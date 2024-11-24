@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:style_me/core/extensions/context_ext.dart';
 
 part 'home_page.g.dart';
 
@@ -17,8 +18,9 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Counter example')),
+      appBar: AppBar(title: Text(context.localizations.appName)),
       body: Center(
         child: Text('${ref.watch(counterProvider)}'),
       ),
