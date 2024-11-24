@@ -22,6 +22,8 @@ migrate_working_dir/
 #.vscode/
 
 # Flutter/Dart/Pub related
+lib/**/*.g.dart
+lib/**/*.chopper.dart
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
