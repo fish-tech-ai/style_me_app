@@ -26,7 +26,7 @@ class AppViewModel extends _$AppViewModel {
     state = state.copyWith(_getCurrentThemeUseCase());
   }
 
-  void saveTheme(Brightness brightness) {
+  void changeTheme(Brightness brightness) {
     _saveCurrentThemeUseCase(brightness);
     state = state.copyWith(brightness);
   }

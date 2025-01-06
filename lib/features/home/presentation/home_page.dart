@@ -16,12 +16,12 @@ class HomePage extends ConsumerWidget {
           children: [
             ElevatedButton(
                 onPressed: () {
-                  appViewModel.saveTheme(Brightness.light);
+                  appViewModel.changeTheme(Brightness.light);
                 },
                 child: Text("Change theme to light")),
             ElevatedButton(
                 onPressed: () {
-                  appViewModel.saveTheme(Brightness.dark);
+                  appViewModel.changeTheme(Brightness.dark);
                 },
                 child: Text("Change theme to dark"))
           ],
