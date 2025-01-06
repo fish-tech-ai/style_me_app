@@ -1,4 +1,13 @@
 {
   "appName": "StyleMe",
+  "loginPageTitle": "Hello, your mirror just got smarter.",
+  "loginPageSubTitle": "Sign in",
+  "authPageGoogleButtonText": "Continue with Google",
+  "authPageInfo1": "By creating an account, you agree to our ",
+  "authPageInfo2Clickable": "Terms of Use",
+  "authPageInfo3": ". Find out how we handle your information in our ",
+  "authPageInfo4Clickable": "Privacy Policy",
+  "email": "e-mail",
+  "continueText": "Continue",
   "yes": "Tak"
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:style_me/core/theme/colors.dart';
+import 'package:style_me/core/theme/custom_colors.dart';
 
 class ThemeManager {
   final ThemeData appThemeDark = _getAppTheme(AppColorsDark());
@@ -8,6 +9,13 @@ class ThemeManager {
 
   static ThemeData _getAppTheme(AppColorsMixin appColors) {
     return ThemeData(
+        extensions: <ThemeExtension<CustomColors>>[
+          CustomColors(
+            backgroundA85: appColors.backgroundA85,
+            dangerA20: appColors.dangerA20,
+            accentA80: appColors.accentA80,
+          ),
+        ],
         colorScheme: ColorScheme(
           primary: appColors.accent,
           primaryContainer: appColors.accentA20,
