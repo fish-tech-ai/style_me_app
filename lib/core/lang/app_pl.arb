@@ -7,7 +7,18 @@
   "authPageInfo2Clickable": "Terms of Use",
   "authPageInfo3": ". Find out how we handle your information in our ",
   "authPageInfo4Clickable": "Privacy Policy",
-  "email": "e-mail",
+  "email": "E-mail",
+  "password": "Password",
+  "firstName": "First name",
+  "surname": "Surname",
+  "verifyPassword": "Verify password",
+  "emailInvalid": "Please enter a valid email address.",
+  "passwordEmpty": "Password cannot be empty.",
+  "passwordWeakLength": "The password must have at least 6 characters",
+  "passwordWeak": "At least one uppercase, lowercase and number required",
+  "forgotPassword": "Forgot your password?",
+  "textFieldEmpty": "This field cannot be empty.",
+  "passwordMismatch": "Passwords do not match.",
   "continueText": "Continue",
-  "yes": "Tak"
+  "yes": "Yes"
 }

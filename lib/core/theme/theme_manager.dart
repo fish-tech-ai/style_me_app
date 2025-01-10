@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:style_me/core/theme/colors.dart';
 import 'package:style_me/core/theme/custom_colors.dart';
+import 'package:style_me/core/utils/constants.dart';
 
 class ThemeManager {
   final ThemeData appThemeDark = _getAppTheme(AppColorsDark());
@@ -44,30 +45,54 @@ class ThemeManager {
             textTheme: ButtonTextTheme.primary,
             shape: RoundedRectangleBorder(
                 side: BorderSide.none,
-                borderRadius: BorderRadius.all(Radius.circular(12)))),
+                borderRadius: GlobalUiConst.borderRadiusNormal)),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            foregroundColor: appColors.accent,
-            backgroundColor: appColors.accentA20,
-          ),
+              foregroundColor: appColors.accent,
+              backgroundColor: appColors.accentA20,
+              side: BorderSide(color: appColors.accent),
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(color: appColors.accent),
+                  borderRadius: GlobalUiConst.borderRadiusNormal)),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: appColors.accent,
-            foregroundColor: appColors.textOnAccent,
-          ),
+              backgroundColor: appColors.accent,
+              foregroundColor: appColors.textOnAccent,
+              shape: RoundedRectangleBorder(
+                  side: BorderSide.none,
+                  borderRadius: GlobalUiConst.borderRadiusNormal)),
         ),
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            foregroundColor: appColors.accent,
-          ),
+              foregroundColor: appColors.accent,
+              shape: RoundedRectangleBorder(
+                  side: BorderSide.none,
+                  borderRadius: GlobalUiConst.borderRadiusNormal)),
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
             backgroundColor: appColors.accent,
             foregroundColor: appColors.textOnAccent),
         inputDecorationTheme: InputDecorationTheme(
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)))),
+          labelStyle: TextStyle(color: appColors.textSecondary),
+          floatingLabelStyle: TextStyle(color: appColors.accent),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: appColors.accent),
+            borderRadius: GlobalUiConst.borderRadiusNormal,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: appColors.accent, width: 2),
+            borderRadius: GlobalUiConst.borderRadiusNormal,
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: appColors.danger),
+            borderRadius: GlobalUiConst.borderRadiusNormal,
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: appColors.danger, width: 2),
+            borderRadius: GlobalUiConst.borderRadiusNormal,
+          ),
+        ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: appColors.background,
           selectedItemColor: appColors.accent,

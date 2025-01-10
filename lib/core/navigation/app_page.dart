@@ -1,5 +1,9 @@
 enum AppPage {
-  homePage("/");
+  authPage("/"),
+  homePage("/home");
 
-  const AppPage(String path);
+
+  final String path;
+
+  const AppPage(this.path);
 }
