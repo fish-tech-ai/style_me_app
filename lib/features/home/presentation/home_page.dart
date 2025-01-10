@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:style_me/core/app/presentation/app_view_model.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
-
-part 'home_page.g.dart';
-
-@riverpod
-class Counter extends _$Counter {
-  @override
-  int build() => 0;
-
-  void increment() => state++;
-}
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
+    final AppViewModel appViewModel = ref.watch(appViewModelProvider.notifier);
     return Scaffold(
       appBar: AppBar(title: Text(context.localizations.appName)),
       body: Center(
-        child: Text('${ref.watch(counterProvider)}'),
+        child: Column(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  appViewModel.changeTheme(Brightness.light);
+                },
+                child: Text("Change theme to light")),
+            ElevatedButton(
+                onPressed: () {
+                  appViewModel.changeTheme(Brightness.dark);
+                },
+                child: Text("Change theme to dark"))
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => ref.read(counterProvider.notifier).increment(),
+        onPressed: () {},
         child: const Icon(Icons.add),
       ),
     );
