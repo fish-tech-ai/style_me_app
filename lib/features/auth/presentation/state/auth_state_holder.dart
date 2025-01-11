@@ -10,7 +10,7 @@ part 'auth_state_holder.freezed.dart';
 class AuthStateHolder with _$AuthStateHolder {
   const AuthStateHolder._();
 
-  factory AuthStateHolder({
+  const factory AuthStateHolder({
     /// Text fields state
     @Default(TextFieldState()) TextFieldState firstName,
     @Default(TextFieldState()) TextFieldState surname,

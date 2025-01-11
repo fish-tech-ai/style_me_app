@@ -25,7 +25,7 @@ class AuthForm extends StatelessWidget {
         buildFormTextField(
             context: context,
             label: context.localizations.firstName,
-            textFieldInfo: state.firstName,
+            textFieldState: state.firstName,
             keyboardType: TextInputType.name,
             onTextChanged: (String text) {
               viewModel.updateTextInput(firstName: text);
@@ -38,7 +38,7 @@ class AuthForm extends StatelessWidget {
         buildFormTextField(
             context: context,
             label: context.localizations.surname,
-            textFieldInfo: state.surname,
+            textFieldState: state.surname,
             keyboardType: TextInputType.name,
             onTextChanged: (String text) {
               viewModel.updateTextInput(surname: text);
@@ -50,7 +50,7 @@ class AuthForm extends StatelessWidget {
         buildFormTextField(
             context: context,
             label: context.localizations.email,
-            textFieldInfo: state.email,
+            textFieldState: state.email,
             keyboardType: TextInputType.emailAddress,
             onTextChanged: (String text) {
               viewModel.updateTextInput(email: text);
@@ -62,7 +62,7 @@ class AuthForm extends StatelessWidget {
         buildFormTextField(
           context: context,
           label: context.localizations.password,
-          textFieldInfo: state.password,
+          textFieldState: state.password,
           keyboardType: TextInputType.visiblePassword,
           asPasswordField: true,
           isPasswordVisible: state.isPasswordVisible,
@@ -80,7 +80,7 @@ class AuthForm extends StatelessWidget {
         buildFormTextField(
           context: context,
           label: context.localizations.verifyPassword,
-          textFieldInfo: state.passwordVerify,
+          textFieldState: state.passwordVerify,
           keyboardType: TextInputType.visiblePassword,
           asPasswordField: true,
           isPasswordVisible: state.isPasswordVerifyVisible,
@@ -129,7 +129,7 @@ class AuthForm extends StatelessWidget {
   Widget buildFormTextField({
     required BuildContext context,
     required String label,
-    required TextFieldState textFieldInfo,
+    required TextFieldState textFieldState,
     required Function(String text) onTextChanged,
     required Function(TextFieldState) onLostFocus,
     TextInputType? keyboardType,
@@ -138,33 +138,34 @@ class AuthForm extends StatelessWidget {
     bool isPasswordVisible = true,
   }) {
     return AnimatedVisibility(
-      isVisible: textFieldInfo.isVisible,
+      isVisible: textFieldState.isVisible,
       padding: EdgeInsets.only(top: 4),
       child: AppTextField(
-        text: textFieldInfo.text,
+        text: textFieldState.text,
         labelText: label,
         keyboardType: keyboardType,
-        errorText: textFieldInfo.errorText,
-        focusNode: textFieldInfo.focusNode,
+        errorText: textFieldState.errorText,
+        focusNode: textFieldState.focusNode,
         textInputAction:
-            textFieldInfo.isLast ? TextInputAction.done : TextInputAction.next,
-        onSubmitted: textFieldInfo.isLast
-            ? (text) {
-                continueIfValidated();
-                textFieldInfo.focusNode?.unfocus();
-                return text;
-              }
-            : (text) {
-                FocusScope.of(context)
-                    .requestFocus(state.focusNodes[textFieldInfo.position + 1]);
-                return text;
-              },
+            textFieldState.isLast ? TextInputAction.done : TextInputAction.next,
+        onSubmitted: (text) => onKeyboardActionClicked(context, textFieldState),
         onTextChanged: onTextChanged,
         asPasswordField: asPasswordField,
         isObscured: !isPasswordVisible,
         onPasswordVisibilityTap: onPasswordVisibilityTap,
-        onLostFocus: () => onLostFocus(textFieldInfo),
+        onLostFocus: () => onLostFocus(textFieldState),
       ),
     );
+  }
+
+  void onKeyboardActionClicked(
+      BuildContext context, TextFieldState textFieldState) {
+    if (textFieldState.isLast) {
+      continueIfValidated();
+      textFieldState.focusNode?.unfocus();
+    } else {
+      FocusScope.of(context)
+          .requestFocus(state.focusNodes[textFieldState.position + 1]);
+    }
   }
 }

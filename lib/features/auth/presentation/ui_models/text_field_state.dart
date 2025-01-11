@@ -5,6 +5,8 @@ part 'text_field_state.freezed.dart';
 
 @freezed
 class TextFieldState with _$TextFieldState {
+  const TextFieldState._();
+
   const factory TextFieldState({
     @Default("") String text,
     @Default(false) bool isVisible,
@@ -14,4 +16,13 @@ class TextFieldState with _$TextFieldState {
     FocusNode? focusNode,
     @Default(0) int position,
   }) = _TextFieldState;
+
+  TextFieldState copyWithTextResettingError(String? text) {
+    return copyWith(
+        text: text ?? this.text, errorText: text != null ? null : errorText);
+  }
+
+  TextFieldState copyWithErrorMessage(String? errorText) {
+    return copyWith(errorText: errorText ?? this.errorText);
+  }
 }

@@ -61,11 +61,11 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                      height: state.mode == AuthPageModeEnum.emailOnly ? 72 : 24),
+                      height:
+                          state.mode == AuthPageModeEnum.emailOnly ? 72 : 24),
                   AppBackButton(onTap: () {
                     viewModel.changePageMode(AuthPageModeEnum.emailOnly);
-                  })
-                      .orEmpty(state.mode == AuthPageModeEnum.emailOnly),
+                  }).orEmpty(state.mode == AuthPageModeEnum.emailOnly),
                   SizedBox(height: GlobalUiConst.paddingNormal),
                   Text(
                     context.localizations.loginPageTitle,

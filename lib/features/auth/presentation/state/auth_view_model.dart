@@ -54,22 +54,12 @@ class AuthViewModel extends _$AuthViewModel {
     String? passwordVerify,
   }) {
     state = state.copyWith(
-      firstName: state.firstName.copyWith(
-          text: firstName ?? state.firstName.text,
-          errorText: firstName != null ? null : state.firstName.errorText),
-      surname: state.surname.copyWith(
-          text: surname ?? state.surname.text,
-          errorText: surname != null ? null : state.surname.errorText),
-      email: state.email.copyWith(
-          text: email ?? state.email.text,
-          errorText: email != null ? null : state.email.errorText),
-      password: state.password.copyWith(
-          text: password ?? state.password.text,
-          errorText: password != null ? null : state.password.errorText),
-      passwordVerify: state.passwordVerify.copyWith(
-          text: passwordVerify ?? state.passwordVerify.text,
-          errorText:
-              passwordVerify != null ? null : state.passwordVerify.errorText),
+      firstName: state.firstName.copyWithTextResettingError(firstName),
+      surname: state.surname.copyWithTextResettingError(surname),
+      email: state.email.copyWithTextResettingError(email),
+      password: state.password.copyWithTextResettingError(password),
+      passwordVerify:
+          state.passwordVerify.copyWithTextResettingError(passwordVerify),
     );
     _silentValidateAll();
   }
@@ -82,38 +72,12 @@ class AuthViewModel extends _$AuthViewModel {
     String? passwordVerifyError,
   }) {
     state = state.copyWith(
-      firstName: state.firstName
-          .copyWith(errorText: firstNameError ?? state.firstName.errorText),
-      surname: state.surname
-          .copyWith(errorText: surnameError ?? state.surname.errorText),
-      email:
-          state.email.copyWith(errorText: emailError ?? state.email.errorText),
-      password: state.password
-          .copyWith(errorText: passwordError ?? state.password.errorText),
-      passwordVerify: state.passwordVerify.copyWith(
-          errorText: passwordVerifyError ?? state.passwordVerify.errorText),
-    );
-  }
-
-  void updateTextFieldVisibility({
-    bool? firstNameVisibility,
-    bool? surnameVisibility,
-    bool? emailVisibility,
-    bool? passwordVisibility,
-    bool? passwordVerifyVisibility,
-  }) {
-    state = state.copyWith(
-      firstName: state.firstName.copyWith(
-          isVisible: firstNameVisibility ?? state.firstName.isVisible),
-      surname: state.surname
-          .copyWith(isVisible: surnameVisibility ?? state.surname.isVisible),
-      email: state.email
-          .copyWith(isVisible: emailVisibility ?? state.email.isVisible),
-      password: state.password
-          .copyWith(isVisible: passwordVisibility ?? state.password.isVisible),
-      passwordVerify: state.passwordVerify.copyWith(
-          isVisible:
-              passwordVerifyVisibility ?? state.passwordVerify.isVisible),
+      firstName: state.firstName.copyWithErrorMessage(firstNameError),
+      surname: state.surname.copyWithErrorMessage(surnameError),
+      email: state.email.copyWithErrorMessage(emailError),
+      password: state.password.copyWithErrorMessage(passwordError),
+      passwordVerify:
+          state.passwordVerify.copyWithErrorMessage(passwordVerifyError),
     );
   }
 
