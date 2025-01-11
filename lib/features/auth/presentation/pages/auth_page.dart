@@ -69,7 +69,10 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                   SizedBox(height: GlobalUiConst.paddingNormal),
                   Text(
                     context.localizations.loginPageTitle,
-                    style: TextStyle(fontSize: 36),
+                    style: TextStyle(
+                        color: context.colorScheme.onSurface,
+                        fontSize: 36,
+                        fontWeight: FontWeight.w500),
                   ),
                   SizedBox(height: GlobalUiConst.paddingLarge),
                   Container(
@@ -99,7 +102,10 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       children: [
         Text(
           context.localizations.loginPageSubTitle,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         AuthForm(viewModel: viewModel, state: state),
         AppOutlinedButton(
@@ -119,6 +125,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
         textAlign: TextAlign.center,
         text: TextSpan(
           style: TextStyle(
+              fontFamily: 'Inter',
               fontWeight: FontWeight.w500,
               fontSize: 12,
               color: context.colorScheme.onSecondary),

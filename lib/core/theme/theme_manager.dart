@@ -10,6 +10,7 @@ class ThemeManager {
 
   static ThemeData _getAppTheme(AppColorsMixin appColors) {
     return ThemeData(
+        fontFamily: 'Inter',
         extensions: <ThemeExtension<CustomColors>>[
           CustomColors(
             backgroundA85: appColors.backgroundA85,
@@ -34,15 +35,9 @@ class ThemeManager {
         dialogBackgroundColor: appColors.backgroundDarker,
         disabledColor: appColors.disabled,
         hintColor: appColors.textDisabled,
-        textTheme: TextTheme(
-          bodyLarge: TextStyle(color: appColors.text),
-          bodyMedium: TextStyle(color: appColors.textSecondary),
-          bodySmall: TextStyle(color: appColors.textDisabled),
-        ),
         buttonTheme: ButtonThemeData(
             buttonColor: appColors.accent,
             disabledColor: appColors.disabled,
-            textTheme: ButtonTextTheme.primary,
             shape: RoundedRectangleBorder(
                 side: BorderSide.none,
                 borderRadius: GlobalUiConst.borderRadiusNormal)),
@@ -50,6 +45,8 @@ class ThemeManager {
           style: OutlinedButton.styleFrom(
               foregroundColor: appColors.accent,
               backgroundColor: appColors.accentA20,
+              textStyle:
+                  TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Inter'),
               side: BorderSide(color: appColors.accent),
               shape: RoundedRectangleBorder(
                   side: BorderSide(color: appColors.accent),
@@ -59,6 +56,10 @@ class ThemeManager {
           style: ElevatedButton.styleFrom(
               backgroundColor: appColors.accent,
               foregroundColor: appColors.textOnAccent,
+              textStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: appColors.text,
+                  fontFamily: 'Inter'),
               shape: RoundedRectangleBorder(
                   side: BorderSide.none,
                   borderRadius: GlobalUiConst.borderRadiusNormal)),
@@ -66,6 +67,8 @@ class ThemeManager {
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
               foregroundColor: appColors.accent,
+              textStyle:
+                  TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Inter'),
               shape: RoundedRectangleBorder(
                   side: BorderSide.none,
                   borderRadius: GlobalUiConst.borderRadiusNormal)),
