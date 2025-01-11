@@ -46,13 +46,13 @@ class AppTextField extends StatefulWidget {
 class _AppTextFieldState extends State<AppTextField> {
   late final TextEditingController controller;
   FocusNode localFocusNode = FocusNode();
-  FocusNode? focusNode;
+  late FocusNode focusNode;
 
   @override
   void initState() {
     super.initState();
     focusNode = widget.focusNode ?? localFocusNode;
-    focusNode?.addListener(handleFocusChange);
+    focusNode.addListener(handleFocusChange);
     controller = TextEditingController(text: widget.text);
   }
 
@@ -63,21 +63,21 @@ class _AppTextFieldState extends State<AppTextField> {
       controller.text = widget.text;
     }
     if (widget.focusNode != oldWidget.focusNode) {
-      focusNode?.removeListener(handleFocusChange);
+      focusNode.removeListener(handleFocusChange);
       focusNode = widget.focusNode ?? localFocusNode;
-      focusNode?.addListener(handleFocusChange);
+      focusNode.addListener(handleFocusChange);
     }
   }
 
   @override
   void dispose() {
-    focusNode?.removeListener(handleFocusChange);
+    focusNode.removeListener(handleFocusChange);
     localFocusNode.dispose();
     super.dispose();
   }
 
   void handleFocusChange() {
-    if (!focusNode!.hasFocus) {
+    if (!focusNode.hasFocus) {
       widget.onLostFocus?.call();
     }
   }
@@ -133,24 +133,39 @@ class _AppTextFieldState extends State<AppTextField> {
   }
 
   Widget _buildPasswordIcon(String? errorText) {
-    return Container(
-      height: 54,
-      width: 54,
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 250),
+      height: 56,
+      width: 56,
       decoration: BoxDecoration(
-        color: errorText != null
-            ? context.colorScheme.error
-            : context.colorScheme.primary,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(GlobalUiConst.radiusNormal),
-          bottomRight: Radius.circular(GlobalUiConst.radiusNormal),
+        color: widget.isObscured
+            ? errorText != null
+                ? context.colorScheme.error
+                : context.colorScheme.primary
+            : Colors.transparent,
+        borderRadius: BorderRadius.all(
+          Radius.circular(GlobalUiConst.radiusNormal),
+        ),
+        border: Border.all(
+          width: focusNode.hasFocus ? 2 : 1,
+          color: errorText != null
+              ? context.colorScheme.error
+              : context.colorScheme.primary,
         ),
       ),
       child: IconButton(
         icon: Icon(
           widget.isObscured ? Icons.visibility : Icons.visibility_off,
-          color: context.colorScheme.onPrimary,
+          color: widget.isObscured
+              ? context.colorScheme.onPrimary
+              : errorText != null
+                  ? context.colorScheme.error
+                  : context.colorScheme.primary,
         ),
         onPressed: widget.onPasswordVisibilityTap,
+        style: ButtonStyle(
+          splashFactory: NoSplash.splashFactory, // Disable splash animation
+        ),
       ),
     );
   }
