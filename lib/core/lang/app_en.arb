@@ -20,5 +20,7 @@
   "textFieldEmpty": "This field cannot be empty.",
   "passwordMismatch": "Passwords do not match.",
   "continueText": "Continue",
+  "unknownError": "Unknown error occurred. please, try again later",
+  "connectionError": "No internet connection",
   "yes": "Yes"
 }
