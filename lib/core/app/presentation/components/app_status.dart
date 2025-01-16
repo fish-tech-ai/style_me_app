@@ -16,21 +16,25 @@ class AppStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 44,
+      constraints: BoxConstraints(minHeight: 44, maxHeight: 180),
       color: color,
       width: double.infinity,
       child: Row(
         spacing: 12,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            text,
-            style: TextStyle(
-                fontSize: 14,
-                color: textColor,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w500,
-                decoration: TextDecoration.none),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                  fontSize: 14,
+                  color: textColor,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500,
+                  decoration: TextDecoration.none),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
           ),
           Icon(icon, color: textColor)
         ],

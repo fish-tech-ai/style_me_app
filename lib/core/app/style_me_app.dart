@@ -8,7 +8,8 @@ import 'package:style_me/core/di/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
-import 'package:style_me/core/views/animated_content.dart';
+import 'package:style_me/core/views/animated_visibility.dart';
+import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
 
 class StyleMeApp extends ConsumerWidget {
   const StyleMeApp({super.key});
@@ -35,6 +36,7 @@ class StyleMeApp extends ConsumerWidget {
             bottom: MediaQuery.of(context).padding.bottom,
             child: AnimatedVisibility(
               isVisible: !state.isConnected || state.failure != null,
+              animDirection: AnimDirectionEnum.bottomToTop,
               child: AppStatus(
                 text: !state.isConnected
                     ? context.localizations.connectionError

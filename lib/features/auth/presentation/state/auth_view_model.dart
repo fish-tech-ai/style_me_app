@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:style_me/core/app/presentation/app_view_model.dart';
+import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/utils/validator.dart';
+import 'package:style_me/features/auth/data/models/email_state_enum.dart';
+import 'package:style_me/features/auth/domain/check_email_use_case.dart';
+import 'package:style_me/features/auth/domain/confirm_email_use_case.dart';
+import 'package:style_me/features/auth/domain/login_use_case.dart';
+import 'package:style_me/features/auth/domain/register_use_case.dart';
 import 'package:style_me/features/auth/presentation/state/auth_state_holder.dart';
 import 'package:style_me/features/auth/presentation/ui_models/auth_page_mode_enum.dart';
 import 'package:style_me/features/auth/presentation/ui_models/text_field_state.dart';
@@ -10,6 +17,18 @@ part 'auth_view_model.g.dart';
 
 @riverpod
 class AuthViewModel extends _$AuthViewModel {
+  late final CheckEmailUseCase _checkEmailUseCase;
+  late final ConfirmEmailUseCase _confirmEmailUseCase;
+  late final LoginUseCase _loginUseCase;
+  late final RegisterUseCase _registerUseCase;
+
+  AuthViewModel() {
+    _checkEmailUseCase = getIt();
+    _confirmEmailUseCase = getIt();
+    _loginUseCase = getIt();
+    _registerUseCase = getIt();
+  }
+
   @override
   AuthStateHolder build() {
     return AuthStateHolder(
@@ -95,20 +114,42 @@ class AuthViewModel extends _$AuthViewModel {
         state.copyWith(isPasswordVerifyVisible: !state.isPasswordVerifyVisible);
   }
 
-  void onContinueButtonClicked() {
+  void onContinueButtonClicked() async {
     switch (state.mode) {
       case AuthPageModeEnum.emailOnly:
-        changePageMode(AuthPageModeEnum.emailAndPassword);
+        checkEmail();
         break;
       case AuthPageModeEnum.emailAndPassword:
-        changePageMode(AuthPageModeEnum.registration);
         break;
       case AuthPageModeEnum.registration:
-        changePageMode(AuthPageModeEnum.emailOnly);
         break;
     }
-    changePageMode(state.mode);
-    _silentValidateAll();
+  }
+
+  void checkEmail() async {
+    state = state.copyWith(isLoading: true);
+    final result = await _checkEmailUseCase(state.email.text);
+    result.collect((result) {
+      onCheckEmailSuccess(result);
+    }, (failure) {
+      ref.read(appViewModelProvider.notifier).showFailure(failure);
+      state = state.copyWith(isLoading: false);
+    });
+  }
+
+  void onCheckEmailSuccess(EmailStateEnum result) {
+    switch (result) {
+      case EmailStateEnum.registeredAndConfirmed:
+        changePageMode(AuthPageModeEnum.emailAndPassword);
+        break;
+      case EmailStateEnum.notConfirmed:
+      // TODO: route to confirm your email page
+        break;
+      case EmailStateEnum.notFound:
+        changePageMode(AuthPageModeEnum.registration);
+        break;
+    }
+    state = state.copyWith(isLoading: false);
   }
 
   void changePageMode(AuthPageModeEnum mode) {

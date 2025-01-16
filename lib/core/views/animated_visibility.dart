@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
 
 class AnimatedVisibility extends StatefulWidget {
   final bool isVisible;
   final bool animateAtFirstBuild;
   final bool reversed;
+  final AnimDirectionEnum animDirection;
   final EdgeInsets padding;
   final Widget child;
 
@@ -14,6 +16,7 @@ class AnimatedVisibility extends StatefulWidget {
     this.animateAtFirstBuild = true,
     this.padding = EdgeInsets.zero,
     this.reversed = false,
+    this.animDirection = AnimDirectionEnum.rightToLeft,
   });
 
   @override
@@ -37,7 +40,9 @@ class _AnimatedVisibilityState extends State<AnimatedVisibility>
     );
 
     _slideAnimation = Tween<Offset>(
-      begin: Offset(widget.reversed ? -1 : 1, 0),
+      begin: widget.animDirection == AnimDirectionEnum.bottomToTop
+          ? Offset(0, widget.reversed ? 1 : -1)
+          : Offset(widget.reversed ? -1 : 1, 0),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,

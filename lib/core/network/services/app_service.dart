@@ -19,5 +19,5 @@ abstract class AppService extends ChopperService {
   @Post(path: 'auth/login')
   Future<Response<Token>> login(@Body() LoginRequest loginRequest);
 
-  static AppService create(ChopperClient client) => _$AppService(client);
+  static AppService create([ChopperClient? client]) => _$AppService(client);
 }

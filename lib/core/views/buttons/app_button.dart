@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/core/views/ui_models/app_button_icon.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 
@@ -8,6 +9,7 @@ class AppButton extends StatelessWidget {
   final String text;
   final Function()? onClick;
   final bool enabled;
+  final bool isLoading;
   final AppButtonIcon? icon;
   final ButtonStyle? style;
 
@@ -18,6 +20,7 @@ class AppButton extends StatelessWidget {
     this.style,
     this.icon,
     this.enabled = true,
+    this.isLoading = false,
   });
 
   @override
@@ -25,30 +28,36 @@ class AppButton extends StatelessWidget {
     return SizedBox(
       height: 48,
       child: ElevatedButton(
-          onPressed: onClick,
-          style: (style ?? ElevatedButton.styleFrom()).copyWith(
-              backgroundColor: WidgetStateProperty.all(enabled
-                  ? context.colorScheme.primary
-                  : context.theme.disabledColor)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 2,
-            children: [
-              _buildIcon(context, icon!.icon).orEmpty(
-                  icon == null || icon?.position != IconPosition.leading),
-              Text(
-                text,
-                style: TextStyle(
-                  color: enabled
-                      ? context.colorScheme.onPrimary
-                      : context.colorScheme.onSecondary,
-                ),
+        onPressed: onClick,
+        style: (style ?? ElevatedButton.styleFrom()).copyWith(
+            backgroundColor: WidgetStateProperty.all(enabled
+                ? context.colorScheme.primary
+                : context.theme.disabledColor)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          spacing: 2,
+          children: [
+            _buildIcon(context, icon!.icon).orEmpty(
+                icon == null || icon?.position != IconPosition.leading),
+            Text(
+              text,
+              style: TextStyle(
+                color: enabled
+                    ? context.colorScheme.onPrimary
+                    : context.colorScheme.onSecondary,
               ),
-              _buildIcon(context, icon!.icon).orEmpty(
-                  icon == null || icon?.position != IconPosition.trailing),
-            ],
-          )),
+            ),
+            _buildIcon(context, icon!.icon).orEmpty(
+                icon == null || icon?.position != IconPosition.trailing),
+          ],
+        ).or(
+            DefaultLoading(
+              color: context.colorScheme.onPrimary,
+              size: Size.square(24),
+            ),
+            isLoading),
+      ),
     );
   }
 

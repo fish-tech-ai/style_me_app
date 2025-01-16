@@ -1,4 +1,4 @@
-import 'package:chopper/src/response.dart';
+import 'package:chopper/chopper.dart';
 import 'package:style_me/core/extensions/list_ext.dart';
 import 'package:style_me/core/extensions/response_ext.dart';
 import 'package:style_me/core/network/exceptions/server_exception.dart';

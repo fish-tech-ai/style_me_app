@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
-import 'package:style_me/core/views/animated_content.dart';
+import 'package:style_me/core/views/animated_visibility.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
 import 'package:style_me/core/views/ui_models/app_button_icon.dart';
@@ -112,6 +112,7 @@ class AuthForm extends StatelessWidget {
         AppButton(
           text: context.localizations.continueText,
           enabled: state.isAllValidated,
+          isLoading: state.isLoading,
           icon: AppButtonIcon(
               Icons.keyboard_arrow_right_rounded, IconPosition.trailing),
           onClick: () => continueIfValidated(),

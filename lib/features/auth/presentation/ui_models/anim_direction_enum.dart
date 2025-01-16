@@ -1,0 +1,4 @@
+enum AnimDirectionEnum {
+  rightToLeft,
+  bottomToTop
+}
