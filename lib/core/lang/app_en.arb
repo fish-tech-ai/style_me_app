@@ -22,5 +22,6 @@
   "continueText": "Continue",
   "unknownError": "Unknown error occurred. please, try again later",
   "connectionError": "No internet connection",
-  "yes": "Yes"
+  "yes": "Yes",
+  "loginFailed": "Invalid email or password"
 }

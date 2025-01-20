@@ -31,7 +31,7 @@ class AuthStateHolder with _$AuthStateHolder {
     @Default(false) bool isPasswordVerifyVisible,
 
     ///other
-    @Default(false) isLoading,
+    @Default(false) bool isLoading,
   }) = _AuthStateHolder;
 
   AuthStateHolder copyWithMode(AuthPageModeEnum mode) {

@@ -1,8 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:style_me/core/app/presentation/app_view_model.dart';
+import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
+import 'package:style_me/core/network/failures/login_failure.dart';
+import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/core/utils/validator.dart';
 import 'package:style_me/features/auth/data/models/email_state_enum.dart';
 import 'package:style_me/features/auth/domain/check_email_use_case.dart';
@@ -114,27 +117,19 @@ class AuthViewModel extends _$AuthViewModel {
         state.copyWith(isPasswordVerifyVisible: !state.isPasswordVerifyVisible);
   }
 
-  void onContinueButtonClicked() async {
+  void onContinueButtonClicked(
+      AppLocalizations localizations, Function goToHome) async {
     switch (state.mode) {
       case AuthPageModeEnum.emailOnly:
         checkEmail();
         break;
       case AuthPageModeEnum.emailAndPassword:
+        loginUser(localizations, goToHome);
         break;
       case AuthPageModeEnum.registration:
+        registerUser();
         break;
     }
-  }
-
-  void checkEmail() async {
-    state = state.copyWith(isLoading: true);
-    final result = await _checkEmailUseCase(state.email.text);
-    result.collect((result) {
-      onCheckEmailSuccess(result);
-    }, (failure) {
-      ref.read(appViewModelProvider.notifier).showFailure(failure);
-      state = state.copyWith(isLoading: false);
-    });
   }
 
   void onCheckEmailSuccess(EmailStateEnum result) {
@@ -143,7 +138,7 @@ class AuthViewModel extends _$AuthViewModel {
         changePageMode(AuthPageModeEnum.emailAndPassword);
         break;
       case EmailStateEnum.notConfirmed:
-      // TODO: route to confirm your email page
+        // TODO: change page mode to confirm email view
         break;
       case EmailStateEnum.notFound:
         changePageMode(AuthPageModeEnum.registration);
@@ -193,5 +188,41 @@ class AuthViewModel extends _$AuthViewModel {
       password: state.password.copyWith(text: ""),
       passwordVerify: state.passwordVerify.copyWith(text: ""),
     );
+  }
+
+  void checkEmail() async {
+    state = state.copyWith(isLoading: true);
+    final result = await _checkEmailUseCase(state.email.text);
+    result.collect((result) {
+      onCheckEmailSuccess(result);
+    }, (failure) {
+      ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+      state = state.copyWith(isLoading: false);
+    });
+  }
+
+  void registerUser() async {
+    state = state.copyWith(isLoading: true);
+    final Result result = await _registerUseCase(state);
+    result.collect((result) {
+      // TODO: change page mode to confirm email view
+      state = state.copyWith(isLoading: false);
+    }, (failure) {
+      ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+      state = state.copyWith(isLoading: false);
+    });
+  }
+
+  void loginUser(AppLocalizations localizations, Function goToHome) async {
+    state = state.copyWith(isLoading: true);
+    final Result result = await _loginUseCase(state);
+    result.collect((result) {
+      goToHome();
+      state = state.copyWith(isLoading: false);
+    }, (failure) {
+      ref.read(appGlobalViewModelProvider.notifier).showFailure(
+          LoginFailure.from(failure, localizations.loginFailed));
+      state = state.copyWith(isLoading: false);
+    });
   }
 }

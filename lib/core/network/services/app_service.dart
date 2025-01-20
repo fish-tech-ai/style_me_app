@@ -1,7 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:style_me/features/auth/data/models/login_request.dart';
 import 'package:style_me/features/auth/data/models/registration_request.dart';
-import 'package:style_me/features/auth/data/models/token_response.dart';
+import 'package:style_me/features/auth/data/models/login_response.dart';
 
 part "app_service.chopper.dart";
 
@@ -17,7 +17,7 @@ abstract class AppService extends ChopperService {
   Future<Response> register(@Body() RegistrationRequest registrationRequest);
 
   @Post(path: 'auth/login')
-  Future<Response<Token>> login(@Body() LoginRequest loginRequest);
+  Future<Response<LoginResponse>> login(@Body() LoginRequest loginRequest);
 
   static AppService create([ChopperClient? client]) => _$AppService(client);
 }

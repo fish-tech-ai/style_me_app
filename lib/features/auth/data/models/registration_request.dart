@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:style_me/core/extensions/string_ext.dart';
 import 'package:style_me/features/auth/presentation/state/auth_state_holder.dart';
 
 part 'registration_request.g.dart';
@@ -27,7 +28,7 @@ class RegistrationRequest {
       firstName: state.firstName.text,
       lastName: state.surname.text,
       email: state.email.text,
-      password: state.password.text,
+      password: state.password.text.getHashed(),
     );
   }
 }

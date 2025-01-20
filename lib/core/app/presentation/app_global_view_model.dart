@@ -4,29 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/domain/usecases/get_current_theme_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/save_current_theme_use_case.dart';
-import 'package:style_me/core/app/presentation/app_state_holder.dart';
+import 'package:style_me/core/app/presentation/app_global_state_holder.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/failures/failure.dart';
 
-part 'app_view_model.g.dart';
+part 'app_global_view_model.g.dart';
 
 @riverpod
-class AppViewModel extends _$AppViewModel {
+class AppGlobalViewModel extends _$AppGlobalViewModel {
   late final GetCurrentThemeUseCase _getCurrentThemeUseCase;
   late final SaveCurrentThemeUseCase _saveCurrentThemeUseCase;
   late final Connection _connection;
 
-  AppViewModel() {
+  AppGlobalViewModel() {
     _getCurrentThemeUseCase = getIt();
     _saveCurrentThemeUseCase = getIt();
     _connection = getIt();
   }
 
   @override
-  AppStateHolder build() {
+  AppGlobalStateHolder build() {
     _monitorConnection();
-    return AppStateHolder(currentTheme: _getCurrentThemeUseCase());
+    return AppGlobalStateHolder(currentTheme: _getCurrentThemeUseCase());
   }
 
   void _monitorConnection() {

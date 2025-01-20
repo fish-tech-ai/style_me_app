@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/animated_visibility.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
@@ -115,15 +117,18 @@ class AuthForm extends StatelessWidget {
           isLoading: state.isLoading,
           icon: AppButtonIcon(
               Icons.keyboard_arrow_right_rounded, IconPosition.trailing),
-          onClick: () => continueIfValidated(),
+          onClick: () => continueIfValidated(context),
         ),
       ],
     );
   }
 
-  void continueIfValidated() {
+  void continueIfValidated(BuildContext context) {
     state.isAllValidated
-        ? viewModel.onContinueButtonClicked()
+        ? viewModel.onContinueButtonClicked(
+            context.localizations,
+            () => context.go(AppPage.homePage.path),
+          )
         : viewModel.validateAndShowAll();
   }
 
@@ -162,7 +167,7 @@ class AuthForm extends StatelessWidget {
   void onKeyboardActionClicked(
       BuildContext context, TextFieldState textFieldState) {
     if (textFieldState.isLast) {
-      continueIfValidated();
+      continueIfValidated(context);
       textFieldState.focusNode?.unfocus();
     } else {
       FocusScope.of(context)

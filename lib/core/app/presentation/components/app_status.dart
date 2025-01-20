@@ -19,6 +19,7 @@ class AppStatus extends StatelessWidget {
       constraints: BoxConstraints(minHeight: 44, maxHeight: 180),
       color: color,
       width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 18),
       child: Row(
         spacing: 12,
         mainAxisAlignment: MainAxisAlignment.center,

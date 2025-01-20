@@ -1,17 +1,21 @@
+import 'dart:io';
+
 import 'package:chopper/chopper.dart';
 import 'package:style_me/core/extensions/list_ext.dart';
 import 'package:style_me/core/extensions/response_ext.dart';
+import 'package:style_me/core/local/database.dart';
 import 'package:style_me/core/network/exceptions/server_exception.dart';
 import 'package:style_me/core/network/services/app_service.dart';
 import 'package:style_me/features/auth/data/models/email_state_enum.dart';
 import 'package:style_me/features/auth/data/models/login_request.dart';
 import 'package:style_me/features/auth/data/models/registration_request.dart';
-import 'package:style_me/features/auth/data/models/token_response.dart';
+import 'package:style_me/features/auth/data/models/login_response.dart';
 
 class AuthRepository {
   final AppService service;
+  final AppDatabase database;
 
-  AuthRepository(this.service);
+  AuthRepository(this.service, this.database);
 
   Future<EmailStateEnum> checkEmail(String email) async {
     try {
@@ -37,14 +41,22 @@ class AuthRepository {
     }
   }
 
-  Future<Token> login(LoginRequest loginRequest) async {
+  Future<LoginResponse> login(LoginRequest loginRequest) async {
     try {
       final response = await service.login(loginRequest);
+      if (response.statusCode == HttpStatus.unauthorized) {
+        throw ServerException(HttpStatus.unauthorized.toString());
+      }
       response.handleIfNotSuccessful();
+      _onLoginSuccess(response.body!);
       return response.body!;
     } catch (error) {
       throw ServerException(error.toString());
     }
+  }
+
+  void _onLoginSuccess(LoginResponse loginResponse) {
+    database.setUser(loginResponse.toUserTable());
   }
 
   Future register(RegistrationRequest registrationRequest) async {
