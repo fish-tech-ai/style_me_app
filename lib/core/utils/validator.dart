@@ -17,6 +17,8 @@ class Validator {
         return _validateEmailAndPassword(state);
       case AuthPageModeEnum.registration:
         return _validateRegistration(state);
+      case AuthPageModeEnum.confirmation:
+        return true;
     }
   }
 

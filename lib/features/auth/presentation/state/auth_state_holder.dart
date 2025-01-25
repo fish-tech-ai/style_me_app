@@ -21,6 +21,7 @@ class AuthStateHolder with _$AuthStateHolder {
 
     /// mode
     @Default(AuthPageModeEnum.emailOnly) AuthPageModeEnum mode,
+    @Default(AuthPageModeEnum.emailOnly) AuthPageModeEnum previousMode,
 
     /// validation
     Validator? validator,
@@ -32,9 +33,11 @@ class AuthStateHolder with _$AuthStateHolder {
 
     ///other
     @Default(false) bool isLoading,
+    @Default(false) bool showConfirmationPageAsWarning,
   }) = _AuthStateHolder;
 
-  AuthStateHolder copyWithMode(AuthPageModeEnum mode) {
+  AuthStateHolder copyWithMode(AuthPageModeEnum mode,
+      {bool? showConfirmationPageAsWarning}) {
     switch (mode) {
       case AuthPageModeEnum.emailOnly:
         return copyWith(
@@ -87,6 +90,12 @@ class AuthStateHolder with _$AuthStateHolder {
               password.focusNode!,
               passwordVerify.focusNode!,
             ]);
+      case AuthPageModeEnum.confirmation:
+        return copyWith(
+          mode: mode,
+          showConfirmationPageAsWarning: showConfirmationPageAsWarning ?? false,
+          email: email.copyWith(isVisible: true, isLast: true, position: 0),
+        );
     }
   }
 }

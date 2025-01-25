@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/navigation/app_page.dart';
-import 'package:style_me/core/views/animated_visibility.dart';
+import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
 import 'package:style_me/core/views/ui_models/app_button_icon.dart';
@@ -102,7 +102,9 @@ class AuthForm extends StatelessWidget {
           isVisible: state.mode == AuthPageModeEnum.emailAndPassword,
           reversed: true,
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              // TODO send email with password change link (dynamic links)
+            },
             child: Text(
               context.localizations.forgotPassword,
               style: TextStyle(fontWeight: FontWeight.w500),
@@ -170,8 +172,7 @@ class AuthForm extends StatelessWidget {
       continueIfValidated(context);
       textFieldState.focusNode?.unfocus();
     } else {
-      FocusScope.of(context)
-          .requestFocus(state.focusNodes[textFieldState.position + 1]);
+      state.focusNodes[textFieldState.position + 1].requestFocus();
     }
   }
 }

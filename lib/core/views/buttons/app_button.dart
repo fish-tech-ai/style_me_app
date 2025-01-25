@@ -38,8 +38,9 @@ class AppButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           spacing: 2,
           children: [
-            _buildIcon(context, icon!.icon).orEmpty(
-                icon == null || icon?.position != IconPosition.leading),
+            _buildIcon(context, icon?.icon ?? Icons.do_not_disturb_alt_rounded)
+                .orEmpty(
+                    icon == null || icon?.position != IconPosition.leading),
             Text(
               text,
               style: TextStyle(
@@ -48,8 +49,9 @@ class AppButton extends StatelessWidget {
                     : context.colorScheme.onSecondary,
               ),
             ),
-            _buildIcon(context, icon!.icon).orEmpty(
-                icon == null || icon?.position != IconPosition.trailing),
+            _buildIcon(context, icon?.icon ?? Icons.do_not_disturb_alt_rounded)
+                .orEmpty(
+                    icon == null || icon?.position != IconPosition.trailing),
           ],
         ).or(
             DefaultLoading(

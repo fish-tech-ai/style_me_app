@@ -2,6 +2,7 @@
   "appName": "StyleMe",
   "loginPageTitle": "Hello, your mirror just got smarter.",
   "loginPageSubTitle": "Sign in",
+  "registerPageSubTitle": "Sign up",
   "authPageGoogleButtonText": "Continue with Google",
   "authPageInfo1": "By creating an account, you agree to our ",
   "authPageInfo2Clickable": "Terms of Use",
@@ -23,5 +24,12 @@
   "unknownError": "Unknown error occurred. please, try again later",
   "connectionError": "No internet connection",
   "yes": "Yes",
-  "loginFailed": "Invalid email or password"
+  "loginFailed": "Invalid email or password",
+  "authEmailSentTitle": "We sent you an email!",
+  "authEmailSentText": "Confirm your email and then log in to start playing with your outfits",
+  "authWarningEmailSentTitle": "Confirm your email!",
+  "authWarningEmailSentText": "It looks like you didn't confirm your email. Confirm your email and then try to log in again.",
+  "backToLogin": "Back to login page",
+  "resendEmailLabel": "Didn't get any email? Check your spam or",
+  "resendEmail": "Resend email"
 }

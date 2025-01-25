@@ -8,6 +8,6 @@ extension WidgetExt on Widget {
 
   Widget? orNull(bool condition) => condition ? null : this;
 
-  Widget? or(Widget otherWidget, bool ifConditionTrue) =>
+  Widget or(Widget otherWidget, bool ifConditionTrue) =>
       ifConditionTrue ? otherWidget : this;
 }

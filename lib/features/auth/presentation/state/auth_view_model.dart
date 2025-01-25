@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -129,6 +128,10 @@ class AuthViewModel extends _$AuthViewModel {
       case AuthPageModeEnum.registration:
         registerUser();
         break;
+      case AuthPageModeEnum.confirmation:
+
+        /// Continue button is not visible in this mode
+        break;
     }
   }
 
@@ -138,7 +141,8 @@ class AuthViewModel extends _$AuthViewModel {
         changePageMode(AuthPageModeEnum.emailAndPassword);
         break;
       case EmailStateEnum.notConfirmed:
-        // TODO: change page mode to confirm email view
+        changePageMode(AuthPageModeEnum.confirmation,
+            showConfirmationPageAsWarning: true);
         break;
       case EmailStateEnum.notFound:
         changePageMode(AuthPageModeEnum.registration);
@@ -147,11 +151,17 @@ class AuthViewModel extends _$AuthViewModel {
     state = state.copyWith(isLoading: false);
   }
 
-  void changePageMode(AuthPageModeEnum mode) {
-    state = state.copyWithMode(mode);
+  void changePageMode(AuthPageModeEnum mode,
+      {bool? showConfirmationPageAsWarning}) {
+    state = state.copyWith(previousMode: state.mode);
+    state = state.copyWithMode(
+      mode,
+      showConfirmationPageAsWarning: showConfirmationPageAsWarning,
+    );
     _clearTextFieldsExceptEmail();
     _clearValidationErrors();
     _silentValidateAll();
+    state.focusNodes.first.requestFocus();
   }
 
   void validateAndShowAll() {
@@ -205,7 +215,7 @@ class AuthViewModel extends _$AuthViewModel {
     state = state.copyWith(isLoading: true);
     final Result result = await _registerUseCase(state);
     result.collect((result) {
-      // TODO: change page mode to confirm email view
+      changePageMode(AuthPageModeEnum.confirmation);
       state = state.copyWith(isLoading: false);
     }, (failure) {
       ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
@@ -220,9 +230,19 @@ class AuthViewModel extends _$AuthViewModel {
       goToHome();
       state = state.copyWith(isLoading: false);
     }, (failure) {
-      ref.read(appGlobalViewModelProvider.notifier).showFailure(
-          LoginFailure.from(failure, localizations.loginFailed));
+      ref
+          .read(appGlobalViewModelProvider.notifier)
+          .showFailure(LoginFailure.from(failure, localizations.loginFailed));
       state = state.copyWith(isLoading: false);
     });
+  }
+
+  void ensureEmailVisible() {
+    if (state.mode == AuthPageModeEnum.emailOnly &&
+        state.previousMode == AuthPageModeEnum.confirmation) {
+      state = state.copyWith(
+          email: state.email.copyWith(isVisible: true),
+          previousMode: AuthPageModeEnum.emailOnly);
+    }
   }
 }

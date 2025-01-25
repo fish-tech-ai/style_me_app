@@ -8,7 +8,7 @@ import 'package:style_me/core/di/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
-import 'package:style_me/core/views/animated_visibility.dart';
+import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
 
 class StyleMeApp extends ConsumerWidget {

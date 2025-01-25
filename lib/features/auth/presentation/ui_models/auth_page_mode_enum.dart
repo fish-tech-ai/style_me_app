@@ -1,5 +1,6 @@
 enum AuthPageModeEnum {
   emailOnly,
   emailAndPassword,
-  registration
+  registration,
+  confirmation
 }
