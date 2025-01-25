@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
-import 'package:style_me/core/views/buttons/app_outlined_button.dart';
+import 'package:style_me/core/views/buttons/countdown_button.dart';
 import 'package:style_me/core/views/ui_models/app_button_icon.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 
@@ -50,7 +50,7 @@ class AuthEmailConfirmation extends StatelessWidget {
           spacing: 6,
           children: [
             Text(context.localizations.resendEmailLabel),
-            AppOutlinedButton(
+            CountdownOutlinedButton(
               text: context.localizations.resendEmail,
               onClick: onResendClicked,
             )

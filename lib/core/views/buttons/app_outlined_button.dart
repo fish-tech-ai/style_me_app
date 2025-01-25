@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppOutlinedButton extends StatelessWidget {
   final String text;
-  final Function() onClick;
+  final Function()? onClick;
   final ButtonStyle? style;
 
   const AppOutlinedButton(

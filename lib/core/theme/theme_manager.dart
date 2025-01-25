@@ -43,14 +43,25 @@ class ThemeManager {
                 borderRadius: GlobalUiConst.borderRadiusNormal)),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-              foregroundColor: appColors.accent,
-              backgroundColor: appColors.accentA20,
-              textStyle:
-                  TextStyle(fontWeight: FontWeight.w500, fontFamily: 'Inter'),
-              side: BorderSide(color: appColors.accent),
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(color: appColors.accent),
-                  borderRadius: GlobalUiConst.borderRadiusNormal)),
+                  foregroundColor: appColors.accent,
+                  backgroundColor: appColors.accentA20,
+                  disabledBackgroundColor: appColors.disabled,
+                  disabledForegroundColor: appColors.textDisabled,
+                  textStyle: TextStyle(
+                      fontWeight: FontWeight.w500, fontFamily: 'Inter'),
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(color: appColors.accent),
+                      borderRadius: GlobalUiConst.borderRadiusNormal))
+              .merge(ButtonStyle(
+            side: WidgetStateProperty.resolveWith<BorderSide?>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return BorderSide(color: appColors.textDisabled);
+                }
+                return BorderSide(color: appColors.accent);
+              },
+            ),
+          )),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
