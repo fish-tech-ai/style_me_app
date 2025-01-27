@@ -1,0 +1,4 @@
+enum Show {
+  first,
+  second;
+}
