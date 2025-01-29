@@ -64,6 +64,9 @@ class _AppTextFieldState extends State<AppTextField> {
       focusNode = widget.focusNode ?? localFocusNode;
       focusNode.addListener(handleFocusChange);
     }
+    if (widget.text != oldWidget.text && widget.text.isEmpty) {
+      controller.clear();
+    }
   }
 
   @override
