@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:style_me/core/local/database_logger.dart';
 import 'package:style_me/core/local/tables/user.dart';
+import 'package:style_me/features/auth/data/models/refresh_token_response.dart';
 
 part 'database.g.dart';
 
@@ -25,5 +26,21 @@ class AppDatabase extends _$AppDatabase {
   Future setUser(UserCompanion user) {
     managers.user.delete();
     return managers.user.create((Function _) => user);
+  }
+
+  Future clearUser() async {
+    await managers.user.delete();
+  }
+
+  Future updateUser(RefreshTokenResponse tokens) async {
+    final user = await getUser();
+    if (user != null) {
+      await managers.user.update(
+        (update) => update(
+          token: Value(tokens.accessToken),
+          refreshToken: Value(tokens.refreshToken),
+        ),
+      );
+    }
   }
 }

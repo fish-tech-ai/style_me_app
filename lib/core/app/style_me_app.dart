@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:style_me/core/app/presentation/app_global_state_holder.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/app/presentation/components/app_status.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/navigation/go_router.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
 import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
 
 class StyleMeApp extends ConsumerWidget {
-  const StyleMeApp({super.key});
+  final bool isAuthenticated;
+  const StyleMeApp(this.isAuthenticated, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +21,7 @@ class StyleMeApp extends ConsumerWidget {
     final ThemeManager appThemeManager = getIt<ThemeManager>();
 
     return MaterialApp.router(
-      routerConfig: getIt<GoRouter>(),
+      routerConfig: getRouter(isAuthenticated),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       title: 'StyleMe',

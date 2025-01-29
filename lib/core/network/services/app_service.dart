@@ -1,5 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:style_me/features/auth/data/models/login_request.dart';
+import 'package:style_me/features/auth/data/models/refresh_token_request.dart';
+import 'package:style_me/features/auth/data/models/refresh_token_response.dart';
 import 'package:style_me/features/auth/data/models/registration_request.dart';
 import 'package:style_me/features/auth/data/models/login_response.dart';
 
@@ -18,6 +20,10 @@ abstract class AppService extends ChopperService {
 
   @Post(path: 'auth/login')
   Future<Response<LoginResponse>> login(@Body() LoginRequest loginRequest);
+
+  @Post(path: 'auth/refresh')
+  Future<Response<RefreshTokenResponse>> refreshToken(
+      @Body() RefreshTokenRequest loginRequest);
 
   static AppService create([ChopperClient? client]) => _$AppService(client);
 }
