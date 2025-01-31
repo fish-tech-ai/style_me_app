@@ -8,6 +8,8 @@ import 'package:style_me/core/network/exceptions/server_exception.dart';
 import 'package:style_me/core/network/services/app_service.dart';
 import 'package:style_me/features/auth/data/models/email_state_enum.dart';
 import 'package:style_me/features/auth/data/models/login_request.dart';
+import 'package:style_me/features/auth/data/models/refresh_token_request.dart';
+import 'package:style_me/features/auth/data/models/refresh_token_response.dart';
 import 'package:style_me/features/auth/data/models/registration_request.dart';
 import 'package:style_me/features/auth/data/models/login_response.dart';
 
@@ -48,14 +50,14 @@ class AuthRepository {
         throw ServerException(HttpStatus.unauthorized.toString());
       }
       response.handleIfNotSuccessful();
-      _onLoginSuccess(response.body!);
+      _saveUser(response.body!);
       return response.body!;
     } catch (error) {
       throw ServerException(error.toString());
     }
   }
 
-  void _onLoginSuccess(LoginResponse loginResponse) {
+  void _saveUser(LoginResponse loginResponse) {
     database.setUser(loginResponse.toUserTable());
   }
 
@@ -66,5 +68,29 @@ class AuthRepository {
     } catch (error) {
       throw ServerException(error.toString());
     }
+  }
+
+  Future<UserData?> getUser() {
+    return database.getUser();
+  }
+
+  Future logoutUser() {
+    return database.clearUser();
+  }
+
+  Future refreshToken(String refreshToken) async {
+    try {
+      final Response response =
+          await service.refreshToken(RefreshTokenRequest(refreshToken));
+      response.handleIfNotSuccessful();
+      await _updateUser(response.body!);
+      return response.body!;
+    } catch (error) {
+      throw ServerException(error.toString());
+    }
+  }
+
+  Future _updateUser(RefreshTokenResponse response) {
+    return database.updateUser(response);
   }
 }

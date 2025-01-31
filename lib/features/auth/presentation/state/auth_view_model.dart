@@ -161,7 +161,12 @@ class AuthViewModel extends _$AuthViewModel {
     _clearTextFieldsExceptEmail();
     _clearValidationErrors();
     _silentValidateAll();
-    state.focusNodes.first.requestFocus();
+    if (state.mode == AuthPageModeEnum.emailAndPassword) {
+      state.focusNodes[1].requestFocus();
+    } else if (state.mode == AuthPageModeEnum.emailOnly ||
+        state.mode == AuthPageModeEnum.registration) {
+      state.focusNodes.first.requestFocus();
+    }
   }
 
   void validateAndShowAll() {

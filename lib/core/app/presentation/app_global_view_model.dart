@@ -8,6 +8,7 @@ import 'package:style_me/core/app/presentation/app_global_state_holder.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/failures/failure.dart';
+import 'package:style_me/core/utils/token_authenticator.dart';
 
 part 'app_global_view_model.g.dart';
 
@@ -15,11 +16,13 @@ part 'app_global_view_model.g.dart';
 class AppGlobalViewModel extends _$AppGlobalViewModel {
   late final GetCurrentThemeUseCase _getCurrentThemeUseCase;
   late final SaveCurrentThemeUseCase _saveCurrentThemeUseCase;
+  late final TokenAuthenticator _tokenAuthenticator;
   late final Connection _connection;
 
   AppGlobalViewModel() {
     _getCurrentThemeUseCase = getIt();
     _saveCurrentThemeUseCase = getIt();
+    _tokenAuthenticator = getIt();
     _connection = getIt();
   }
 

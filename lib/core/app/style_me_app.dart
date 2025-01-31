@@ -7,20 +7,35 @@ import 'package:style_me/core/app/presentation/components/app_status.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/navigation/go_router.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
 import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
 
-class StyleMeApp extends ConsumerWidget {
-  const StyleMeApp({super.key});
+class StyleMeApp extends ConsumerStatefulWidget {
+  final bool isAuthenticated;
+  const StyleMeApp(this.isAuthenticated, {super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<StyleMeApp> createState() => _StyleMeAppState();
+}
+
+class _StyleMeAppState extends ConsumerState<StyleMeApp> {
+  late final GoRouter router;
+
+  @override
+  void initState() {
+    super.initState();
+    router = getRouter(widget.isAuthenticated);
+  }
+
+@override
+  Widget build(BuildContext context) {
     final AppGlobalStateHolder state = ref.watch(appGlobalViewModelProvider);
     final ThemeManager appThemeManager = getIt<ThemeManager>();
 
     return MaterialApp.router(
-      routerConfig: getIt<GoRouter>(),
+      routerConfig: router,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       title: 'StyleMe',

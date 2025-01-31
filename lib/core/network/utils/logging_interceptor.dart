@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
-import 'package:flutter/foundation.dart';
+import 'package:style_me/core/extensions/global_ext.dart';
 
 class LoggingInterceptor implements Interceptor {
   @override
@@ -30,8 +30,6 @@ class LoggingInterceptor implements Interceptor {
   }
 
   void log(String message) {
-    if (kDebugMode) {
-      print("\x1B[90m[NETWORKING]\x1B[0m \x1B[36m$message\x1B[0m");
-    }
+    debugMessagePrint("\x1B[90m[NETWORKING]\x1B[0m \x1B[36m$message\x1B[0m");
   }
 }

@@ -94,7 +94,6 @@ class AuthStateHolder with _$AuthStateHolder {
         return copyWith(
           mode: mode,
           showConfirmationPageAsWarning: showConfirmationPageAsWarning ?? false,
-          email: email.copyWith(isVisible: true, isLast: true, position: 0),
         );
     }
   }

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
-import 'package:flutter/foundation.dart';
+import 'package:style_me/core/extensions/global_ext.dart';
 
 class JsonSerializableConverter extends JsonConverter {
   final Map<Type, Function> typeToJsonFactory;
@@ -19,10 +19,8 @@ class JsonSerializableConverter extends JsonConverter {
     final Function? fromJson = typeToJsonFactory[ResultType];
 
     if (fromJson == null || jsonBody == null) {
-      if (kDebugMode) {
-        debugPrint(
-            "\x1b[31m$ResultType is not registered in lib/core/network/chopper_manager.dart\x1B[0m");
-      }
+      debugMessagePrint(
+          "\x1b[31m$ResultType is not registered in lib/core/network/chopper_manager.dart\x1B[0m");
       throw Exception('Cannot convert response to $ResultType');
     }
 
