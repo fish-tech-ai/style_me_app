@@ -25,5 +25,8 @@ abstract class AppService extends ChopperService {
   Future<Response<RefreshTokenResponse>> refreshToken(
       @Body() RefreshTokenRequest loginRequest);
 
+  @Get(path: 'auth/resend/confirmation-email')
+  Future<Response> resendConfirmation(@Query('email') String email);
+
   static AppService create([ChopperClient? client]) => _$AppService(client);
 }

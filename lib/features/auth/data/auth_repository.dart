@@ -43,6 +43,15 @@ class AuthRepository {
     }
   }
 
+  Future resendConfirmation(String email) async {
+    try {
+      final Response response = await service.resendConfirmation(email);
+      response.handleIfNotSuccessful();
+    } catch (error) {
+      throw ServerException(error.toString());
+    }
+  }
+
   Future<LoginResponse> login(LoginRequest loginRequest) async {
     try {
       final response = await service.login(loginRequest);

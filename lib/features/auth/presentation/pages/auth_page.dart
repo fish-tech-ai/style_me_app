@@ -91,7 +91,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                           viewModel.changePageMode(AuthPageModeEnum.emailOnly);
                         },
                         onResendClicked: () {
-                          //TODO when backend will be ready
+                          viewModel.resendEmail();
                         },
                       ),
                     ),

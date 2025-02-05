@@ -11,6 +11,8 @@ import 'package:style_me/core/local/database.dart';
 import 'package:style_me/core/network/chopper_manager.dart';
 import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/services/app_service.dart';
+import 'package:style_me/core/network/utils/app_authenticator.dart';
+import 'package:style_me/core/network/utils/app_headers_interceptor.dart';
 import 'package:style_me/core/network/utils/network_request_util.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
 import 'package:style_me/core/utils/token_authenticator.dart';
@@ -19,6 +21,7 @@ import 'package:style_me/features/auth/domain/check_email_use_case.dart';
 import 'package:style_me/features/auth/domain/confirm_email_use_case.dart';
 import 'package:style_me/features/auth/domain/login_use_case.dart';
 import 'package:style_me/features/auth/domain/register_use_case.dart';
+import 'package:style_me/features/auth/domain/resend_confirmation_use_case.dart';
 
 final getIt = GetIt.instance;
 
@@ -26,7 +29,10 @@ class GetItManager {
   static Future setupGetIt() async {
     ///core
     getIt.registerLazySingleton<ChopperClient>(
-        () => ChopperManager.createClient());
+        () => ChopperManager.createClient(getIt(), getIt()));
+    getIt.registerFactory(() => TokenAuthenticator());
+    getIt.registerFactory(() => AppHeadersInterceptor());
+    getIt.registerFactory(() => AppAuthenticator(getIt()));
     getIt.registerFactory<AppService>(
         () => AppService.create(getIt<ChopperClient>()));
     getIt.registerLazySingleton(() => ThemeManager());
@@ -41,12 +47,10 @@ class GetItManager {
     getIt.registerFactory(() => GetCurrentThemeUseCase(getIt()));
     getIt.registerFactory(() => SaveCurrentThemeUseCase(getIt()));
 
-
     ///Global auth
     getIt.registerFactory(() => GetUserUseCase(getIt()));
     getIt.registerFactory(() => LogoutUserUseCase(getIt()));
     getIt.registerFactory(() => RefreshTokenUseCase(getIt(), getIt()));
-    getIt.registerFactory(() => TokenAuthenticator(getIt(), getIt(), getIt()));
 
     ///Auth
     getIt.registerFactory(() => AuthRepository(getIt(), getIt()));
@@ -54,5 +58,6 @@ class GetItManager {
     getIt.registerFactory(() => ConfirmEmailUseCase(getIt(), getIt()));
     getIt.registerFactory(() => LoginUseCase(getIt(), getIt()));
     getIt.registerFactory(() => RegisterUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => ResendConfirmationUseCase(getIt(), getIt()));
   }
 }
