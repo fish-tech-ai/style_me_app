@@ -11,6 +11,7 @@ import 'package:style_me/features/auth/domain/check_email_use_case.dart';
 import 'package:style_me/features/auth/domain/confirm_email_use_case.dart';
 import 'package:style_me/features/auth/domain/login_use_case.dart';
 import 'package:style_me/features/auth/domain/register_use_case.dart';
+import 'package:style_me/features/auth/domain/resend_confirmation_use_case.dart';
 import 'package:style_me/features/auth/presentation/state/auth_state_holder.dart';
 import 'package:style_me/features/auth/presentation/ui_models/auth_page_mode_enum.dart';
 import 'package:style_me/features/auth/presentation/ui_models/text_field_state.dart';
@@ -21,12 +22,14 @@ part 'auth_view_model.g.dart';
 class AuthViewModel extends _$AuthViewModel {
   late final CheckEmailUseCase _checkEmailUseCase;
   late final ConfirmEmailUseCase _confirmEmailUseCase;
+  late final ResendConfirmationUseCase _resendConfirmationUseCase;
   late final LoginUseCase _loginUseCase;
   late final RegisterUseCase _registerUseCase;
 
   AuthViewModel() {
     _checkEmailUseCase = getIt();
     _confirmEmailUseCase = getIt();
+    _resendConfirmationUseCase = getIt();
     _loginUseCase = getIt();
     _registerUseCase = getIt();
   }
@@ -249,5 +252,15 @@ class AuthViewModel extends _$AuthViewModel {
           email: state.email.copyWith(isVisible: true),
           previousMode: AuthPageModeEnum.emailOnly);
     }
+  }
+
+  void resendEmail() async {
+    final Result result = await _resendConfirmationUseCase(state.email.text);
+    result.collect(
+      (_) {},
+      (failure) {
+        ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+      },
+    );
   }
 }

@@ -29,3 +29,8 @@ abstract class RegexConst {
       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$';
   static const emailRegex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
 }
+
+abstract class NetworkHeaders {
+  static const String authorization = "Authorization";
+  static const String apiKey = "API-KEY";
+}
