@@ -31,5 +31,6 @@
   "authWarningEmailSentText": "It looks like you didn't confirm your email. Confirm your email and then try to log in again.",
   "backToLogin": "Back to login page",
   "resendEmailLabel": "Didn't get any email? Check your spam or",
-  "resendEmail": "Resend email"
+  "resendEmail": "Resend email",
+  "confirmationSuccess": "You have confirmed your email! You can now log in."
 }

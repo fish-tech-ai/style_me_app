@@ -8,8 +8,8 @@ class ConfirmEmailUseCase {
 
   ConfirmEmailUseCase(this._repository, this._networkUtil);
 
-  Future<Result> call(String email) {
+  Future<Result> call(String token) {
     return _networkUtil
-        .makeRepositoryRequest(() => _repository.confirmEmail(email));
+        .makeRepositoryRequest(() => _repository.confirmEmail(token));
   }
 }

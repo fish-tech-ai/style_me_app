@@ -12,6 +12,7 @@ import 'package:style_me/features/auth/data/models/refresh_token_request.dart';
 import 'package:style_me/features/auth/data/models/refresh_token_response.dart';
 import 'package:style_me/features/auth/data/models/registration_request.dart';
 import 'package:style_me/features/auth/data/models/login_response.dart';
+import 'package:style_me/features/auth/data/models/reset_password_request.dart';
 
 class AuthRepository {
   final AppService service;
@@ -34,9 +35,9 @@ class AuthRepository {
     }
   }
 
-  Future confirmEmail(String email) async {
+  Future confirmEmail(String token) async {
     try {
-      final Response response = await service.confirmEmail(email);
+      final Response response = await service.confirmEmail("Bearer $token");
       response.handleIfNotSuccessful();
     } catch (error) {
       throw ServerException(error.toString());
@@ -73,6 +74,17 @@ class AuthRepository {
   Future register(RegistrationRequest registrationRequest) async {
     try {
       final Response response = await service.register(registrationRequest);
+      response.handleIfNotSuccessful();
+    } catch (error) {
+      throw ServerException(error.toString());
+    }
+  }
+
+  Future resetPassword(
+      ResetPasswordRequest resetPasswordRequest, String token) async {
+    try {
+      final Response response =
+          await service.resetPassword(resetPasswordRequest, token);
       response.handleIfNotSuccessful();
     } catch (error) {
       throw ServerException(error.toString());

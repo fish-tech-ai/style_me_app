@@ -1,9 +1,11 @@
 import 'package:chopper/chopper.dart';
+import 'package:style_me/core/utils/constants.dart';
 import 'package:style_me/features/auth/data/models/login_request.dart';
 import 'package:style_me/features/auth/data/models/refresh_token_request.dart';
 import 'package:style_me/features/auth/data/models/refresh_token_response.dart';
 import 'package:style_me/features/auth/data/models/registration_request.dart';
 import 'package:style_me/features/auth/data/models/login_response.dart';
+import 'package:style_me/features/auth/data/models/reset_password_request.dart';
 
 part "app_service.chopper.dart";
 
@@ -13,10 +15,16 @@ abstract class AppService extends ChopperService {
   Future<Response> checkEmail(@Query('email') String email);
 
   @Get(path: 'auth/confirm-email')
-  Future<Response> confirmEmail(@Query('email') String email);
+  Future<Response> confirmEmail(@Header(NetworkHeaders.authorization) String token);
 
   @Post(path: 'auth/register')
   Future<Response> register(@Body() RegistrationRequest registrationRequest);
+
+  @Post(path: 'auth/reset-password')
+  Future<Response> resetPassword(
+    @Body() ResetPasswordRequest resetPasswordRequest,
+    @Header(NetworkHeaders.authorization) String token,
+  );
 
   @Post(path: 'auth/login')
   Future<Response<LoginResponse>> login(@Body() LoginRequest loginRequest);

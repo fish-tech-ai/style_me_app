@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:style_me/core/network/failures/failure.dart';
+import 'package:style_me/core/app/presentation/ui_models/banner_message.dart';
 
 part 'app_global_state_holder.freezed.dart';
 
@@ -9,6 +9,6 @@ class AppGlobalStateHolder with _$AppGlobalStateHolder {
   const factory AppGlobalStateHolder({
     Brightness? currentTheme,
     @Default(true) bool isConnected,
-    Failure? failure,
+    BannerMessage? bannerMessage
   }) = _AppStateHolder;
 }

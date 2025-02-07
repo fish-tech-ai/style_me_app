@@ -26,8 +26,8 @@ migrate_working_dir/
 lib/**/*.g.dart
 lib/**/*.chopper.dart
 lib/**/*.freezed.dart
-.keystore/*
-.keystore
+android/.keystore/*
+android/.keystore
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/

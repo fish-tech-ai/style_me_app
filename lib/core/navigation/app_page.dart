@@ -1,6 +1,7 @@
 enum AppPage {
   authPage("/"),
-  homePage("/home");
+  homePage("/home"),
+  changePasswordPage("/resetPassword");
 
 
   final String path;
