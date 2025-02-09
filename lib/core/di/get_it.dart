@@ -1,3 +1,4 @@
+import 'package:app_links/app_links.dart';
 import 'package:chopper/chopper.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,8 +16,10 @@ import 'package:style_me/core/network/utils/app_authenticator.dart';
 import 'package:style_me/core/network/utils/app_headers_interceptor.dart';
 import 'package:style_me/core/network/utils/network_request_util.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
+import 'package:style_me/core/utils/deep_link_manager.dart';
 import 'package:style_me/core/utils/token_authenticator.dart';
 import 'package:style_me/features/auth/data/auth_repository.dart';
+import 'package:style_me/features/auth/domain/change_password_use_case.dart';
 import 'package:style_me/features/auth/domain/check_email_use_case.dart';
 import 'package:style_me/features/auth/domain/confirm_email_use_case.dart';
 import 'package:style_me/features/auth/domain/login_use_case.dart';
@@ -41,6 +44,8 @@ class GetItManager {
     getIt.registerLazySingleton(() => Connection());
     getIt.registerFactory(() => NetworkRequestUtil());
     getIt.registerLazySingleton<AppDatabase>(() => AppDatabase());
+    getIt.registerLazySingleton(() => AppLinks());
+    getIt.registerLazySingleton(() => DeepLinkManager(getIt()));
 
     ///Global
     getIt.registerFactory(() => AppRepository(getIt(), getIt()));
@@ -59,5 +64,6 @@ class GetItManager {
     getIt.registerFactory(() => LoginUseCase(getIt(), getIt()));
     getIt.registerFactory(() => RegisterUseCase(getIt(), getIt()));
     getIt.registerFactory(() => ResendConfirmationUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => ChangePasswordUseCase(getIt(), getIt()));
   }
 }

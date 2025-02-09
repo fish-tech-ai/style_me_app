@@ -8,7 +8,6 @@ import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/core/utils/validator.dart';
 import 'package:style_me/features/auth/data/models/email_state_enum.dart';
 import 'package:style_me/features/auth/domain/check_email_use_case.dart';
-import 'package:style_me/features/auth/domain/confirm_email_use_case.dart';
 import 'package:style_me/features/auth/domain/login_use_case.dart';
 import 'package:style_me/features/auth/domain/register_use_case.dart';
 import 'package:style_me/features/auth/domain/resend_confirmation_use_case.dart';
@@ -21,14 +20,12 @@ part 'auth_view_model.g.dart';
 @riverpod
 class AuthViewModel extends _$AuthViewModel {
   late final CheckEmailUseCase _checkEmailUseCase;
-  late final ConfirmEmailUseCase _confirmEmailUseCase;
   late final ResendConfirmationUseCase _resendConfirmationUseCase;
   late final LoginUseCase _loginUseCase;
   late final RegisterUseCase _registerUseCase;
 
   AuthViewModel() {
     _checkEmailUseCase = getIt();
-    _confirmEmailUseCase = getIt();
     _resendConfirmationUseCase = getIt();
     _loginUseCase = getIt();
     _registerUseCase = getIt();

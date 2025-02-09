@@ -1,0 +1,12 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.style.me.app.style_me",
+    "sha256_cert_fingerprints":
+    [
+      "F3:E3:F0:FC:F2:56:B4:3F:C8:83:D2:15:0C:86:53:FE:4A:3F:1C:AD:54:F3:8F:5A:3E:2B:FC:5E:33:55:A1:83",
+      "4F:31:CE:43:BC:EF:BD:0D:04:AF:9E:F3:2D:13:64:C0:87:0D:AD:61:B5:F2:8D:4C:A4:8F:7D:59:01:E8:6D:E9"
+    ]
+  }
+}]

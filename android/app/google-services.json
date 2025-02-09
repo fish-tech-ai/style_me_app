@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "461396037978",
+    "project_id": "stylemee-cd8b9",
+    "storage_bucket": "stylemee-cd8b9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461396037978:android:01f09ba72358a00feb2363",
+        "android_client_info": {
+          "package_name": "com.style.me.app.style_me"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdelcWmvh38-GImpv1oScM_jI6TMeqNL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
