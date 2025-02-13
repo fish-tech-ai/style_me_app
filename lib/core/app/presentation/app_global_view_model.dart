@@ -7,7 +7,6 @@ import 'package:style_me/core/app/domain/usecases/save_current_theme_use_case.da
 import 'package:style_me/core/app/presentation/app_global_state_holder.dart';
 import 'package:style_me/core/app/presentation/ui_models/banner_message.dart';
 import 'package:style_me/core/di/get_it.dart';
-import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/failures/failure.dart';
 import 'package:style_me/core/utils/deep_link_manager.dart';
@@ -44,16 +43,30 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
   }
 
   void showFailure(Failure failure) async {
-    state =
-        state.copyWith(bannerMessage: BannerMessage(failure.toString(), true));
+    state = state.copyWith(
+        bannerMessage: BannerMessage(
+            message: failure.toString(), isError: true, isVisible: true));
     await Future.delayed(Duration(seconds: 5));
-    state = state.copyWith(bannerMessage: null);
+    state = state.copyWith(
+        bannerMessage: state.bannerMessage.copyWith(isVisible: false));
+  }
+
+  void showErrorMessage(String message) async {
+    state = state.copyWith(
+        bannerMessage:
+            BannerMessage(message: message, isError: true, isVisible: true));
+    await Future.delayed(Duration(seconds: 5));
+    state = state.copyWith(
+        bannerMessage: state.bannerMessage.copyWith(isVisible: false));
   }
 
   void showSuccessInfo(String message) async {
-    state = state.copyWith(bannerMessage: BannerMessage(message, false));
+    state = state.copyWith(
+        bannerMessage:
+            BannerMessage(message: message, isError: false, isVisible: true));
     await Future.delayed(Duration(seconds: 5));
-    state = state.copyWith(bannerMessage: null);
+    state = state.copyWith(
+        bannerMessage: state.bannerMessage.copyWith(isVisible: false));
   }
 
   void getCurrentTheme() {
@@ -68,12 +81,12 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
   Future initializeAndHandleDeepLinks({
     required Function(String token) navigateToPasswordReset,
     required String confirmationSuccessMessage,
+    required String tokenExpiredMessage,
   }) async {
     await _deepLinkManager.initializeAndHandleDeepLinks(
       navigateToPasswordReset,
-      (String token) {
-        _confirmEmail(token, confirmationSuccessMessage);
-      },
+      (String token) => _confirmEmail(token, confirmationSuccessMessage),
+      () => showErrorMessage(tokenExpiredMessage),
     );
   }
 

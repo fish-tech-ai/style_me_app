@@ -1,8 +1,8 @@
-class ChangePasswordArgs {
+class ChangePasswordPageArgs {
   final String token;
   final bool isResettingPass;
 
-  ChangePasswordArgs(
+  ChangePasswordPageArgs(
     this.token,
     this.isResettingPass,
   );

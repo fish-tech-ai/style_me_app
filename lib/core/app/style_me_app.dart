@@ -41,7 +41,7 @@ class _StyleMeAppState extends ConsumerState<StyleMeApp> {
       themeMode: appThemeManager.getModeBy(state.currentTheme),
       darkTheme: appThemeManager.appThemeDark,
       builder: (context, child) {
-        return AppWrapper(child: child);
+        return AppWrapper(router: router, child: child);
       },
     );
   }

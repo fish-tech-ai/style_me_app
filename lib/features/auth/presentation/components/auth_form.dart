@@ -103,7 +103,8 @@ class AuthForm extends StatelessWidget {
           reversed: true,
           child: InkWell(
             onTap: () {
-              // TODO send email with password change link (dynamic links)
+              viewModel.sendResetPasswordMail(
+                  context.localizations.authForgotPasswordUserNotFound);
             },
             child: Text(
               context.localizations.forgotPassword,

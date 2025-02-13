@@ -1,6 +1,12 @@
-class BannerMessage {
-  final String message;
-  final bool isError;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  BannerMessage(this.message, this.isError);
+part 'banner_message.freezed.dart';
+
+@freezed
+class BannerMessage with _$BannerMessage {
+  const factory BannerMessage({
+    @Default("") String message,
+    @Default(true) bool isError,
+    @Default(false) bool isVisible,
+  }) = _BannerMessage;
 }

@@ -7,17 +7,21 @@ import 'package:style_me/core/views/ui_models/icon_position.dart';
 
 class AuthEmailConfirmation extends StatelessWidget {
   final bool asWarning;
+  final bool asResetPassword;
   final Function() onBackToLoginClicked;
   final Function() onResendClicked;
 
-  const AuthEmailConfirmation(
-      {super.key,
-      required this.asWarning,
-      required this.onBackToLoginClicked,
-      required this.onResendClicked});
+  const AuthEmailConfirmation({
+    super.key,
+    required this.asWarning,
+    required this.onBackToLoginClicked,
+    required this.onResendClicked,
+    required this.asResetPassword,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final texts = context.localizations;
     return Column(
       spacing: 18,
       children: [
@@ -28,18 +32,20 @@ class AuthEmailConfirmation extends StatelessWidget {
         ),
         Text(
           asWarning
-              ? context.localizations.authWarningEmailSentTitle
-              : context.localizations.authEmailSentTitle,
+              ? texts.authWarningEmailSentTitle
+              : texts.authEmailSentTitle,
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
         ),
         Text(
           asWarning
-              ? context.localizations.authWarningEmailSentText
-              : context.localizations.authEmailSentText,
+              ? texts.authWarningEmailSentText
+              : asResetPassword
+                  ? texts.authResetEmailSentText
+                  : texts.authEmailSentText,
           textAlign: TextAlign.center,
         ),
         AppButton(
-          text: context.localizations.backToLogin,
+          text: texts.backToLogin,
           onClick: onBackToLoginClicked,
           icon: AppButtonIcon(
             Icons.keyboard_arrow_right_rounded,
@@ -49,9 +55,9 @@ class AuthEmailConfirmation extends StatelessWidget {
         Column(
           spacing: 6,
           children: [
-            Text(context.localizations.resendEmailLabel),
+            Text(texts.resendEmailLabel),
             CountdownOutlinedButton(
-              text: context.localizations.resendEmail,
+              text: texts.resendEmail,
               onClick: onResendClicked,
             )
           ],

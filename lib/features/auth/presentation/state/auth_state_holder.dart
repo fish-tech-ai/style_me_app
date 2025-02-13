@@ -10,34 +10,37 @@ part 'auth_state_holder.freezed.dart';
 class AuthStateHolder with _$AuthStateHolder {
   const AuthStateHolder._();
 
-  const factory AuthStateHolder({
-    /// Text fields state
-    @Default(TextFieldState()) TextFieldState firstName,
-    @Default(TextFieldState()) TextFieldState surname,
-    @Default(TextFieldState()) TextFieldState email,
-    @Default(TextFieldState()) TextFieldState password,
-    @Default(TextFieldState()) TextFieldState passwordVerify,
-    @Default([]) List<FocusNode> focusNodes,
+  const factory AuthStateHolder(
+          {
+          /// Text fields state
+          @Default(TextFieldState()) TextFieldState firstName,
+          @Default(TextFieldState()) TextFieldState surname,
+          @Default(TextFieldState()) TextFieldState email,
+          @Default(TextFieldState()) TextFieldState password,
+          @Default(TextFieldState()) TextFieldState passwordVerify,
+          @Default([]) List<FocusNode> focusNodes,
 
-    /// mode
-    @Default(AuthPageModeEnum.emailOnly) AuthPageModeEnum mode,
-    @Default(AuthPageModeEnum.emailOnly) AuthPageModeEnum previousMode,
+          /// mode
+          @Default(AuthPageModeEnum.emailOnly) AuthPageModeEnum mode,
+          @Default(AuthPageModeEnum.emailOnly) AuthPageModeEnum previousMode,
 
-    /// validation
-    Validator? validator,
-    @Default(false) bool isAllValidated,
+          /// validation
+          Validator? validator,
+          @Default(false) bool isAllValidated,
 
-    /// Toggles
-    @Default(false) bool isPasswordVisible,
-    @Default(false) bool isPasswordVerifyVisible,
+          /// Toggles
+          @Default(false) bool isPasswordVisible,
+          @Default(false) bool isPasswordVerifyVisible,
 
-    ///other
-    @Default(false) bool isLoading,
-    @Default(false) bool showConfirmationPageAsWarning,
-  }) = _AuthStateHolder;
+          ///other
+          @Default(false) bool isLoading,
+          @Default(false) bool showConfirmationPageAsWarning,
+          @Default(false) bool showConfirmationPageForPasswordReset}) =
+      _AuthStateHolder;
 
   AuthStateHolder copyWithMode(AuthPageModeEnum mode,
-      {bool? showConfirmationPageAsWarning}) {
+      {bool? showConfirmationPageAsWarning,
+      bool? showConfirmationPageForPasswordReset}) {
     switch (mode) {
       case AuthPageModeEnum.emailOnly:
         return copyWith(
@@ -94,6 +97,8 @@ class AuthStateHolder with _$AuthStateHolder {
         return copyWith(
           mode: mode,
           showConfirmationPageAsWarning: showConfirmationPageAsWarning ?? false,
+          showConfirmationPageForPasswordReset:
+              showConfirmationPageForPasswordReset ?? false,
         );
     }
   }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/utils/constants.dart';
 import 'package:style_me/core/utils/show_enum.dart';
 import 'package:style_me/core/views/animators/animated_transistor.dart';
@@ -86,6 +89,8 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                     secondChild: _buildPaddedContainer(
                       key: ValueKey(2),
                       child: AuthEmailConfirmation(
+                        asResetPassword:
+                            state.showConfirmationPageForPasswordReset,
                         asWarning: state.showConfirmationPageAsWarning,
                         onBackToLoginClicked: () {
                           viewModel.changePageMode(AuthPageModeEnum.emailOnly);
@@ -142,7 +147,17 @@ class _AuthPageState extends ConsumerState<AuthPage> {
           AuthForm(viewModel: viewModel, state: state),
           AppOutlinedButton(
             text: context.localizations.authPageGoogleButtonText,
-            onClick: () {},
+            leadingIcon: SvgPicture.asset("assets/google_logo.svg"),
+            spacing: 10,
+            style: OutlinedButton.styleFrom(
+                backgroundColor: Color(0xFF131314),
+                side: BorderSide(
+                    color: context.theme.colorScheme.onSurface, width: 1),
+                foregroundColor: context.theme.colorScheme.onSurface),
+            onClick: () {
+              viewModel
+                  .signInWithGoogle(() => context.go(AppPage.homePage.path));
+            },
           ),
           _buildTermsAndPrivacyInfoText(context)
         ],

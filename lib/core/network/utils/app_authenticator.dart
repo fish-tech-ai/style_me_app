@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:chopper/chopper.dart';
 import 'package:style_me/core/utils/constants.dart';
@@ -12,7 +13,7 @@ class AppAuthenticator implements Authenticator {
   @override
   FutureOr<Request?> authenticate(Request request, Response<dynamic> response,
       [Request? originalRequest]) async {
-    if (response.statusCode == 401) {
+    if (response.statusCode == HttpStatus.unauthorized) {
       final newToken = await _tokenAuthenticator.refreshAndGetNewToken();
       if (newToken == null) {
         return null;

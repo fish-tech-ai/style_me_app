@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:style_me/core/app/domain/usecases/get_user_use_case.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
+import 'package:style_me/core/extensions/string_ext.dart';
 import 'package:style_me/core/network/failures/failure.dart';
 import 'package:style_me/core/utils/constants.dart';
 
@@ -22,7 +23,7 @@ class AppHeadersInterceptor implements Interceptor {
     );
     final headers = {NetworkHeaders.apiKey: dotenv.env['API_KEY'] ?? ''};
     if (token != null) {
-      headers.putIfAbsent(NetworkHeaders.authorization, () => 'Bearer $token');
+      headers.putIfAbsent(NetworkHeaders.authorization, () => token!.withBearer());
     }
     return chain.proceed(
       applyHeaders(

@@ -14,8 +14,9 @@ import 'package:style_me/features/settings/presentation/ui_models/change_passwor
 ///This is also a wrapper for whole navigation (the child is the actual page)
 class AppWrapper extends ConsumerStatefulWidget {
   final Widget? child;
+  final GoRouter router;
 
-  const AppWrapper({super.key, required this.child});
+  const AppWrapper({super.key, required this.child, required this.router});
 
   @override
   ConsumerState<AppWrapper> createState() => _AppWrapperState();
@@ -33,9 +34,12 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
         .read(appGlobalViewModelProvider.notifier)
         .initializeAndHandleDeepLinks(
           confirmationSuccessMessage: context.localizations.confirmationSuccess,
-          navigateToPasswordReset: ( token) {
-            context.push(AppPage.changePasswordPage.path,
-                extra: ChangePasswordArgs(token, true));
+          tokenExpiredMessage: context.localizations.tokenExpiredMessage,
+          navigateToPasswordReset: (token) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              widget.router.push(AppPage.changePasswordPage.path,
+                  extra: ChangePasswordPageArgs(token, true));
+            });
           },
         );
     FlutterNativeSplash.remove();
@@ -45,29 +49,32 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
   Widget build(BuildContext context) {
     final state = ref.watch(appGlobalViewModelProvider);
     return Stack(children: [
-      widget.child ?? SizedBox(),
+      Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: widget.child ?? SizedBox(),
+      ),
       Positioned(
         left: 0,
         right: 0,
         bottom: MediaQuery.of(context).padding.bottom,
         child: AnimatedVisibility(
-          isVisible: !state.isConnected || state.bannerMessage != null,
+          isVisible: !state.isConnected || state.bannerMessage.isVisible,
           animDirection: AnimDirectionEnum.bottomToTop,
           child: AppStatus(
             text: !state.isConnected
                 ? context.localizations.connectionError
-                : state.bannerMessage?.message != null
-                    ? state.bannerMessage?.message ?? ""
+                : state.bannerMessage.message.isNotEmpty
+                    ? state.bannerMessage.message
                     : context.localizations.unknownError,
-            textColor: state.bannerMessage?.isError ?? true
+            textColor: state.bannerMessage.isError
                 ? context.colorScheme.onError
                 : context.colorScheme.onPrimary,
-            color: state.bannerMessage?.isError ?? true
+            color: state.bannerMessage.isError
                 ? context.colorScheme.error
                 : context.colorScheme.primary,
             icon: !state.isConnected
                 ? Icons.wifi_off_rounded
-                : state.bannerMessage?.isError ?? true
+                : state.bannerMessage.isError
                     ? Icons.error_rounded
                     : Icons.check_circle_rounded,
           ),

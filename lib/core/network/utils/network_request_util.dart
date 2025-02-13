@@ -18,7 +18,7 @@ class NetworkRequestUtil {
       }
       return Result.success(response);
     } on ServerException catch (error) {
-      final failure = ServerFailure(error.message);
+      final failure = ServerFailure(error.message, error.statusCode);
       if (onError != null) {
         onError(failure);
       }

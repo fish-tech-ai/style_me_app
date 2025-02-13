@@ -3,14 +3,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
+import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/network/failures/login_failure.dart';
 import 'package:style_me/core/network/utils/result.dart';
+import 'package:style_me/core/utils/google_auth_service.dart';
 import 'package:style_me/core/utils/validator.dart';
 import 'package:style_me/features/auth/data/models/email_state_enum.dart';
 import 'package:style_me/features/auth/domain/check_email_use_case.dart';
 import 'package:style_me/features/auth/domain/login_use_case.dart';
+import 'package:style_me/features/auth/domain/login_with_google_use_case.dart';
 import 'package:style_me/features/auth/domain/register_use_case.dart';
 import 'package:style_me/features/auth/domain/resend_confirmation_use_case.dart';
+import 'package:style_me/features/auth/domain/send_reset_password_mail_use_case.dart';
 import 'package:style_me/features/auth/presentation/state/auth_state_holder.dart';
 import 'package:style_me/features/auth/presentation/ui_models/auth_page_mode_enum.dart';
 import 'package:style_me/features/auth/presentation/ui_models/text_field_state.dart';
@@ -22,13 +26,19 @@ class AuthViewModel extends _$AuthViewModel {
   late final CheckEmailUseCase _checkEmailUseCase;
   late final ResendConfirmationUseCase _resendConfirmationUseCase;
   late final LoginUseCase _loginUseCase;
+  late final LoginWithGoogleUseCase _loginWithGoogleUseCase;
   late final RegisterUseCase _registerUseCase;
+  late final SendResetPasswordMailUseCase _sendResetPasswordMailUseCase;
+  late final GoogleAuthService _googleAuthService;
 
   AuthViewModel() {
     _checkEmailUseCase = getIt();
     _resendConfirmationUseCase = getIt();
     _loginUseCase = getIt();
+    _loginWithGoogleUseCase = getIt();
     _registerUseCase = getIt();
+    _googleAuthService = getIt();
+    _sendResetPasswordMailUseCase = getIt();
   }
 
   @override
@@ -50,7 +60,8 @@ class AuthViewModel extends _$AuthViewModel {
           isLast: true,
           focusNode: FocusNode()),
       password: TextFieldState(
-          validate: (text) => validator.validatePassword(text, state.mode),
+          validate: (text) =>
+              validator.validatePasswordWithMode(text, state.mode),
           focusNode: FocusNode()),
       passwordVerify: TextFieldState(
           validate: (text) =>
@@ -120,7 +131,7 @@ class AuthViewModel extends _$AuthViewModel {
       AppLocalizations localizations, Function goToHome) async {
     switch (state.mode) {
       case AuthPageModeEnum.emailOnly:
-        checkEmail();
+        checkEmail(localizations);
         break;
       case AuthPageModeEnum.emailAndPassword:
         loginUser(localizations, goToHome);
@@ -135,29 +146,37 @@ class AuthViewModel extends _$AuthViewModel {
     }
   }
 
-  void onCheckEmailSuccess(EmailStateEnum result) {
+  void onCheckEmailSuccess(
+      EmailStateEnum result, AppLocalizations localizations) {
     switch (result) {
       case EmailStateEnum.registeredAndConfirmed:
         changePageMode(AuthPageModeEnum.emailAndPassword);
         break;
       case EmailStateEnum.notConfirmed:
         changePageMode(AuthPageModeEnum.confirmation,
-            showConfirmationPageAsWarning: true);
+            showConfirmationPageAsWarning: true,
+            showConfirmationPageForPasswordReset: false);
         break;
       case EmailStateEnum.notFound:
         changePageMode(AuthPageModeEnum.registration);
+        break;
+      case EmailStateEnum.loggedWithGoogle:
+        ref
+            .read(appGlobalViewModelProvider.notifier)
+            .showErrorMessage(localizations.usuallyOtherLoginMethod);
         break;
     }
     state = state.copyWith(isLoading: false);
   }
 
   void changePageMode(AuthPageModeEnum mode,
-      {bool? showConfirmationPageAsWarning}) {
+      {bool? showConfirmationPageAsWarning,
+      bool? showConfirmationPageForPasswordReset}) {
     state = state.copyWith(previousMode: state.mode);
-    state = state.copyWithMode(
-      mode,
-      showConfirmationPageAsWarning: showConfirmationPageAsWarning,
-    );
+    state = state.copyWithMode(mode,
+        showConfirmationPageAsWarning: showConfirmationPageAsWarning,
+        showConfirmationPageForPasswordReset:
+            showConfirmationPageForPasswordReset);
     _clearTextFieldsExceptEmail();
     _clearValidationErrors();
     _silentValidateAll();
@@ -179,7 +198,7 @@ class AuthViewModel extends _$AuthViewModel {
           errorText: state.validator?.validateEmail(state.email.text)),
       password: state.password.copyWith(
           errorText: state.validator
-              ?.validatePassword(state.password.text, state.mode)),
+              ?.validatePasswordWithMode(state.password.text, state.mode)),
       passwordVerify: state.passwordVerify.copyWith(
           errorText: state.validator?.validatePasswordVerify(
               state.passwordVerify.text, state.password.text)),
@@ -205,11 +224,11 @@ class AuthViewModel extends _$AuthViewModel {
     );
   }
 
-  void checkEmail() async {
+  void checkEmail(AppLocalizations localizations) async {
     state = state.copyWith(isLoading: true);
     final result = await _checkEmailUseCase(state.email.text);
     result.collect((result) {
-      onCheckEmailSuccess(result);
+      onCheckEmailSuccess(result, localizations);
     }, (failure) {
       ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
       state = state.copyWith(isLoading: false);
@@ -252,10 +271,60 @@ class AuthViewModel extends _$AuthViewModel {
   }
 
   void resendEmail() async {
-    final Result result = await _resendConfirmationUseCase(state.email.text);
+    Result result;
+    result = state.showConfirmationPageForPasswordReset
+        ? await _sendResetPasswordMailUseCase(state.email.text)
+        : await _resendConfirmationUseCase(state.email.text);
     result.collect(
       (_) {},
       (failure) {
+        ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+      },
+    );
+  }
+
+  void sendResetPasswordMail(String emailNotFoundMessage) async {
+    final validationResult = state.validator?.validateEmail(state.email.text);
+    if (validationResult != null) {
+      state = state.copyWith(
+        email: state.email.copyWith(errorText: validationResult),
+        password: state.password.copyWith(errorText: null),
+      );
+      return;
+    }
+    _performSendResetPasswordMail(emailNotFoundMessage);
+  }
+
+  void signInWithGoogle(Function() goToHome) async {
+    final idToken = await _googleAuthService.signInWithGoogle();
+    if (idToken != null) {
+      debugMessagePrint(idToken);
+      final result = await _loginWithGoogleUseCase(idToken);
+      result.collect((_) {
+        goToHome();
+      }, (failure) {
+        _googleAuthService.signOut();
+        ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+      });
+    }
+  }
+
+  void _performSendResetPasswordMail(String emailNotFoundMessage) async {
+    state = state.copyWith(isLoading: true);
+    final result = await _sendResetPasswordMailUseCase(state.email.text);
+    result.collect(
+      (_) {
+        state = state.copyWith(isLoading: false);
+        state = state.copyWithMode(AuthPageModeEnum.confirmation,
+            showConfirmationPageAsWarning: false,
+            showConfirmationPageForPasswordReset: true);
+      },
+      (failure) {
+        state = state.copyWith(isLoading: false);
+        if (failure.message?.startsWith("404") ?? false) {
+          state = state.copyWith(
+              email: state.email.copyWith(errorText: emailNotFoundMessage));
+        }
         ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
       },
     );

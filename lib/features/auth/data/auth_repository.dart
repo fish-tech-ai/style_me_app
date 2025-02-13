@@ -3,19 +3,19 @@ import 'dart:io';
 import 'package:chopper/chopper.dart';
 import 'package:style_me/core/extensions/list_ext.dart';
 import 'package:style_me/core/extensions/response_ext.dart';
+import 'package:style_me/core/extensions/string_ext.dart';
 import 'package:style_me/core/local/database.dart';
 import 'package:style_me/core/network/exceptions/server_exception.dart';
-import 'package:style_me/core/network/services/app_service.dart';
+import 'package:style_me/core/network/services/auth_service.dart';
 import 'package:style_me/features/auth/data/models/email_state_enum.dart';
 import 'package:style_me/features/auth/data/models/login_request.dart';
 import 'package:style_me/features/auth/data/models/refresh_token_request.dart';
 import 'package:style_me/features/auth/data/models/refresh_token_response.dart';
 import 'package:style_me/features/auth/data/models/registration_request.dart';
 import 'package:style_me/features/auth/data/models/login_response.dart';
-import 'package:style_me/features/auth/data/models/reset_password_request.dart';
 
 class AuthRepository {
-  final AppService service;
+  final AuthService service;
   final AppDatabase database;
 
   AuthRepository(this.service, this.database);
@@ -37,7 +37,7 @@ class AuthRepository {
 
   Future confirmEmail(String token) async {
     try {
-      final Response response = await service.confirmEmail("Bearer $token");
+      final Response response = await service.confirmEmail(token.withBearer());
       response.handleIfNotSuccessful();
     } catch (error) {
       throw ServerException(error.toString());
@@ -67,6 +67,17 @@ class AuthRepository {
     }
   }
 
+  Future<LoginResponse> loginWithGoogle(String token) async {
+    try {
+      final response = await service.loginWithGoogle(token.withBearer());
+      response.handleIfNotSuccessful();
+      _saveUser(response.body!);
+      return response.body!;
+    } catch (error) {
+      throw ServerException(error.toString());
+    }
+  }
+
   void _saveUser(LoginResponse loginResponse) {
     database.setUser(loginResponse.toUserTable());
   }
@@ -80,11 +91,9 @@ class AuthRepository {
     }
   }
 
-  Future resetPassword(
-      ResetPasswordRequest resetPasswordRequest, String token) async {
+  Future sendResetPasswordMail(String email) async {
     try {
-      final Response response =
-          await service.resetPassword(resetPasswordRequest, token);
+      final Response response = await service.sendResetPasswordMail(email);
       response.handleIfNotSuccessful();
     } catch (error) {
       throw ServerException(error.toString());

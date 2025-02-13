@@ -1,5 +1,7 @@
 import 'package:style_me/core/network/failures/failure.dart';
 
 class ServerFailure extends Failure {
-  ServerFailure(super.message);
+  final int? statusCode;
+
+  ServerFailure(super.message, this.statusCode);
 }
