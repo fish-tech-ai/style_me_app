@@ -30,13 +30,20 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
     super.initState();
     viewModel = ref.read(changePasswordViewModelProvider.notifier);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      viewModel.initFormValidators(context.localizations, widget.changePasswordArgs.isResettingPass);
+      if (widget.changePasswordArgs.isResettingPass) {
+        ref
+            .read(appGlobalViewModelProvider.notifier)
+            .setBottomNavBarVisibility(false);
+      }
+      viewModel.initFormValidators(
+          context.localizations, widget.changePasswordArgs.isResettingPass);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final ChangePasswordStateHolder state = ref.watch(changePasswordViewModelProvider);
+    final ChangePasswordStateHolder state =
+        ref.watch(changePasswordViewModelProvider);
     return SafeArea(
       child: Column(
         children: [
@@ -115,8 +122,8 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
   }
 
   void onChangePasswordButtonClicked() {
-    viewModel.changePassword(
-        widget.changePasswordArgs, context.localizations, () {
+    viewModel.changePassword(widget.changePasswordArgs, context.localizations,
+        () {
       ref
           .read(appGlobalViewModelProvider.notifier)
           .showSuccessInfo(context.localizations.passwordHasBeenChanged);

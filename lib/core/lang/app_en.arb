@@ -43,5 +43,9 @@
   "authForgotPasswordUserNotFound": "User not found, please enter a valid email",
   "passwordHasBeenChanged": "Your password has been changed, please log in with your new password.",
   "oldPasswordNotCorrect": "The old password is incorrect.",
-  "usuallyOtherLoginMethod": "Usually you log on in a different way."
+  "usuallyOtherLoginMethod": "Usually you log on in a different way.",
+  "home": "Home",
+  "checkroom": "Try-on",
+  "wardrobe": "Wardrobe",
+  "settings": "Settings"
 }

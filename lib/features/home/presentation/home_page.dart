@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/views/app_top_bar.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -9,28 +10,38 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final AppGlobalViewModel appViewModel = ref.watch(appGlobalViewModelProvider.notifier);
-    return Scaffold(
-      appBar: AppBar(title: Text(context.localizations.appName)),
-      body: Center(
-        child: Column(
-          children: [
-            ElevatedButton(
-                onPressed: () {
-                  appViewModel.changeTheme(Brightness.light);
-                },
-                child: Text("Change theme to light")),
-            ElevatedButton(
-                onPressed: () {
-                  appViewModel.changeTheme(Brightness.dark);
-                },
-                child: Text("Change theme to dark"))
-          ],
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        AppTopBar(title: context.localizations.appName),
+        Center(
+          child: Column(
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    appViewModel.changeTheme(Brightness.light);
+                  },
+                  child: Text("Change theme to light")),
+              ElevatedButton(
+                  onPressed: () {
+                    appViewModel.changeTheme(Brightness.dark);
+                  },
+                  child: Text("Change theme to dark"))
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
-      ),
+        Container(
+          margin: EdgeInsets.only(right: 18, bottom: 0),
+          alignment: Alignment.bottomRight,
+          child: Container(
+            color: context.colorScheme.primary,
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.add),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
