@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "461396037978",
+    "project_id": "stylemee-cd8b9",
+    "storage_bucket": "stylemee-cd8b9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461396037978:android:01f09ba72358a00feb2363",
+        "android_client_info": {
+          "package_name": "com.style.me.app.style_me"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "461396037978-24mhhlhd9555ps6anrg45468mpte6dui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.style.me.app.style_me",
+            "certificate_hash": "2a453bc01ad4aa0cabb28a6dcfa02163b6451c55"
+          }
+        },
+        {
+          "client_id": "461396037978-kddgi85hm2nsdemg8d2k30gi2q70buql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.style.me.app.style_me",
+            "certificate_hash": "1d89fb8212ad18c14cd52fb4f453083104eae13b"
+          }
+        },
+        {
+          "client_id": "461396037978-neuhlobp8lguhd0o729s4pf4gqq22f0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdelcWmvh38-GImpv1oScM_jI6TMeqNL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "461396037978-neuhlobp8lguhd0o729s4pf4gqq22f0k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "461396037978-g4s0gjba1d94rr5qaa5i5noa3frd4o6m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.style.me.app.styleMe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,4 @@
+enum IconPosition {
+  trailing,
+  leading;
+}

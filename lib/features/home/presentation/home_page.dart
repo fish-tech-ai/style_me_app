@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:style_me/core/app/presentation/app_view_model.dart';
+import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 
 class HomePage extends ConsumerWidget {
@@ -8,7 +8,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AppViewModel appViewModel = ref.watch(appViewModelProvider.notifier);
+    final AppGlobalViewModel appViewModel = ref.watch(appGlobalViewModelProvider.notifier);
     return Scaffold(
       appBar: AppBar(title: Text(context.localizations.appName)),
       body: Center(
