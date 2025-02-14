@@ -6,7 +6,7 @@ extension ResponseErrorHandling<T> on Response<T> {
     if (!isSuccessful) {
       String errorMessage = error.toString();
       throw ServerException(
-          "$statusCode: ${errorMessage.isEmpty ? "Unknown reason" : errorMessage}");
+          errorMessage.isEmpty ? "Unknown reason" : errorMessage, statusCode);
     }
   }
 }

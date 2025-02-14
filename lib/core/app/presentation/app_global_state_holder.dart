@@ -9,6 +9,6 @@ class AppGlobalStateHolder with _$AppGlobalStateHolder {
   const factory AppGlobalStateHolder({
     Brightness? currentTheme,
     @Default(true) bool isConnected,
-    BannerMessage? bannerMessage
+    @Default(BannerMessage()) BannerMessage bannerMessage
   }) = _AppStateHolder;
 }

@@ -9,6 +9,7 @@ import 'package:style_me/core/extensions/string_ext.dart';
 import 'package:style_me/core/local/database.dart';
 import 'package:style_me/core/network/failures/failure.dart';
 import 'package:style_me/core/network/utils/result.dart';
+import 'package:style_me/core/utils/google_auth_service.dart';
 
 class TokenAuthenticator {
   TokenAuthenticator();
@@ -75,7 +76,10 @@ class TokenAuthenticator {
     return completer.future;
   }
 
-  void _logoutUser() => getIt<LogoutUserUseCase>().call();
+  void _logoutUser() {
+    getIt<LogoutUserUseCase>().call();
+    getIt<GoogleAuthService>().signOut();
+  }
 
   Future<Result> _refreshToken(String refreshToken) =>
       getIt<RefreshTokenUseCase>().call(refreshToken);

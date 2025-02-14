@@ -5,36 +5,37 @@ import 'package:style_me/features/auth/data/models/refresh_token_request.dart';
 import 'package:style_me/features/auth/data/models/refresh_token_response.dart';
 import 'package:style_me/features/auth/data/models/registration_request.dart';
 import 'package:style_me/features/auth/data/models/login_response.dart';
-import 'package:style_me/features/auth/data/models/reset_password_request.dart';
 
-part "app_service.chopper.dart";
+part "auth_service.chopper.dart";
 
-@ChopperApi()
-abstract class AppService extends ChopperService {
-  @Get(path: 'auth/check-email')
+@ChopperApi(baseUrl: "/auth")
+abstract class AuthService extends ChopperService {
+  @Get(path: '/check-email')
   Future<Response> checkEmail(@Query('email') String email);
 
-  @Get(path: 'auth/confirm-email')
-  Future<Response> confirmEmail(@Header(NetworkHeaders.authorization) String token);
+  @Get(path: '/confirm-email')
+  Future<Response> confirmEmail(
+      @Header(NetworkHeaders.authorization) String token);
 
-  @Post(path: 'auth/register')
+  @Post(path: '/register')
   Future<Response> register(@Body() RegistrationRequest registrationRequest);
 
-  @Post(path: 'auth/reset-password')
-  Future<Response> resetPassword(
-    @Body() ResetPasswordRequest resetPasswordRequest,
-    @Header(NetworkHeaders.authorization) String token,
-  );
-
-  @Post(path: 'auth/login')
+  @Post(path: '/login')
   Future<Response<LoginResponse>> login(@Body() LoginRequest loginRequest);
 
-  @Post(path: 'auth/refresh')
+  @Post(path: 'login/google')
+  Future<Response<LoginResponse>> loginWithGoogle(
+      @Header(NetworkHeaders.authorization) String token);
+
+  @Post(path: '/refresh')
   Future<Response<RefreshTokenResponse>> refreshToken(
       @Body() RefreshTokenRequest loginRequest);
 
-  @Get(path: 'auth/resend/confirmation-email')
+  @Post(path: '/resend/confirmation-email')
   Future<Response> resendConfirmation(@Query('email') String email);
 
-  static AppService create([ChopperClient? client]) => _$AppService(client);
+  @Post(path: '/forgot-password')
+  Future<Response> sendResetPasswordMail(@Query('email') String email);
+
+  static AuthService create([ChopperClient? client]) => _$AuthService(client);
 }

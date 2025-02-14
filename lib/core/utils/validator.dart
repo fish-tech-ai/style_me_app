@@ -33,7 +33,7 @@ class Validator {
 
   bool _validateRegistration(AuthStateHolder state) {
     return _validateEmailOnly(state) &&
-        validatePassword(state.password.text, state.mode) == null &&
+        validatePasswordWithMode(state.password.text, state.mode) == null &&
         state.password.text == state.passwordVerify.text &&
         state.firstName.text.isNotEmpty &&
         state.surname.text.isNotEmpty;
@@ -53,11 +53,15 @@ class Validator {
     return null;
   }
 
-  String? validatePassword(String text, AuthPageModeEnum mode) {
+  String? validatePasswordWithMode(String text, AuthPageModeEnum mode) {
     if (mode != AuthPageModeEnum.registration) {
       return validateIsEmpty(text);
     }
 
+    return validatePassword(text);
+  }
+
+  String? validatePassword(String text) {
     if (text.length <= 6) {
       return localizations.passwordWeakLength;
     } else if (!RegExp(RegexConst.passwordRegex).hasMatch(text)) {

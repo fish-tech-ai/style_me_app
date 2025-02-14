@@ -15,6 +15,7 @@ class TextFieldState with _$TextFieldState {
     @Default(false) bool isLast,
     FocusNode? focusNode,
     @Default(0) int position,
+    @Default(false) bool isObscured,
   }) = _TextFieldState;
 
   TextFieldState copyWithTextResettingError(String? text) {
@@ -24,5 +25,9 @@ class TextFieldState with _$TextFieldState {
 
   TextFieldState copyWithErrorMessage(String? errorText) {
     return copyWith(errorText: errorText ?? this.errorText);
+  }
+
+  TextFieldState copyWithIsObscured(bool? isObscured) {
+    return copyWith(isObscured: isObscured ?? this.isObscured);
   }
 }

@@ -1,7 +1,8 @@
 class ServerException implements Exception {
+  final int? statusCode;
   final String? message;
 
-  ServerException(this.message);
+  ServerException(this.message, [this.statusCode]);
 
   @override
   String toString() {

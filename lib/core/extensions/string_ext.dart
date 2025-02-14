@@ -9,6 +9,10 @@ extension Cryptography on String {
     final digest = sha256.convert(bytes);
     return digest.toString();
   }
+}
+
+extension TokenExt on String {
+  String withBearer() => "Bearer $this";
 
   bool isTokenExpired() {
     try {
@@ -33,5 +37,16 @@ extension Cryptography on String {
       debugMessagePrint("Error decoding JWT: $e");
       return true;
     }
+  }
+}
+
+extension CryptographySafe on String? {
+  String? getHashed() {
+    if (this == null) {
+      return null;
+    }
+    final bytes = utf8.encode(this!);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
   }
 }

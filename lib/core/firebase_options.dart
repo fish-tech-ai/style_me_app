@@ -63,6 +63,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '461396037978',
     projectId: 'stylemee-cd8b9',
     storageBucket: 'stylemee-cd8b9.firebasestorage.app',
+    androidClientId: '461396037978-24mhhlhd9555ps6anrg45468mpte6dui.apps.googleusercontent.com',
+    iosClientId: '461396037978-g4s0gjba1d94rr5qaa5i5noa3frd4o6m.apps.googleusercontent.com',
     iosBundleId: 'com.style.me.app.styleMe',
   );
+
 }

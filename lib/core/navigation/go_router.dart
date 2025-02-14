@@ -20,7 +20,7 @@ GoRouter getRouter(bool isAuthenticated) => GoRouter(
         GoRoute(
           path: AppPage.changePasswordPage.path,
           builder: (context, state) {
-            final ChangePasswordArgs args = state.extra as ChangePasswordArgs;
+            final ChangePasswordPageArgs args = state.extra as ChangePasswordPageArgs;
             return ChangePasswordPage(changePasswordArgs: args);
           },
         ),
