@@ -9,7 +9,7 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.read(settingsViewModelProvider);
+    final state = ref.watch(settingsViewModelProvider);
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),

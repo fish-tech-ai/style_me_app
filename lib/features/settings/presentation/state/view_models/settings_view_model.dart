@@ -35,6 +35,10 @@ class SettingsViewModel extends _$SettingsViewModel {
     final appSettings =
         AppSettings(globalState.lang!, globalState.currentTheme!);
 
+    Future.microtask(() async {
+      getUser();
+    });
+
     return SettingsStateHolder(appSettings: [
       Setting(
         label: localizations.theme,
@@ -93,7 +97,7 @@ class SettingsViewModel extends _$SettingsViewModel {
 
   void logOut(GoRouter? router) {}
 
-  Future _getUser() async {
+  Future getUser() async {
     state = state.copyWith(isLoading: true);
     final Result<UserData> result = await _getUserUseCase();
     result.collect(
