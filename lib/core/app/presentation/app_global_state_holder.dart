@@ -9,6 +9,7 @@ part 'app_global_state_holder.freezed.dart';
 class AppGlobalStateHolder with _$AppGlobalStateHolder {
   const factory AppGlobalStateHolder({
     Brightness? currentTheme,
+    Locale? lang,
     @Default(true) bool isConnected,
     @Default(BannerMessage()) BannerMessage bannerMessage,
     @Default(BottomBarState()) BottomBarState bottomBarState,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 abstract class SharedPrefsConst {
   static const currentThemeKey = "currentThemeKey";
+  static const languageKey = "languageKey";
 }
 
 abstract class GlobalUiConst {
@@ -33,4 +34,9 @@ abstract class RegexConst {
 abstract class NetworkHeaders {
   static const String authorization = "Authorization";
   static const String apiKey = "API-KEY";
+}
+
+abstract class LanguageCodeConst {
+  static const String english = "en";
+  static const String polish = "pl";
 }

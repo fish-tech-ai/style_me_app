@@ -47,5 +47,32 @@
   "home": "Home",
   "checkroom": "Try-on",
   "wardrobe": "Wardrobe",
-  "settings": "Settings"
+  "settings": "Settings",
+  "loggedInAs": "You are logged in as:",
+  "theme": "Theme",
+  "themeSystemDefault": "System default",
+  "change": "Change",
+  "language": "Language",
+  "languageEnglish": "English",
+  "languagePolish": "Polski",
+  "privacyPolicy": "Privacy policy",
+  "seeMore": "See more",
+  "termsAndConditions": "Terms and Conditions",
+  "reportBug": "Report bug",
+  "about": "About",
+  "accountSettings": "Account settings:",
+  "changePassword": "Change password",
+  "logOut": "Log out",
+  "deleteAccount": "Delete account",
+  "followSystemTheme": "Follow system theme",
+  "themeDark": "Dark theme",
+  "themeLight": "Light theme",
+  "areYouSure": "Are you sure?",
+  "deleteAccountWarning": "Your account will be deleted and you will lose all your data. This operation cannot be undone. Enter your password to confirm the operation.",
+  "cancel": "Cancel",
+  "whatsWrong": "What’s wrong?",
+  "describeProblem": "Describe as precisely as possible what the problem is...",
+  "send": "Send"
+
+
 }

@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'package:drift/drift.dart';
+import 'package:style_me/core/extensions/global_ext.dart';
 
 class DatabaseLogger extends QueryInterceptor {
   Future<T> _run<T>(String operationType, String tableName, dynamic args,
       FutureOr<T> Function() operation) async {
     try {
       final result = await operation();
-      print(_formatLog(
+      debugMessagePrint(_formatLog(
         operationType: operationType,
         tableName: tableName,
         args: args,
@@ -15,7 +16,7 @@ class DatabaseLogger extends QueryInterceptor {
       ));
       return result;
     } on Object catch (e) {
-      print(_formatLog(
+      debugMessagePrint(_formatLog(
         operationType: operationType,
         tableName: tableName,
         args: args,

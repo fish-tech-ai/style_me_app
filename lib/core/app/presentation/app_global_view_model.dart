@@ -4,7 +4,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/domain/usecases/get_current_theme_use_case.dart';
+import 'package:style_me/core/app/domain/usecases/get_language_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/save_current_theme_use_case.dart';
+import 'package:style_me/core/app/domain/usecases/set_language_use_case.dart';
 import 'package:style_me/core/app/presentation/app_global_state_holder.dart';
 import 'package:style_me/core/app/presentation/ui_models/banner_message.dart';
 import 'package:style_me/core/app/presentation/ui_models/bottom_bar_state.dart';
@@ -22,6 +24,8 @@ part 'app_global_view_model.g.dart';
 class AppGlobalViewModel extends _$AppGlobalViewModel {
   late final GetCurrentThemeUseCase _getCurrentThemeUseCase;
   late final SaveCurrentThemeUseCase _saveCurrentThemeUseCase;
+  late final GetLanguageUseCase _getLanguageUseCase;
+  late final SetLanguageUseCase _setLanguageUseCase;
   late final ConfirmEmailUseCase _confirmEmailUseCase;
   late final DeepLinkManager _deepLinkManager;
   late final Connection _connection;
@@ -29,6 +33,8 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
   AppGlobalViewModel() {
     _getCurrentThemeUseCase = getIt();
     _saveCurrentThemeUseCase = getIt();
+    _getLanguageUseCase = getIt();
+    _setLanguageUseCase = getIt();
     _confirmEmailUseCase = getIt();
     _connection = getIt();
     _deepLinkManager = getIt();
@@ -39,6 +45,7 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
     _monitorConnection();
     return AppGlobalStateHolder(
       currentTheme: _getCurrentThemeUseCase(),
+      lang: _getLanguageUseCase()
     );
   }
 
@@ -82,14 +89,16 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
         bannerMessage: state.bannerMessage.copyWith(isVisible: false));
   }
 
-  void getCurrentTheme() {
-    state = state.copyWith(currentTheme: _getCurrentThemeUseCase());
-  }
-
   void changeTheme(Brightness brightness) {
     _saveCurrentThemeUseCase(brightness);
     state = state.copyWith(currentTheme: brightness);
   }
+
+  void changeLanguage(Locale locale) {
+    _setLanguageUseCase(locale);
+    state = state.copyWith(lang: locale);
+  }
+
 
   Future initializeAndHandleDeepLinks({
     required Function(String token) navigateToPasswordReset,

@@ -35,6 +35,7 @@ class _StyleMeAppState extends ConsumerState<StyleMeApp> {
 
     return MaterialApp.router(
       routerConfig: router,
+      locale: state.lang,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       title: 'StyleMe',

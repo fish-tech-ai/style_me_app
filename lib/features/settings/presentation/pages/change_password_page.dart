@@ -10,7 +10,7 @@ import 'package:style_me/core/views/ui_models/app_button_icon.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 import 'package:style_me/features/auth/presentation/ui_models/text_field_state.dart';
 import 'package:style_me/features/settings/presentation/state/change_password_state_holder.dart';
-import 'package:style_me/features/settings/presentation/state/change_password_view_model.dart';
+import 'package:style_me/features/settings/presentation/state/view_models/change_password_view_model.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 
 class ChangePasswordPage extends ConsumerStatefulWidget {

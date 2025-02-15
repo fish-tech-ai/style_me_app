@@ -6,10 +6,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_me/core/app/data/app_repository.dart';
 import 'package:style_me/core/app/domain/usecases/get_current_theme_use_case.dart';
+import 'package:style_me/core/app/domain/usecases/get_language_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_user_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/logout_user_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/refresh_token_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/save_current_theme_use_case.dart';
+import 'package:style_me/core/app/domain/usecases/set_language_use_case.dart';
 import 'package:style_me/core/local/database.dart';
 import 'package:style_me/core/network/chopper_manager.dart';
 import 'package:style_me/core/network/connection.dart';
@@ -82,5 +84,7 @@ class GetItManager {
     ///Settings
     getIt.registerFactory(() => SettingsRepository(getIt()));
     getIt.registerFactory(() => ChangePasswordUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => GetLanguageUseCase(getIt()));
+    getIt.registerFactory(() => SetLanguageUseCase(getIt()));
   }
 }
