@@ -16,7 +16,7 @@ class AppSettings {
 
   String getLanguageText() {
     return language.toLanguageTag() == LanguageCodeConst.english
-        ? localizations.themeDark
-        : localizations.themeLight;
+        ? localizations.languageEnglish
+        : localizations.languagePolish;
   }
 }
