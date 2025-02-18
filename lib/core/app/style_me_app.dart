@@ -6,7 +6,6 @@ import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/app/presentation/components/app_wrapper.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/go_router.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
 
@@ -43,7 +42,6 @@ class _StyleMeAppState extends ConsumerState<StyleMeApp> {
       themeMode: appThemeManager.getModeBy(state.currentTheme),
       darkTheme: appThemeManager.appThemeDark,
       builder: (context, child) {
-        LocalizationHelper.init(context);
         return AppWrapper(router: router, child: child);
       },
     );

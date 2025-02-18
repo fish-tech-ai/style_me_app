@@ -71,9 +71,7 @@
   "deleteAccountWarning": "Your account will be deleted and you will lose all your data. This operation cannot be undone. Enter your password to confirm the operation.",
   "cancel": "Cancel",
   "whatsWrong": "What’s wrong?",
-  "describeProblem": "Describe as precisely as possible what the problem is...",
+  "describeProblem": "Describe what the problem is...",
   "send": "Send",
   "youAreLoggedAs": "You are logged in as:"
-
-
 }

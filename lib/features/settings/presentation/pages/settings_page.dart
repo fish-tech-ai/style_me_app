@@ -1,10 +1,19 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:style_me/core/app/presentation/app_global_view_model.dart';
+import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/features/settings/presentation/components/settings_banner.dart';
 import 'package:style_me/features/settings/presentation/components/settings_item.dart';
+import 'package:style_me/features/settings/presentation/components/settings_language_bottom_sheet_content.dart';
+import 'package:style_me/features/settings/presentation/components/settings_report_bottom_sheet.dart';
+import 'package:style_me/features/settings/presentation/components/settings_theme_bottom_sheet_content.dart';
 import 'package:style_me/features/settings/presentation/state/view_models/settings_view_model.dart';
+import 'package:style_me/features/settings/presentation/ui_models/setting.dart';
+import 'package:style_me/features/settings/presentation/ui_models/setting_action.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -23,7 +32,11 @@ class SettingsPage extends ConsumerWidget {
               SettingsBanner(email: state.userEmail),
               Column(
                 children: state.appSettings
-                    .map((setting) => SettingsItem(setting: setting))
+                    .mapIndexed((index, setting) => SettingsItem(
+                          setting: setting,
+                          onItemClicked: (item) =>
+                              handleAction(ref, setting, index),
+                        ))
                     .toList(),
               ),
               Column(
@@ -38,7 +51,11 @@ class SettingsPage extends ConsumerWidget {
                     ),
                   ),
                   ...state.accountSettings
-                      .map((setting) => SettingsItem(setting: setting)),
+                      .mapIndexed((index, setting) => SettingsItem(
+                            setting: setting,
+                            onItemClicked: (item) =>
+                                handleAction(ref, setting, index),
+                          )),
                 ],
               )
             ],
@@ -46,5 +63,60 @@ class SettingsPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  void handleAction(WidgetRef ref, Setting setting, int settingIndex) {
+    final viewModel = ref.read(settingsViewModelProvider.notifier);
+    if (setting.action != null) {
+      switch (setting.action!) {
+        case SettingAction.openThemeBottomSheet:
+          showAppModalBottomSheet(
+            ref.context,
+            SettingsThemeBottomSheetContent(
+              onItemSelected: (theme) =>
+                  viewModel.changeTheme(theme, settingIndex),
+            ),
+          );
+          break;
+        case SettingAction.openLanguageBottomSheet:
+          showAppModalBottomSheet(
+            ref.context,
+            SettingsLanguageBottomSheetContent(
+              onItemSelected: (lang) =>
+                  onLanguageSelected(lang, ref, settingIndex, viewModel),
+            ),
+          );
+          break;
+        case SettingAction.openReportBottomSheet:
+          showAppModalBottomSheet(
+            ref.context,
+            SettingsReportBottomSheet(onSubmit: viewModel.submitIssueReport),
+          );
+          break;
+        case SettingAction.openDeleteAccountDialog:
+          // TODO: Handle this case.
+          break;
+        case SettingAction.logOut:
+          // TODO: Handle this case.
+          break;
+        case SettingAction.deleteAccount:
+          // TODO: Handle this case.
+          break;
+      }
+    }
+  }
+
+  void onLanguageSelected(
+    Locale lang,
+    WidgetRef ref,
+    int settingIndex,
+    SettingsViewModel viewModel,
+  ) async {
+    final currentLanguage = ref.read(appGlobalViewModelProvider).lang;
+    if (lang.toLanguageTag() == currentLanguage?.toLanguageTag()) {
+      return;
+    }
+    LocalizationHelper.init(await AppLocalizations.delegate.load(lang));
+    viewModel.changeLanguage(lang, settingIndex);
   }
 }

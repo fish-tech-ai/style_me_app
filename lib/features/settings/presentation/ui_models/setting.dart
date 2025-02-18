@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:go_router/go_router.dart';
+import 'package:style_me/features/settings/presentation/ui_models/setting_action.dart';
 
 part 'setting.freezed.dart';
 
+/// [id] - also specifies the order of showed settings
+///
 /// [actionText] - If not provided, [Icons.keyboard_arrow_right_rounded] will be presented instead.
 ///
 /// [forceForegroundColor] - this option will force [label] and [actionText] (or icon if actionText is null) to be [forceForegroundColor].
 ///
-/// [path] - If not null will automatically push to this path, otherwise [onItemClicked] will be called.
+/// [path] - If not null will automatically push to this path.
 ///
-/// [onItemClicked] - will be called if path is null, for more complex handling [GoRouter] can be provided
-/// **NOTE**: If [onItemClicked] and [path] are both null, then a [SettingsItem] will not be clickable,
-
+/// [action] - runs action if path is null
 @freezed
 class Setting with _$Setting {
   const factory Setting({
     required String label,
     String? subLabel,
     String? actionText,
-    Function(GoRouter?)? onItemClicked,
+    SettingAction? action,
     Color Function(BuildContext context)? forceForegroundColor,
     String? path,
   }) = _Setting;

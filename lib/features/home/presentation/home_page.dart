@@ -9,7 +9,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AppGlobalViewModel appViewModel = ref.watch(appGlobalViewModelProvider.notifier);
+    ref.watch(appGlobalViewModelProvider.notifier);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -17,16 +17,6 @@ class HomePage extends ConsumerWidget {
         Center(
           child: Column(
             children: [
-              ElevatedButton(
-                  onPressed: () {
-                    appViewModel.changeTheme(Brightness.light);
-                  },
-                  child: Text("Change theme to light")),
-              ElevatedButton(
-                  onPressed: () {
-                    appViewModel.changeTheme(Brightness.dark);
-                  },
-                  child: Text("Change theme to dark"))
             ],
           ),
         ),

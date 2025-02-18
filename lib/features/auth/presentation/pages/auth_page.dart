@@ -105,7 +105,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         : Show.first,
                   ),
                   SizedBox(height: GlobalUiConst.paddingNormal),
-                  SizedBox(height: GlobalUiConst.defaultSystemNavBarHeight),
+                  SizedBox(height: MediaQuery.of(context).padding.bottom),
                 ],
               ),
             ),

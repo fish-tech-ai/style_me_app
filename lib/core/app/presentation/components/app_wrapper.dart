@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/app/presentation/components/app_status.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/core/views/app_bottom_nav_bar.dart';
@@ -28,6 +29,12 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback(initApp);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    LocalizationHelper.init(context.localizations);
   }
 
   Future initApp(Duration _) async {
@@ -89,10 +96,10 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
           animDirection: AnimDirectionEnum.bottomToTop,
           child: AppStatus(
             text: !state.isConnected
-                ? context.localizations.connectionError
+                ? localizations.connectionError
                 : state.bannerMessage.message.isNotEmpty
                     ? state.bannerMessage.message
-                    : context.localizations.unknownError,
+                    : localizations.unknownError,
             textColor: state.bannerMessage.isError
                 ? context.colorScheme.onError
                 : context.colorScheme.onPrimary,

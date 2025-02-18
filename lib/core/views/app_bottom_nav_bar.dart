@@ -66,12 +66,18 @@ class AppBottomNavBar extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  item.label.toUpperCase(),
+                  item.label,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: item.isSelected
-                          ? colorScheme.onSurface
-                          : colorScheme.onSecondary,
-                      fontSize: 12),
+                    color: item.isSelected
+                        ? colorScheme.onSurface
+                        : colorScheme.onSecondary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  softWrap: false,
+                  overflow: TextOverflow.visible,
                 )
               ],
             ),

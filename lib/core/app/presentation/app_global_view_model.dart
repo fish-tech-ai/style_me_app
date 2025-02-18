@@ -10,7 +10,6 @@ import 'package:style_me/core/app/domain/usecases/set_language_use_case.dart';
 import 'package:style_me/core/app/presentation/app_global_state_holder.dart';
 import 'package:style_me/core/app/presentation/ui_models/banner_message.dart';
 import 'package:style_me/core/app/presentation/ui_models/bottom_bar_state.dart';
-import 'package:style_me/core/app/presentation/ui_models/bottom_nav_item.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/network/connection.dart';
@@ -44,9 +43,7 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
   AppGlobalStateHolder build() {
     _monitorConnection();
     return AppGlobalStateHolder(
-      currentTheme: _getCurrentThemeUseCase(),
-      lang: _getLanguageUseCase()
-    );
+        currentTheme: _getCurrentThemeUseCase(), lang: _getLanguageUseCase());
   }
 
   void _monitorConnection() {
@@ -58,7 +55,7 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
   void initBottomNavItems() {
     state = state.copyWith(
         bottomBarState: BottomBarState(
-      items: BottomNavItem.getBottomNavItems(),
+      items: BottomBarState.getBottomNavItems(),
     ));
   }
 
@@ -89,16 +86,22 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
         bannerMessage: state.bannerMessage.copyWith(isVisible: false));
   }
 
-  void changeTheme(Brightness brightness) {
+  void changeTheme(Brightness? brightness) {
     _saveCurrentThemeUseCase(brightness);
     state = state.copyWith(currentTheme: brightness);
   }
 
-  void changeLanguage(Locale locale) {
-    _setLanguageUseCase(locale);
-    state = state.copyWith(lang: locale);
+  void changeLanguage(Locale lang) {
+    _setLanguageUseCase(lang);
+    final selectedBottomNavItem =
+        state.bottomBarState.items.indexWhere((item) => item.isSelected);
+    state = state.copyWith(
+      lang: lang,
+      bottomBarState: state.bottomBarState
+          .copyWith(items: BottomBarState.getBottomNavItems()),
+    );
+    selectBottomNavItem(selectedBottomNavItem);
   }
-
 
   Future initializeAndHandleDeepLinks({
     required Function(String token) navigateToPasswordReset,

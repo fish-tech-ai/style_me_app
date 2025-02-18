@@ -31,6 +31,9 @@ class ThemeManager {
           onError: appColors.dangerSurface,
           brightness: appColors.brightness,
         ),
+        bottomSheetTheme: BottomSheetThemeData(
+          backgroundColor: Colors.transparent,
+        ),
         scaffoldBackgroundColor: appColors.background,
         dialogBackgroundColor: appColors.backgroundDarker,
         disabledColor: appColors.disabled,

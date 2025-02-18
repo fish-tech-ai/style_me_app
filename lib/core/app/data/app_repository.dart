@@ -13,7 +13,11 @@ class AppRepository {
     return sharedPreferences.getString(SharedPrefsConst.currentThemeKey);
   }
 
-  void saveCurrentThemeName(String value) {
+  void saveCurrentThemeName(String? value) {
+    if (value == null) {
+      sharedPreferences.remove(SharedPrefsConst.currentThemeKey);
+      return;
+    }
     sharedPreferences.setString(SharedPrefsConst.currentThemeKey, value);
   }
 
@@ -26,6 +30,7 @@ class AppRepository {
   }
 
   void saveLanguage(Locale language) {
-    sharedPreferences.setString(SharedPrefsConst.languageKey, language.toLanguageTag());
+    sharedPreferences.setString(
+        SharedPrefsConst.languageKey, language.toLanguageTag());
   }
 }
