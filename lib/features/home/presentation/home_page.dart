@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
 
@@ -9,7 +8,6 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(appGlobalViewModelProvider.notifier);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

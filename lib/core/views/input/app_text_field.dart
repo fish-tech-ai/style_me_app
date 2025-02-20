@@ -41,7 +41,7 @@ class AppTextField extends StatefulWidget {
     this.textInputAction,
     this.focusNode,
     this.height = 76,
-    this.minLines = 0,
+    this.minLines = 1,
     this.maxLines = 1,
   });
 
