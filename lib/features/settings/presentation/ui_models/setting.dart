@@ -4,13 +4,9 @@ import 'package:style_me/features/settings/presentation/ui_models/setting_action
 
 part 'setting.freezed.dart';
 
-/// [id] - also specifies the order of showed settings
-///
 /// [actionText] - If not provided, [Icons.keyboard_arrow_right_rounded] will be presented instead.
 ///
 /// [forceForegroundColor] - this option will force [label] and [actionText] (or icon if actionText is null) to be [forceForegroundColor].
-///
-/// [path] - If not null will automatically push to this path.
 ///
 /// [action] - runs action if path is null
 @freezed

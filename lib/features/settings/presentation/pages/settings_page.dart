@@ -15,6 +15,7 @@ import 'package:style_me/features/settings/presentation/components/settings_lang
 import 'package:style_me/features/settings/presentation/components/settings_report_bottom_sheet.dart';
 import 'package:style_me/features/settings/presentation/components/settings_theme_bottom_sheet_content.dart';
 import 'package:style_me/features/settings/presentation/state/view_models/settings_view_model.dart';
+import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 import 'package:style_me/features/settings/presentation/ui_models/setting.dart';
 import 'package:style_me/features/settings/presentation/ui_models/setting_action.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -70,7 +71,8 @@ class SettingsPage extends ConsumerWidget {
   }
 
   void handleAction(WidgetRef ref, Setting setting, int settingIndex) {
-    final SettingsViewModel viewModel = ref.read(settingsViewModelProvider.notifier);
+    final SettingsViewModel viewModel =
+        ref.read(settingsViewModelProvider.notifier);
     if (setting.action != null) {
       switch (setting.action!) {
         case SettingAction.openThemeBottomSheet:
@@ -104,18 +106,26 @@ class SettingsPage extends ConsumerWidget {
             borderColor: ref.context.colorScheme.error,
             child: SettingsDeleteAccountDialogContent(
               onDeleteClicked: () => viewModel.deleteAccount(() {
-                ref.context.go(AppPage.authPage.path);
+                onUserLogout(ref);
               }),
             ),
           );
           break;
         case SettingAction.logOut:
           viewModel.logOut(() {
-            ref.context.go(AppPage.authPage.path);
+            onUserLogout(ref);
           });
           break;
+        case SettingAction.goToChangePassword:
+          ref.context.push(AppPage.changePasswordPage.path,
+              extra: ChangePasswordPageArgs(null, false));
       }
     }
+  }
+
+  void onUserLogout(WidgetRef ref) {
+    ref.read(appGlobalViewModelProvider.notifier).selectBottomNavItem(0);
+    ref.context.go(AppPage.authPage.path);
   }
 
   void onLanguageSelected(

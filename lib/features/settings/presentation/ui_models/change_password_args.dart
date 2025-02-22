@@ -1,5 +1,5 @@
 class ChangePasswordPageArgs {
-  final String token;
+  final String? token;
   final bool isResettingPass;
 
   ChangePasswordPageArgs(

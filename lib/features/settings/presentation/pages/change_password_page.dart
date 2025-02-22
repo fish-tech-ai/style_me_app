@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
@@ -122,11 +123,11 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
   }
 
   void onChangePasswordButtonClicked() {
-    viewModel.changePassword(widget.changePasswordArgs, context.localizations,
-        () {
-      ref
-          .read(appGlobalViewModelProvider.notifier)
-          .showSuccessInfo(context.localizations.passwordHasBeenChanged);
+    viewModel.changePassword(widget.changePasswordArgs, () {
+      ref.read(appGlobalViewModelProvider.notifier).showSuccessInfo(
+          widget.changePasswordArgs.isResettingPass
+              ? localizations.passwordHasBeenReset
+              : localizations.passwordHasBeenChanged);
       context.pop();
     });
   }

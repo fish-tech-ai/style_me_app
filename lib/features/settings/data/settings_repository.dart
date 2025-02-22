@@ -14,9 +14,9 @@ class SettingsRepository {
   SettingsRepository(this.service);
 
   Future resetPassword(
-      ResetPasswordRequest resetPasswordRequest, String token) async {
+      ResetPasswordRequest resetPasswordRequest, String? token) async {
     final Response response =
-        await service.resetPassword(resetPasswordRequest, token.withBearer());
+        await service.resetPassword(resetPasswordRequest, token?.withBearer());
     if (response.statusCode == HttpStatus.notAcceptable) {
       throw ServerException("", HttpStatus.notAcceptable);
     }

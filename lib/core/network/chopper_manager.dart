@@ -18,19 +18,20 @@ class ChopperManager {
     AppAuthenticator authenticator,
   ) =>
       ChopperClient(
-          baseUrl: Uri.parse(dotenv.env['BASE_URL'] ?? ''),
-          converter: JsonSerializableConverter({
-            LoginRequest: (json) => LoginRequest.fromJson(json),
-            RegistrationRequest: (json) => RegistrationRequest.fromJson(json),
-            LoginResponse: (json) => LoginResponse.fromJson(json),
-            RefreshTokenRequest: (json) => RefreshTokenRequest.fromJson(json),
-            RefreshTokenResponse: (json) => RefreshTokenResponse.fromJson(json),
-            ResetPasswordRequest: (json) => ResetPasswordRequest.fromJson(json),
-            DeleteUserRequest: (json) => DeleteUserRequest.fromJson(json)
-          }),
-          interceptors: [
-            headersInterceptor,
-            LoggingInterceptor(),
-          ],
-          authenticator: authenticator);
+        baseUrl: Uri.parse(dotenv.env['BASE_URL'] ?? ''),
+        converter: JsonSerializableConverter({
+          LoginRequest: (json) => LoginRequest.fromJson(json),
+          RegistrationRequest: (json) => RegistrationRequest.fromJson(json),
+          LoginResponse: (json) => LoginResponse.fromJson(json),
+          RefreshTokenRequest: (json) => RefreshTokenRequest.fromJson(json),
+          RefreshTokenResponse: (json) => RefreshTokenResponse.fromJson(json),
+          ResetPasswordRequest: (json) => ResetPasswordRequest.fromJson(json),
+          DeleteUserRequest: (json) => DeleteUserRequest.fromJson(json)
+        }),
+        interceptors: [
+          headersInterceptor,
+          LoggingInterceptor(),
+        ],
+        authenticator: authenticator,
+      );
 }

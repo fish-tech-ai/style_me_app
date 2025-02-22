@@ -9,7 +9,7 @@ part "user_service.chopper.dart";
 abstract class UserService extends ChopperService {
   @Post(path: '/reset-password')
   Future<Response> resetPassword(@Body() ResetPasswordRequest request,
-      @Header(NetworkHeaders.authorization) String token);
+      @Header(NetworkHeaders.authorization) String? token);
 
   @Delete(path: '/delete-user')
   Future<Response> deleteAccount(@Body() DeleteUserRequest request);

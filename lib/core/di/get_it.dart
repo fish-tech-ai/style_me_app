@@ -69,7 +69,7 @@ class GetItManager {
     getIt.registerFactory(() => FirebaseAuth.instance);
     getIt.registerFactory(() => GoogleAuthService(getIt(), getIt()));
     getIt.registerFactory(() => GetUserUseCase(getIt()));
-    getIt.registerFactory(() => LogoutUserUseCase(getIt()));
+    getIt.registerFactory(() => LogoutUserUseCase(getIt(), getIt()));
     getIt.registerFactory(() => RefreshTokenUseCase(getIt(), getIt()));
 
     ///Auth

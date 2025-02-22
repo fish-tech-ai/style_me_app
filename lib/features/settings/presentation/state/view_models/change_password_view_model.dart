@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/utils/validator.dart';
 import 'package:style_me/features/settings/domain/change_password_use_case.dart';
 import 'package:style_me/features/settings/presentation/state/change_password_state_holder.dart';
@@ -95,9 +96,9 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
   }
 
   void changePassword(
-      ChangePasswordPageArgs args, AppLocalizations localizations, Function() onSuccess) {
+      ChangePasswordPageArgs args, Function() onSuccess) {
     if (state.isAllValidated) {
-      _performPasswordChange(args, localizations, onSuccess);
+      _performPasswordChange(args, onSuccess);
     } else {
       _validateAndShowAll();
     }
@@ -116,7 +117,6 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
 
   void _performPasswordChange(
     ChangePasswordPageArgs args,
-    AppLocalizations localizations,
     Function() onSuccess,
   ) async {
     state = state.copyWith(isLoading: true);

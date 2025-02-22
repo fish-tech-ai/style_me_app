@@ -69,7 +69,7 @@ class SettingsStateHolder with _$SettingsStateHolder {
     return [
       Setting(
         label: localizations.changePassword,
-        path: AppPage.changePasswordPage.path,
+        action: SettingAction.goToChangePassword,
       ),
       Setting(
         label: localizations.logOut,
