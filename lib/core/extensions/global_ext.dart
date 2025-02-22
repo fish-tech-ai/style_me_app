@@ -8,7 +8,34 @@ void debugMessagePrint(String message) {
   }
 }
 
-void showAppModalBottomSheet(BuildContext context, Widget content) {
+void showAppDialog({
+  required BuildContext context,
+  required Widget child,
+  Color? borderColor,
+}) {
+  showDialog(
+    context: context,
+    builder: (_) {
+      return Dialog(
+        insetPadding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+              color: borderColor ?? context.colorScheme.primary, width: 1),
+          borderRadius: BorderRadius.circular(32),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(18),
+          child: child,
+        ),
+      );
+    },
+  );
+}
+
+void showAppModalBottomSheet({
+  required BuildContext context,
+  required Widget child,
+}) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -37,7 +64,7 @@ void showAppModalBottomSheet(BuildContext context, Widget content) {
                     color: context.theme.hintColor,
                     borderRadius: BorderRadius.circular(32)),
               ),
-              content,
+              child,
             ])),
       );
     },

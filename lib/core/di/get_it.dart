@@ -34,6 +34,7 @@ import 'package:style_me/features/auth/domain/login_with_google_use_case.dart';
 import 'package:style_me/features/auth/domain/register_use_case.dart';
 import 'package:style_me/features/auth/domain/resend_confirmation_use_case.dart';
 import 'package:style_me/features/auth/domain/send_reset_password_mail_use_case.dart';
+import 'package:style_me/features/settings/domain/delete_account_use_case.dart';
 
 final getIt = GetIt.instance;
 
@@ -84,6 +85,7 @@ class GetItManager {
     ///Settings
     getIt.registerFactory(() => SettingsRepository(getIt()));
     getIt.registerFactory(() => ChangePasswordUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => DeleteAccountUseCase(getIt(), getIt()));
     getIt.registerFactory(() => GetLanguageUseCase(getIt()));
     getIt.registerFactory(() => SetLanguageUseCase(getIt()));
   }

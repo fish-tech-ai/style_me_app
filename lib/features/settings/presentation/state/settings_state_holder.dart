@@ -5,6 +5,7 @@ import 'package:style_me/core/extensions/locale_ext.dart';
 import 'package:style_me/core/extensions/theme_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
+import 'package:style_me/features/settings/presentation/state/delete_dialog_state.dart';
 import 'package:style_me/features/settings/presentation/ui_models/setting.dart';
 import 'package:style_me/features/settings/presentation/ui_models/setting_action.dart';
 
@@ -17,13 +18,14 @@ class SettingsStateHolder with _$SettingsStateHolder {
     @Default([]) List<Setting> accountSettings,
     @Default(true) bool isLoading,
     @Default("") String userEmail,
+    @Default(DeleteDialogState()) DeleteDialogState deleteDialogState,
   }) = _SettingsStateHolder;
 
   factory SettingsStateHolder.getDefault(
       Brightness? currentTheme, Locale currentLang) {
     return SettingsStateHolder(
-      appSettings: SettingsStateHolder.getInitialAppSettings(
-          currentTheme, currentLang),
+      appSettings:
+          SettingsStateHolder.getInitialAppSettings(currentTheme, currentLang),
       accountSettings: SettingsStateHolder.getInitialAccountSettings(),
     );
   }
@@ -75,7 +77,7 @@ class SettingsStateHolder with _$SettingsStateHolder {
       ),
       Setting(
         label: localizations.deleteAccount,
-        action: SettingAction.deleteAccount,
+        action: SettingAction.openDeleteAccountDialog,
         forceForegroundColor: (BuildContext context) =>
             context.colorScheme.error,
       ),

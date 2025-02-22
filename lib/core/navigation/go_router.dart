@@ -4,7 +4,9 @@ import 'package:style_me/features/auth/presentation/pages/auth_page.dart';
 import 'package:style_me/features/checkroom/presentation/checkroom_page.dart';
 import 'package:style_me/features/home/presentation/home_page.dart';
 import 'package:style_me/features/settings/presentation/pages/change_password_page.dart';
+import 'package:style_me/features/settings/presentation/pages/privacy_policy_page.dart';
 import 'package:style_me/features/settings/presentation/pages/settings_page.dart';
+import 'package:style_me/features/settings/presentation/pages/terms_and_contitions_page.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 import 'package:style_me/features/wardrobe/presentation/wardrobe_page.dart';
 
@@ -33,9 +35,18 @@ GoRouter getRouter(bool isAuthenticated) => GoRouter(
           builder: (context, state) => const SettingsPage(),
         ),
         GoRoute(
+          path: AppPage.privacyPolicy.path,
+          builder: (context, state) => const PrivacyPolicyPage(),
+        ),
+        GoRoute(
+          path: AppPage.termsAndConditions.path,
+          builder: (context, state) => const TermsAndConditionsPage(),
+        ),
+        GoRoute(
           path: AppPage.changePasswordPage.path,
           builder: (context, state) {
-            final ChangePasswordPageArgs args = state.extra as ChangePasswordPageArgs;
+            final ChangePasswordPageArgs args =
+                state.extra as ChangePasswordPageArgs;
             return ChangePasswordPage(changePasswordArgs: args);
           },
         ),

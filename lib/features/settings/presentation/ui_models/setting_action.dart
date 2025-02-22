@@ -3,6 +3,5 @@ enum SettingAction {
   openLanguageBottomSheet,
   openReportBottomSheet,
   openDeleteAccountDialog,
-  logOut,
-  deleteAccount;
+  logOut;
 }

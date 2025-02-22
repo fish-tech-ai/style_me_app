@@ -1,11 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
+import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/features/settings/presentation/components/settings_banner.dart';
+import 'package:style_me/features/settings/presentation/components/settings_delete_account_dialog_content.dart';
 import 'package:style_me/features/settings/presentation/components/settings_item.dart';
 import 'package:style_me/features/settings/presentation/components/settings_language_bottom_sheet_content.dart';
 import 'package:style_me/features/settings/presentation/components/settings_report_bottom_sheet.dart';
@@ -66,13 +70,13 @@ class SettingsPage extends ConsumerWidget {
   }
 
   void handleAction(WidgetRef ref, Setting setting, int settingIndex) {
-    final viewModel = ref.read(settingsViewModelProvider.notifier);
+    final SettingsViewModel viewModel = ref.read(settingsViewModelProvider.notifier);
     if (setting.action != null) {
       switch (setting.action!) {
         case SettingAction.openThemeBottomSheet:
           showAppModalBottomSheet(
-            ref.context,
-            SettingsThemeBottomSheetContent(
+            context: ref.context,
+            child: SettingsThemeBottomSheetContent(
               onItemSelected: (theme) =>
                   viewModel.changeTheme(theme, settingIndex),
             ),
@@ -80,8 +84,8 @@ class SettingsPage extends ConsumerWidget {
           break;
         case SettingAction.openLanguageBottomSheet:
           showAppModalBottomSheet(
-            ref.context,
-            SettingsLanguageBottomSheetContent(
+            context: ref.context,
+            child: SettingsLanguageBottomSheetContent(
               onItemSelected: (lang) =>
                   onLanguageSelected(lang, ref, settingIndex, viewModel),
             ),
@@ -89,18 +93,26 @@ class SettingsPage extends ConsumerWidget {
           break;
         case SettingAction.openReportBottomSheet:
           showAppModalBottomSheet(
-            ref.context,
-            SettingsReportBottomSheet(onSubmit: viewModel.submitIssueReport),
+            context: ref.context,
+            child: SettingsReportBottomSheet(
+                onSubmit: viewModel.submitIssueReport),
           );
           break;
         case SettingAction.openDeleteAccountDialog:
-          // TODO: Handle this case.
+          showAppDialog(
+            context: ref.context,
+            borderColor: ref.context.colorScheme.error,
+            child: SettingsDeleteAccountDialogContent(
+              onDeleteClicked: () => viewModel.deleteAccount(() {
+                ref.context.go(AppPage.authPage.path);
+              }),
+            ),
+          );
           break;
         case SettingAction.logOut:
-          // TODO: Handle this case.
-          break;
-        case SettingAction.deleteAccount:
-          // TODO: Handle this case.
+          viewModel.logOut(() {
+            ref.context.go(AppPage.authPage.path);
+          });
           break;
       }
     }

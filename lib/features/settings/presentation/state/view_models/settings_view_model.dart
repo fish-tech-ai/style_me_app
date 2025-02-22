@@ -1,14 +1,21 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/domain/usecases/get_current_theme_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_language_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_user_use_case.dart';
+import 'package:style_me/core/app/domain/usecases/logout_user_use_case.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/theme_ext.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/local/database.dart';
+import 'package:style_me/core/network/failures/failure.dart';
+import 'package:style_me/core/network/failures/server_failure.dart';
 import 'package:style_me/core/network/utils/result.dart';
+import 'package:style_me/features/settings/domain/delete_account_use_case.dart';
 import 'package:style_me/features/settings/presentation/state/settings_state_holder.dart';
 
 part 'settings_view_model.g.dart';
@@ -18,11 +25,15 @@ class SettingsViewModel extends _$SettingsViewModel {
   late final GetUserUseCase _getUserUseCase;
   late final GetCurrentThemeUseCase _getCurrentThemeUseCase;
   late final GetLanguageUseCase _getCurrentLangUseCase;
+  late final LogoutUserUseCase _logoutUserUseCase;
+  late final DeleteAccountUseCase _deleteAccountUseCase;
 
   SettingsViewModel() {
     _getUserUseCase = getIt();
     _getCurrentThemeUseCase = getIt();
     _getCurrentLangUseCase = getIt();
+    _logoutUserUseCase = getIt();
+    _deleteAccountUseCase = getIt();
   }
 
   @override
@@ -37,9 +48,66 @@ class SettingsViewModel extends _$SettingsViewModel {
     );
   }
 
-  void logOut() {}
+  Future getUser() async {
+    state = state.copyWith(isLoading: true);
+    final Result<UserData> result = await _getUserUseCase();
+    result.collect(
+      (userData) {
+        state = state.copyWith(isLoading: false, userEmail: userData.email);
+      },
+      (failure) {
+        ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+        state = state.copyWith(isLoading: false);
+      },
+    );
+  }
 
-  void deleteAccount() {}
+  void changeDeleteDialogPassText(String text) {
+    state = state.copyWith(
+      deleteDialogState:
+          state.deleteDialogState.copyWith(password: text, errorMessage: null),
+    );
+  }
+
+  void toggleDeleteDialogPassVisibility() {
+    state = state.copyWith(
+        deleteDialogState: state.deleteDialogState.copyWith(
+            isPasswordVisible: !state.deleteDialogState.isPasswordVisible));
+  }
+
+  void logOut(Function onSuccess) async {
+    await _logoutUserUseCase();
+    onSuccess();
+  }
+
+  void deleteAccount(Function onSuccess) async {
+    state = state.copyWith(
+        deleteDialogState: state.deleteDialogState.copyWith(isLoading: true));
+    final result =
+        await _deleteAccountUseCase(state.deleteDialogState.password);
+    result.collect((_) {
+      state = state.copyWith(
+          deleteDialogState:
+              state.deleteDialogState.copyWith(isLoading: false, password: ""));
+      _logoutUserUseCase();
+      onSuccess();
+    }, (failure) {
+      _onDeleteFailure(failure);
+    });
+  }
+
+  void _onDeleteFailure(Failure failure) {
+    if (failure is ServerFailure &&
+        failure.statusCode == HttpStatus.forbidden) {
+      state = state.copyWith(
+          deleteDialogState: state.deleteDialogState
+              .copyWith(errorMessage: localizations.passwordWrong));
+      return;
+    }
+    state = state.copyWith(
+        deleteDialogState: state.deleteDialogState.copyWith(isLoading: false));
+    ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+  }
 
   void changeTheme(Brightness? brightness, int settingIndex) {
     final AppGlobalViewModel globalProvider =
@@ -63,20 +131,6 @@ class SettingsViewModel extends _$SettingsViewModel {
               _getCurrentThemeUseCase(), language)
           .toList(),
       accountSettings: SettingsStateHolder.getInitialAccountSettings(),
-    );
-  }
-
-  Future getUser() async {
-    state = state.copyWith(isLoading: true);
-    final Result<UserData> result = await _getUserUseCase();
-    result.collect(
-      (userData) {
-        state = state.copyWith(isLoading: false, userEmail: userData.email);
-      },
-      (failure) {
-        ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
-        state = state.copyWith(isLoading: false);
-      },
     );
   }
 

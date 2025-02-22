@@ -28,6 +28,7 @@
   "connectionError": "No internet connection",
   "yes": "Yes",
   "loginFailed": "Invalid email or password",
+  "passwordWrong": "Invalid password",
   "authEmailSentTitle": "We sent you an email!",
   "authEmailSentText": "Confirm your email and then log in to start playing with your outfits",
   "authResetEmailSentText": "Reset your password and then log in to start playing with your outfits",
