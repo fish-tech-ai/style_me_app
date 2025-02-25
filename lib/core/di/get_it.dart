@@ -15,6 +15,7 @@ import 'package:style_me/core/app/domain/usecases/set_language_use_case.dart';
 import 'package:style_me/core/local/database.dart';
 import 'package:style_me/core/network/chopper_manager.dart';
 import 'package:style_me/core/network/connection.dart';
+import 'package:style_me/core/network/services/app_service.dart';
 import 'package:style_me/core/network/services/auth_service.dart';
 import 'package:style_me/core/network/services/user_service.dart';
 import 'package:style_me/core/network/utils/app_authenticator.dart';
@@ -26,6 +27,7 @@ import 'package:style_me/core/utils/google_auth_service.dart';
 import 'package:style_me/core/utils/token_authenticator.dart';
 import 'package:style_me/features/auth/data/auth_repository.dart';
 import 'package:style_me/features/settings/data/settings_repository.dart';
+import 'package:style_me/features/settings/domain/add_report_use_case.dart';
 import 'package:style_me/features/settings/domain/change_password_use_case.dart';
 import 'package:style_me/features/auth/domain/check_email_use_case.dart';
 import 'package:style_me/features/auth/domain/confirm_email_use_case.dart';
@@ -50,6 +52,8 @@ class GetItManager {
         () => AuthService.create(getIt<ChopperClient>()));
     getIt.registerFactory<UserService>(
         () => UserService.create(getIt<ChopperClient>()));
+    getIt.registerFactory<AppService>(
+        () => AppService.create(getIt<ChopperClient>()));
     getIt.registerLazySingleton(() => ThemeManager());
     final sharedPrefs = await SharedPreferences.getInstance();
     getIt.registerLazySingleton(() => sharedPrefs);
@@ -83,10 +87,11 @@ class GetItManager {
     getIt.registerFactory(() => SendResetPasswordMailUseCase(getIt(), getIt()));
 
     ///Settings
-    getIt.registerFactory(() => SettingsRepository(getIt()));
+    getIt.registerFactory(() => SettingsRepository(getIt(), getIt()));
     getIt.registerFactory(() => ChangePasswordUseCase(getIt(), getIt()));
     getIt.registerFactory(() => DeleteAccountUseCase(getIt(), getIt()));
     getIt.registerFactory(() => GetLanguageUseCase(getIt()));
     getIt.registerFactory(() => SetLanguageUseCase(getIt()));
+    getIt.registerFactory(() => AddReportUseCase(getIt(), getIt()));
   }
 }

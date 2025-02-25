@@ -14,6 +14,7 @@ import 'package:style_me/features/settings/presentation/components/settings_item
 import 'package:style_me/features/settings/presentation/components/settings_language_bottom_sheet_content.dart';
 import 'package:style_me/features/settings/presentation/components/settings_report_bottom_sheet.dart';
 import 'package:style_me/features/settings/presentation/components/settings_theme_bottom_sheet_content.dart';
+import 'package:style_me/features/settings/presentation/state/settings_state_holder.dart';
 import 'package:style_me/features/settings/presentation/state/view_models/settings_view_model.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 import 'package:style_me/features/settings/presentation/ui_models/setting.dart';
@@ -25,7 +26,7 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(settingsViewModelProvider);
+    final SettingsStateHolder state = ref.watch(settingsViewModelProvider);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -55,12 +56,12 @@ class SettingsPage extends ConsumerWidget {
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                     ),
                   ),
-                  ...state.accountSettings
-                      .mapIndexed((index, setting) => SettingsItem(
-                            setting: setting,
-                            onItemClicked: (item) =>
-                                handleAction(ref, setting, index),
-                          )),
+                  ...state.accountSettings.mapIndexed((index, setting) =>
+                      SettingsItem(
+                        setting: setting,
+                        onItemClicked: (item) =>
+                            handleAction(ref, setting, index),
+                      ).orEmpty(index == 0 && state.isUserFromGoogleSignIn)),
                 ],
               )
             ],

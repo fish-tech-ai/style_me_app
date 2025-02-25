@@ -6,4 +6,5 @@ class User extends Table {
   TextColumn get email => text()();
   TextColumn get token => text()();
   TextColumn get refreshToken => text()();
+  BoolColumn get isFromGoogleSignIn => boolean()();
 }

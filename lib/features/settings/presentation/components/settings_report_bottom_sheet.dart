@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
+import 'package:style_me/core/views/input/app_dropdown_button.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
+import 'package:style_me/features/settings/data/models/report_category.dart';
+import 'package:style_me/features/settings/presentation/state/view_models/settings_view_model.dart';
 
-class SettingsReportBottomSheet extends StatefulWidget {
+class SettingsReportBottomSheet extends ConsumerStatefulWidget {
   final Function(String) onSubmit;
 
   const SettingsReportBottomSheet({super.key, required this.onSubmit});
 
   @override
-  State<SettingsReportBottomSheet> createState() =>
+  ConsumerState<SettingsReportBottomSheet> createState() =>
       _SettingsReportBottomSheetState();
 }
 
-class _SettingsReportBottomSheetState extends State<SettingsReportBottomSheet> {
+class _SettingsReportBottomSheetState
+    extends ConsumerState<SettingsReportBottomSheet> {
   String reportText = "";
   String? errorMessage;
 
@@ -46,12 +51,22 @@ class _SettingsReportBottomSheetState extends State<SettingsReportBottomSheet> {
                   reportText.isEmpty ? localizations.textFieldEmpty : null;
             }),
           ),
+          AppDropdownButton(
+            items: ReportCategory.values,
+            selectedItem: ref.watch(settingsViewModelProvider).selectedCategory,
+            itemBuilder: (category) => Text(category.text),
+            onItemSelect: (category) {
+              ref
+                  .read(settingsViewModelProvider.notifier)
+                  .selectIssueReportCategory(category);
+            },
+          ),
           AppButton(
             text: localizations.send,
             onClick: reportText.isNotEmpty
                 ? () {
                     widget.onSubmit(reportText);
-                    context.pop(); //TODO add loading before context.pop() when backend will be ready
+                    context.pop();
                   }
                 : null,
             enabled: reportText.isNotEmpty,

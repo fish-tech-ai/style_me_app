@@ -11,6 +11,7 @@ import 'package:style_me/features/auth/data/models/registration_request.dart';
 import 'package:style_me/features/auth/data/models/login_response.dart';
 import 'package:style_me/features/auth/data/models/reset_password_request.dart';
 import 'package:style_me/features/settings/data/models/delete_user_request.dart';
+import 'package:style_me/features/settings/data/models/report_request.dart';
 
 class ChopperManager {
   static ChopperClient createClient(
@@ -26,7 +27,8 @@ class ChopperManager {
           RefreshTokenRequest: (json) => RefreshTokenRequest.fromJson(json),
           RefreshTokenResponse: (json) => RefreshTokenResponse.fromJson(json),
           ResetPasswordRequest: (json) => ResetPasswordRequest.fromJson(json),
-          DeleteUserRequest: (json) => DeleteUserRequest.fromJson(json)
+          DeleteUserRequest: (json) => DeleteUserRequest.fromJson(json),
+          ReportRequest: (json) => ReportRequest.fromJson(json),
         }),
         interceptors: [
           headersInterceptor,

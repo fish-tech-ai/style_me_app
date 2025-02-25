@@ -45,7 +45,11 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
   Widget build(BuildContext context) {
     final ChangePasswordStateHolder state =
         ref.watch(changePasswordViewModelProvider);
-    return SafeArea(
+    return Padding(
+      padding: EdgeInsets.only(
+          top: widget.changePasswordArgs.isResettingPass
+              ? MediaQuery.of(context).padding.top
+              : 0),
       child: Column(
         children: [
           AppTopBar(

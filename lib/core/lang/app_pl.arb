@@ -74,5 +74,11 @@
   "whatsWrong": "Co jest nie tak?",
   "describeProblem": "Opisz, na czym polega problem...",
   "send": "Wyślij",
-  "youAreLoggedAs": "Jesteś zalogowany jako:"
+  "youAreLoggedAs": "Jesteś zalogowany jako:",
+  "onboarding": "Wprowadzenie",
+  "virtual_closet_and_fitting_room": "Wirtualna szafa i przymierzanie",
+  "history_and_favorite_outfits": "Historia i ulubione stylizacje",
+  "app_settings": "Ustawienia aplikacji",
+  "other_issues": "Inne problemy",
+  "reportSuccessMessage": "Dziękujemy za przesłanie zgłoszenia."
 }

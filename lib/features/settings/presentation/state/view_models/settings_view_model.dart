@@ -15,6 +15,9 @@ import 'package:style_me/core/local/database.dart';
 import 'package:style_me/core/network/failures/failure.dart';
 import 'package:style_me/core/network/failures/server_failure.dart';
 import 'package:style_me/core/network/utils/result.dart';
+import 'package:style_me/features/settings/data/models/report_category.dart';
+import 'package:style_me/features/settings/data/models/report_request.dart';
+import 'package:style_me/features/settings/domain/add_report_use_case.dart';
 import 'package:style_me/features/settings/domain/delete_account_use_case.dart';
 import 'package:style_me/features/settings/presentation/state/settings_state_holder.dart';
 
@@ -27,6 +30,7 @@ class SettingsViewModel extends _$SettingsViewModel {
   late final GetLanguageUseCase _getCurrentLangUseCase;
   late final LogoutUserUseCase _logoutUserUseCase;
   late final DeleteAccountUseCase _deleteAccountUseCase;
+  late final AddReportUseCase _addReportUseCase;
 
   SettingsViewModel() {
     _getUserUseCase = getIt();
@@ -34,6 +38,7 @@ class SettingsViewModel extends _$SettingsViewModel {
     _getCurrentLangUseCase = getIt();
     _logoutUserUseCase = getIt();
     _deleteAccountUseCase = getIt();
+    _addReportUseCase = getIt();
   }
 
   @override
@@ -52,8 +57,12 @@ class SettingsViewModel extends _$SettingsViewModel {
     state = state.copyWith(isLoading: true);
     final Result<UserData> result = await _getUserUseCase();
     result.collect(
-      (userData) {
-        state = state.copyWith(isLoading: false, userEmail: userData.email);
+      (user) {
+        state = state.copyWith(
+          isLoading: false,
+          userEmail: user.email,
+          isUserFromGoogleSignIn: user.isFromGoogleSignIn,
+        );
       },
       (failure) {
         ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
@@ -134,7 +143,18 @@ class SettingsViewModel extends _$SettingsViewModel {
     );
   }
 
-  void submitIssueReport(String reportText) {
-    //TODO when backend ready
+  void submitIssueReport(String reportText) async {
+    final result = await _addReportUseCase(
+        ReportRequest(reportText, state.selectedCategory));
+    final globalViewModel = ref.read(appGlobalViewModelProvider.notifier);
+    result.collect((_) {
+      globalViewModel.showSuccessInfo(localizations.reportSuccessMessage);
+    }, (failure) {
+      globalViewModel.showFailure(failure);
+    });
+  }
+
+  void selectIssueReportCategory(ReportCategory category) {
+    state = state.copyWith(selectedCategory: category);
   }
 }

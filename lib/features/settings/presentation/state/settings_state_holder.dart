@@ -5,6 +5,7 @@ import 'package:style_me/core/extensions/locale_ext.dart';
 import 'package:style_me/core/extensions/theme_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
+import 'package:style_me/features/settings/data/models/report_category.dart';
 import 'package:style_me/features/settings/presentation/state/delete_dialog_state.dart';
 import 'package:style_me/features/settings/presentation/ui_models/setting.dart';
 import 'package:style_me/features/settings/presentation/ui_models/setting_action.dart';
@@ -18,7 +19,9 @@ class SettingsStateHolder with _$SettingsStateHolder {
     @Default([]) List<Setting> accountSettings,
     @Default(true) bool isLoading,
     @Default("") String userEmail,
+    @Default(false) bool isUserFromGoogleSignIn,
     @Default(DeleteDialogState()) DeleteDialogState deleteDialogState,
+    @Default(ReportCategory.OTHER_ISSUES) ReportCategory selectedCategory,
   }) = _SettingsStateHolder;
 
   factory SettingsStateHolder.getDefault(

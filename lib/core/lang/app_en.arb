@@ -75,5 +75,11 @@
   "whatsWrong": "What’s wrong?",
   "describeProblem": "Describe what the problem is...",
   "send": "Send",
-  "youAreLoggedAs": "You are logged in as:"
+  "youAreLoggedAs": "You are logged in as:",
+  "onboarding": "Onboarding",
+  "virtualClosetAndFittingRoom": "Virtual Wardrobe & Try-on",
+  "historyAndFavoriteOutfits": "History & Favorite Outfits",
+  "appSettings": "App Settings",
+  "otherIssues": "Other Issues",
+  "reportSuccessMessage": "Thank you for submitting your report."
 }
