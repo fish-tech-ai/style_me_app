@@ -26,6 +26,7 @@ migrate_working_dir/
 lib/**/*.g.dart
 lib/**/*.chopper.dart
 lib/**/*.freezed.dart
+test/**/*.mocks.dart
 android/.keystore/*
 android/.keystore
 **/doc/api/
