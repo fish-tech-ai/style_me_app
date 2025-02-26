@@ -84,12 +84,12 @@ class SettingsViewModel extends _$SettingsViewModel {
             isPasswordVisible: !state.deleteDialogState.isPasswordVisible));
   }
 
-  void logOut(Function onSuccess) async {
+  Future logOut(Function onSuccess) async {
     await _logoutUserUseCase();
     onSuccess();
   }
 
-  void deleteAccount(Function onSuccess) async {
+  Future deleteAccount(Function onSuccess) async {
     state = state.copyWith(
         deleteDialogState: state.deleteDialogState.copyWith(isLoading: true));
     final result =
@@ -131,7 +131,7 @@ class SettingsViewModel extends _$SettingsViewModel {
     }).toList());
   }
 
-  void changeLanguage(Locale language, int settingIndex) async {
+  Future changeLanguage(Locale language, int settingIndex) async {
     final AppGlobalViewModel globalProvider =
         ref.read(appGlobalViewModelProvider.notifier);
     globalProvider.changeLanguage(language);
@@ -143,7 +143,7 @@ class SettingsViewModel extends _$SettingsViewModel {
     );
   }
 
-  void submitIssueReport(String reportText) async {
+  Future submitIssueReport(String reportText) async {
     final result = await _addReportUseCase(
         ReportRequest(reportText, state.selectedCategory));
     final globalViewModel = ref.read(appGlobalViewModelProvider.notifier);
@@ -157,4 +157,14 @@ class SettingsViewModel extends _$SettingsViewModel {
   void selectIssueReportCategory(ReportCategory category) {
     state = state.copyWith(selectedCategory: category);
   }
+
+  @visibleForTesting
+  SettingsViewModel.test(
+    this._getUserUseCase,
+    this._getCurrentThemeUseCase,
+    this._getCurrentLangUseCase,
+    this._logoutUserUseCase,
+    this._deleteAccountUseCase,
+    this._addReportUseCase,
+  );
 }

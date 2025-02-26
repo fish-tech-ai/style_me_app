@@ -136,4 +136,14 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
     state = state.copyWith(
         bottomBarState: state.bottomBarState.copyWith(isVisible: isVisible));
   }
+
+  @visibleForTesting
+  AppGlobalViewModel.test(
+      this._getCurrentThemeUseCase,
+      this._saveCurrentThemeUseCase,
+      this._getLanguageUseCase,
+      this._setLanguageUseCase,
+      this._confirmEmailUseCase,
+      this._deepLinkManager,
+      this._connection);
 }

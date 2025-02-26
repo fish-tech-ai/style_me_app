@@ -35,7 +35,6 @@ void main() {
     test(
         'should navigate to email confirmation when deep link is for email confirmation',
         () async {
-      // Arrange
       final Uri emailConfirmUri =
           Uri.parse('https://example.com/confirm-email?token=$validToken');
       navigateToPasswordReset(String token) =>
@@ -45,7 +44,6 @@ void main() {
       });
       onConfirmationFailed() => fail('Should not fail confirmation');
 
-      // Act
       await deepLinkManager.initializeAndHandleDeepLinks(
         navigateToPasswordReset,
         onEmailConfirmDeepLink,
@@ -57,7 +55,6 @@ void main() {
     test(
         'should navigate to password reset when deep link is for password reset',
         () async {
-      // Arrange
       final Uri resetPasswordUri =
           Uri.parse('https://example.com/reset-password?token=$validToken');
       final navigateToPasswordReset = expectAsync1((String token) {
@@ -67,7 +64,6 @@ void main() {
           fail('Should not navigate to email confirmation');
       onConfirmationFailed() => fail('Should not fail confirmation');
 
-      // Act
       await deepLinkManager.initializeAndHandleDeepLinks(
         navigateToPasswordReset,
         onEmailConfirmDeepLink,
@@ -77,7 +73,6 @@ void main() {
     });
 
     test('should call onConfirmationFailed when token is missing', () async {
-      // Arrange
       final Uri invalidUri = Uri.parse('https://example.com/confirm-email');
       navigateToPasswordReset(String token) =>
           fail('Should not navigate to password reset');
@@ -85,7 +80,6 @@ void main() {
           fail('Should not navigate to email confirmation');
       final onConfirmationFailed = expectAsync0(() {});
 
-      // Act
       await deepLinkManager.initializeAndHandleDeepLinks(
         navigateToPasswordReset,
         onEmailConfirmDeepLink,
@@ -95,7 +89,6 @@ void main() {
     });
 
     test('should call onConfirmationFailed when token is expired', () async {
-      // Arrange
       String expiredToken =
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.${base64Url.encode(utf8.encode('{"exp":${1000000}}'))}.signature';
 
@@ -107,7 +100,6 @@ void main() {
           fail('Should not navigate to email confirmation');
       final onConfirmationFailed = expectAsync0(() {});
 
-      // Act
       await deepLinkManager.initializeAndHandleDeepLinks(
         navigateToPasswordReset,
         onEmailConfirmDeepLink,
@@ -117,14 +109,12 @@ void main() {
     });
 
     test('should handle URI stream errors gracefully', () async {
-      // Arrange
       navigateToPasswordReset(String token) =>
           fail('Should not navigate to password reset');
       onEmailConfirmDeepLink(String token) =>
           fail('Should not navigate to email confirmation');
       onConfirmationFailed() => fail('Should not fail confirmation');
 
-      // Act
       await deepLinkManager.initializeAndHandleDeepLinks(
         navigateToPasswordReset,
         onEmailConfirmDeepLink,
