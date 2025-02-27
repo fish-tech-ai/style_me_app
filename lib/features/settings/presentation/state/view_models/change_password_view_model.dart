@@ -26,8 +26,8 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
     return ChangePasswordStateHolder();
   }
 
-  void initFormValidators(
-      AppLocalizations localizations, bool isResettingPass) {
+  void initFormValidators(AppLocalizations localizations,
+      bool isResettingPass) {
     final Validator validator = Validator(localizations);
     state = state.copyWith(
       oldPassword: state.oldPassword.copyWith(
@@ -56,7 +56,7 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
       oldPassword: state.oldPassword.copyWithTextResettingError(oldPassword),
       newPassword: state.newPassword.copyWithTextResettingError(newPassword),
       verifyPassword:
-          state.verifyPassword.copyWithTextResettingError(verifyPassword),
+      state.verifyPassword.copyWithTextResettingError(verifyPassword),
     );
     _silentValidateAll();
   }
@@ -70,16 +70,16 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
       oldPassword: state.oldPassword.copyWithErrorMessage(oldPasswordError),
       newPassword: state.newPassword.copyWithErrorMessage(newPasswordError),
       verifyPassword:
-          state.verifyPassword.copyWithErrorMessage(verifyPasswordError),
+      state.verifyPassword.copyWithErrorMessage(verifyPasswordError),
     );
   }
 
   void _silentValidateAll() {
     state = state.copyWith(
       isAllValidated:
-          state.oldPassword.validate!(state.oldPassword.text) == null &&
-              state.newPassword.validate!(state.newPassword.text) == null &&
-              state.verifyPassword.validate!(state.verifyPassword.text) == null,
+      state.oldPassword.validate!(state.oldPassword.text) == null &&
+          state.newPassword.validate!(state.newPassword.text) == null &&
+          state.verifyPassword.validate!(state.verifyPassword.text) == null,
     );
   }
 
@@ -95,10 +95,9 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
     );
   }
 
-  void changePassword(
-      ChangePasswordPageArgs args, Function() onSuccess) {
+  Future changePassword(ChangePasswordPageArgs args, Function() onSuccess) async {
     if (state.isAllValidated) {
-      _performPasswordChange(args, onSuccess);
+      await _performPasswordChange(args, onSuccess);
     } else {
       _validateAndShowAll();
     }
@@ -115,10 +114,8 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
     );
   }
 
-  void _performPasswordChange(
-    ChangePasswordPageArgs args,
-    Function() onSuccess,
-  ) async {
+  Future _performPasswordChange(ChangePasswordPageArgs args,
+      Function() onSuccess,) async {
     state = state.copyWith(isLoading: true);
     final result = await _changePasswordUseCase(
       args.token,
@@ -140,4 +137,7 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
       ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
     });
   }
+
+  @visibleForTesting
+  ChangePasswordViewModel.test(this._changePasswordUseCase);
 }
