@@ -10,7 +10,7 @@ class ChangePasswordUseCase {
 
   ChangePasswordUseCase(this._repository, this._networkUtil);
 
-  Future<Result> call(String token, String newPassword, String? oldPassword) {
+  Future<Result> call(String? token, String newPassword, String? oldPassword) {
     final ResetPasswordRequest resetPasswordRequest =
         ResetPasswordRequest(oldPassword.getHashed(), newPassword.getHashed());
     return _networkUtil.makeRepositoryRequest(

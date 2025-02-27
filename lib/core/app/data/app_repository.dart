@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_me/core/local/database.dart';
 import 'package:style_me/core/utils/constants.dart';
@@ -12,7 +13,24 @@ class AppRepository {
     return sharedPreferences.getString(SharedPrefsConst.currentThemeKey);
   }
 
-  void saveCurrentThemeName(String value) {
+  void saveCurrentThemeName(String? value) {
+    if (value == null) {
+      sharedPreferences.remove(SharedPrefsConst.currentThemeKey);
+      return;
+    }
     sharedPreferences.setString(SharedPrefsConst.currentThemeKey, value);
+  }
+
+  Locale? getLanguage() {
+    final language = sharedPreferences.getString(SharedPrefsConst.languageKey);
+    if (language == null) {
+      return null;
+    }
+    return Locale(language);
+  }
+
+  void saveLanguage(Locale language) {
+    sharedPreferences.setString(
+        SharedPrefsConst.languageKey, language.toLanguageTag());
   }
 }

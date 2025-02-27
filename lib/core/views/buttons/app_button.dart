@@ -5,13 +5,23 @@ import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/core/views/ui_models/app_button_icon.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 
+
 class AppButton extends StatelessWidget {
   final String text;
   final Function()? onClick;
   final bool enabled;
   final bool isLoading;
   final AppButtonIcon? icon;
+  ///Replaces current [style], default is:
+  ///```dart
+  ///ElevatedButton.styleFrom(
+  /// backgroundColor: enabled
+  ///     ? backgroundColorLocal
+  ///     : context.theme.disabledColor)
+  ///```
   final ButtonStyle? style;
+  ///Changes the background colour without changing the colour for the button in the inactive state
+  final Color? backgroundColor;
 
   const AppButton({
     super.key,
@@ -21,18 +31,20 @@ class AppButton extends StatelessWidget {
     this.icon,
     this.enabled = true,
     this.isLoading = false,
+    this.backgroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColorLocal = backgroundColor ?? context.colorScheme.primary;
     return SizedBox(
       height: 48,
       child: ElevatedButton(
         onPressed: onClick,
-        style: (style ?? ElevatedButton.styleFrom()).copyWith(
-            backgroundColor: WidgetStateProperty.all(enabled
-                ? context.colorScheme.primary
-                : context.theme.disabledColor)),
+        style: style ?? ElevatedButton.styleFrom(
+                backgroundColor: enabled
+                    ? backgroundColorLocal
+                    : context.theme.disabledColor),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

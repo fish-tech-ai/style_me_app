@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
@@ -10,7 +11,7 @@ import 'package:style_me/core/views/ui_models/app_button_icon.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 import 'package:style_me/features/auth/presentation/ui_models/text_field_state.dart';
 import 'package:style_me/features/settings/presentation/state/change_password_state_holder.dart';
-import 'package:style_me/features/settings/presentation/state/change_password_view_model.dart';
+import 'package:style_me/features/settings/presentation/state/view_models/change_password_view_model.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 
 class ChangePasswordPage extends ConsumerStatefulWidget {
@@ -30,14 +31,25 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
     super.initState();
     viewModel = ref.read(changePasswordViewModelProvider.notifier);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      viewModel.initFormValidators(context.localizations, widget.changePasswordArgs.isResettingPass);
+      if (widget.changePasswordArgs.isResettingPass) {
+        ref
+            .read(appGlobalViewModelProvider.notifier)
+            .setBottomNavBarVisibility(false);
+      }
+      viewModel.initFormValidators(
+          context.localizations, widget.changePasswordArgs.isResettingPass);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final ChangePasswordStateHolder state = ref.watch(changePasswordViewModelProvider);
-    return SafeArea(
+    final ChangePasswordStateHolder state =
+        ref.watch(changePasswordViewModelProvider);
+    return Padding(
+      padding: EdgeInsets.only(
+          top: widget.changePasswordArgs.isResettingPass
+              ? MediaQuery.of(context).padding.top
+              : 0),
       child: Column(
         children: [
           AppTopBar(
@@ -115,11 +127,11 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
   }
 
   void onChangePasswordButtonClicked() {
-    viewModel.changePassword(
-        widget.changePasswordArgs, context.localizations, () {
-      ref
-          .read(appGlobalViewModelProvider.notifier)
-          .showSuccessInfo(context.localizations.passwordHasBeenChanged);
+    viewModel.changePassword(widget.changePasswordArgs, () {
+      ref.read(appGlobalViewModelProvider.notifier).showSuccessInfo(
+          widget.changePasswordArgs.isResettingPass
+              ? localizations.passwordHasBeenReset
+              : localizations.passwordHasBeenChanged);
       context.pop();
     });
   }

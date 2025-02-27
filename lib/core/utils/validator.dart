@@ -45,10 +45,10 @@ class Validator {
   }
 
   String? validateEmail(String text) {
-    if (!RegExp(RegexConst.emailRegex).hasMatch(text)) {
-      return localizations.emailInvalid;
-    } else if (text.isEmpty) {
+    if (text.isEmpty) {
       return localizations.textFieldEmpty;
+    } else if (!RegExp(RegexConst.emailRegex).hasMatch(text)) {
+      return localizations.emailInvalid;
     }
     return null;
   }
@@ -62,21 +62,21 @@ class Validator {
   }
 
   String? validatePassword(String text) {
-    if (text.length <= 6) {
+    if (text.isEmpty) {
+      return localizations.textFieldEmpty;
+    } else if (text.length <= 6) {
       return localizations.passwordWeakLength;
     } else if (!RegExp(RegexConst.passwordRegex).hasMatch(text)) {
       return localizations.passwordWeak;
-    } else if (text.isEmpty) {
-      return localizations.textFieldEmpty;
     }
     return null;
   }
 
   String? validatePasswordVerify(String text, String password) {
-    if (text != password) {
-      return localizations.passwordMismatch;
-    } else if (text.isEmpty) {
+    if (text.isEmpty) {
       return localizations.textFieldEmpty;
+    } else if (text != password) {
+      return localizations.passwordMismatch;
     }
     return null;
   }

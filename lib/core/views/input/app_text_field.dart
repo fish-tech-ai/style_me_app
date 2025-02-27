@@ -9,6 +9,9 @@ class AppTextField extends StatefulWidget {
   final Function(String text) onTextChanged;
   final Function()? onTap;
   final Function()? onLostFocus;
+  final double? height;
+  final int minLines;
+  final int maxLines;
   final Function(String)? onSubmitted;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
@@ -32,11 +35,14 @@ class AppTextField extends StatefulWidget {
     this.onLostFocus,
     this.asPasswordField = false,
     this.onPasswordVisibilityTap,
-    this.isObscured = true,
+    this.isObscured = false,
     this.keyboardType,
     this.onSubmitted,
     this.textInputAction,
     this.focusNode,
+    this.height = 76,
+    this.minLines = 1,
+    this.maxLines = 1,
   });
 
   @override
@@ -90,7 +96,7 @@ class _AppTextFieldState extends State<AppTextField> {
         : context.colorScheme.primary;
 
     return SizedBox(
-      height: 76,
+      height: widget.height,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,6 +109,8 @@ class _AppTextFieldState extends State<AppTextField> {
             onChanged: widget.onTextChanged,
             onTap: widget.onTap,
             focusNode: focusNode,
+            minLines: widget.minLines,
+            maxLines: widget.maxLines,
             keyboardType: widget.keyboardType,
             textInputAction: widget.textInputAction,
             onFieldSubmitted: widget.onSubmitted,
@@ -117,6 +125,8 @@ class _AppTextFieldState extends State<AppTextField> {
                 borderRadius: GlobalUiConst.borderRadiusNormal,
                 borderSide: BorderSide(color: borderSideColor, width: 2),
               ),
+              alignLabelWithHint: true,
+              labelStyle: TextStyle(color: context.theme.hintColor),
               labelText: widget.labelText,
               floatingLabelStyle: TextStyle(color: borderSideColor),
               suffixIcon: widget.asPasswordField

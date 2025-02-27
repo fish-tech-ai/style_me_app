@@ -23,7 +23,7 @@ class LoggingInterceptor implements Interceptor {
     log('Status Code: ${response.statusCode}');
     log('URL: ${response.base.request?.url}');
     log('Headers: ${response.headers}');
-    log('Body: ${response.body}');
+    log('Body: ${response.bodyString}');
     log('========================================================================================');
 
     return response;

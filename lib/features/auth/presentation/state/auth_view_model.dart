@@ -127,7 +127,7 @@ class AuthViewModel extends _$AuthViewModel {
         state.copyWith(isPasswordVerifyVisible: !state.isPasswordVerifyVisible);
   }
 
-  void onContinueButtonClicked(
+  Future onContinueButtonClicked(
       AppLocalizations localizations, Function goToHome) async {
     switch (state.mode) {
       case AuthPageModeEnum.emailOnly:
@@ -224,7 +224,7 @@ class AuthViewModel extends _$AuthViewModel {
     );
   }
 
-  void checkEmail(AppLocalizations localizations) async {
+  Future checkEmail(AppLocalizations localizations) async {
     state = state.copyWith(isLoading: true);
     final result = await _checkEmailUseCase(state.email.text);
     result.collect((result) {
@@ -235,7 +235,7 @@ class AuthViewModel extends _$AuthViewModel {
     });
   }
 
-  void registerUser() async {
+  Future registerUser() async {
     state = state.copyWith(isLoading: true);
     final Result result = await _registerUseCase(state);
     result.collect((result) {
@@ -247,7 +247,7 @@ class AuthViewModel extends _$AuthViewModel {
     });
   }
 
-  void loginUser(AppLocalizations localizations, Function goToHome) async {
+  Future loginUser(AppLocalizations localizations, Function goToHome) async {
     state = state.copyWith(isLoading: true);
     final Result result = await _loginUseCase(state);
     result.collect((result) {
@@ -270,7 +270,7 @@ class AuthViewModel extends _$AuthViewModel {
     }
   }
 
-  void resendEmail() async {
+  Future resendEmail() async {
     Result result;
     result = state.showConfirmationPageForPasswordReset
         ? await _sendResetPasswordMailUseCase(state.email.text)
@@ -283,7 +283,7 @@ class AuthViewModel extends _$AuthViewModel {
     );
   }
 
-  void sendResetPasswordMail(String emailNotFoundMessage) async {
+  Future sendResetPasswordMail(String emailNotFoundMessage) async {
     final validationResult = state.validator?.validateEmail(state.email.text);
     if (validationResult != null) {
       state = state.copyWith(
@@ -295,7 +295,7 @@ class AuthViewModel extends _$AuthViewModel {
     _performSendResetPasswordMail(emailNotFoundMessage);
   }
 
-  void signInWithGoogle(Function() goToHome) async {
+  Future signInWithGoogle(Function() goToHome) async {
     final idToken = await _googleAuthService.signInWithGoogle();
     if (idToken != null) {
       debugMessagePrint(idToken);
@@ -329,4 +329,15 @@ class AuthViewModel extends _$AuthViewModel {
       },
     );
   }
+
+  @visibleForTesting
+  AuthViewModel.test(
+    this._checkEmailUseCase,
+    this._resendConfirmationUseCase,
+    this._loginUseCase,
+    this._loginWithGoogleUseCase,
+    this._registerUseCase,
+    this._sendResetPasswordMailUseCase,
+    this._googleAuthService,
+  );
 }

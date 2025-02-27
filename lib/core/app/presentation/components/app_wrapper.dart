@@ -5,8 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/app/presentation/components/app_status.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/animators/animated_visibility.dart';
+import 'package:style_me/core/views/app_bottom_nav_bar.dart';
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 
@@ -29,29 +31,61 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
     WidgetsBinding.instance.addPostFrameCallback(initApp);
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    LocalizationHelper.init(context.localizations);
+  }
+
   Future initApp(Duration _) async {
-    await ref
-        .read(appGlobalViewModelProvider.notifier)
-        .initializeAndHandleDeepLinks(
-          confirmationSuccessMessage: context.localizations.confirmationSuccess,
-          tokenExpiredMessage: context.localizations.tokenExpiredMessage,
-          navigateToPasswordReset: (token) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              widget.router.push(AppPage.changePasswordPage.path,
-                  extra: ChangePasswordPageArgs(token, true));
-            });
-          },
-        );
+    final viewModel = ref.read(appGlobalViewModelProvider.notifier);
+    viewModel.initBottomNavItems();
+    _onRouteChange(viewModel);
+    widget.router.routerDelegate.addListener(() {
+      _onRouteChange(viewModel);
+    });
+    await viewModel.initializeAndHandleDeepLinks(
+      navigateToPasswordReset: (token) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          widget.router.push(AppPage.changePasswordPage.path,
+              extra: ChangePasswordPageArgs(token, true));
+        });
+      },
+    );
     FlutterNativeSplash.remove();
+  }
+
+  void _onRouteChange(AppGlobalViewModel viewModel) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final currentPath =
+          widget.router.routerDelegate.currentConfiguration.fullPath;
+      viewModel.setBottomNavBarVisibility(AppPage.values
+          .firstWhere((appPage) => appPage.path.startsWith(currentPath))
+          .shouldShowBottomNavBar);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(appGlobalViewModelProvider);
+    final bottomBarState = ref.watch(
+        appGlobalViewModelProvider.select((state) => state.bottomBarState));
+
     return Stack(children: [
-      Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: widget.child ?? SizedBox(),
+      Container(
+        padding:
+            bottomBarState.isVisible ? MediaQuery.of(context).padding : null,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Column(
+            children: [
+              Expanded(
+                child: widget.child ?? SizedBox(),
+              ),
+              AppBottomNavBar(widget.router)
+            ],
+          ),
+        ),
       ),
       Positioned(
         left: 0,
@@ -62,10 +96,10 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
           animDirection: AnimDirectionEnum.bottomToTop,
           child: AppStatus(
             text: !state.isConnected
-                ? context.localizations.connectionError
+                ? localizations.connectionError
                 : state.bannerMessage.message.isNotEmpty
                     ? state.bannerMessage.message
-                    : context.localizations.unknownError,
+                    : localizations.unknownError,
             textColor: state.bannerMessage.isError
                 ? context.colorScheme.onError
                 : context.colorScheme.onPrimary,

@@ -10,12 +10,14 @@ class LoginResponse {
   final String firstName;
   final String accessToken;
   final String refreshToken;
+  final bool fromGoogleSignIn;
 
   LoginResponse(
     this.email,
     this.firstName,
     this.accessToken,
     this.refreshToken,
+    this.fromGoogleSignIn,
   );
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
@@ -29,6 +31,7 @@ class LoginResponse {
       email: Value(email),
       token: Value(accessToken),
       refreshToken: Value(refreshToken),
+      isFromGoogleSignIn: Value(fromGoogleSignIn),
     );
   }
 }

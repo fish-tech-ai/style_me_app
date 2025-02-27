@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:style_me/core/network/exceptions/server_exception.dart';
 import 'package:style_me/core/network/failures/failure.dart';
 import 'package:style_me/core/network/failures/server_failure.dart';
@@ -24,7 +22,6 @@ class NetworkRequestUtil {
       }
       return Result.fail(failure);
     } catch (error) {
-      log(error.toString(), error: error);
       if (onError != null) {
         onError(UnknownFailure());
       }
