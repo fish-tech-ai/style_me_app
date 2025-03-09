@@ -7,23 +7,30 @@ class AppOutlinedButton extends StatelessWidget {
   final Widget? leadingIcon;
   final Widget? trailingIcon;
   final double? spacing;
+  final double? height;
+  final EdgeInsets padding;
 
-  const AppOutlinedButton(
-      {super.key,
-      required this.text,
-      required this.onClick,
-      this.style,
-      this.leadingIcon,
-      this.trailingIcon,
-      this.spacing});
+
+  const AppOutlinedButton({
+    super.key,
+    required this.text,
+    required this.onClick,
+    this.style,
+    this.leadingIcon,
+    this.trailingIcon,
+    this.spacing,
+    this.height = 48,
+    this.padding = const EdgeInsets.symmetric(horizontal: 12),
+  });
 
   @override
   Widget build(BuildContext context) {
+    final defaultStyle = OutlinedButton.styleFrom(padding: padding);
     return SizedBox(
-      height: 48,
+      height: height,
       child: OutlinedButton(
           onPressed: onClick,
-          style: style,
+          style: style?.merge(defaultStyle) ?? defaultStyle,
           child: Row(
             spacing: spacing ?? 0,
             mainAxisAlignment: MainAxisAlignment.center,

@@ -41,8 +41,8 @@ class _AnimatedVisibilityState extends State<AnimatedVisibility>
 
     _slideAnimation = Tween<Offset>(
       begin: widget.animDirection == AnimDirectionEnum.bottomToTop
-          ? Offset(0, widget.reversed ? 1 : -1)
-          : Offset(widget.reversed ? -1 : 1, 0),
+          ? Offset(0, widget.reversed ? -1 : 1)
+          : Offset(widget.reversed ? 1 : -1, 0),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,

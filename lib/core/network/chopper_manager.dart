@@ -12,6 +12,7 @@ import 'package:style_me/features/auth/data/models/login_response.dart';
 import 'package:style_me/features/auth/data/models/reset_password_request.dart';
 import 'package:style_me/features/settings/data/models/delete_user_request.dart';
 import 'package:style_me/features/settings/data/models/report_request.dart';
+import 'package:style_me/features/wardrobe/data/models/io/clothes_response.dart';
 
 class ChopperManager {
   static ChopperClient createClient(
@@ -29,6 +30,7 @@ class ChopperManager {
           ResetPasswordRequest: (json) => ResetPasswordRequest.fromJson(json),
           DeleteUserRequest: (json) => DeleteUserRequest.fromJson(json),
           ReportRequest: (json) => ReportRequest.fromJson(json),
+          ClothesResponse: (json) => ClothesResponse.fromJson(json),
         }),
         interceptors: [
           headersInterceptor,

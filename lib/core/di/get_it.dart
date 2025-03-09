@@ -17,6 +17,7 @@ import 'package:style_me/core/network/chopper_manager.dart';
 import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/services/app_service.dart';
 import 'package:style_me/core/network/services/auth_service.dart';
+import 'package:style_me/core/network/services/clothes_service.dart';
 import 'package:style_me/core/network/services/user_service.dart';
 import 'package:style_me/core/network/utils/app_authenticator.dart';
 import 'package:style_me/core/network/utils/app_headers_interceptor.dart';
@@ -37,6 +38,8 @@ import 'package:style_me/features/auth/domain/register_use_case.dart';
 import 'package:style_me/features/auth/domain/resend_confirmation_use_case.dart';
 import 'package:style_me/features/auth/domain/send_reset_password_mail_use_case.dart';
 import 'package:style_me/features/settings/domain/delete_account_use_case.dart';
+import 'package:style_me/features/wardrobe/data/wardrobe_repository.dart';
+import 'package:style_me/features/wardrobe/domain/get_clothes_use_case.dart';
 
 final getIt = GetIt.instance;
 
@@ -54,6 +57,8 @@ class GetItManager {
         () => UserService.create(getIt<ChopperClient>()));
     getIt.registerFactory<AppService>(
         () => AppService.create(getIt<ChopperClient>()));
+    getIt.registerFactory<ClothesService>(
+        () => ClothesService.create(getIt<ChopperClient>()));
     getIt.registerLazySingleton(() => ThemeManager());
     final sharedPrefs = await SharedPreferences.getInstance();
     getIt.registerLazySingleton(() => sharedPrefs);
@@ -93,5 +98,9 @@ class GetItManager {
     getIt.registerFactory(() => GetLanguageUseCase(getIt()));
     getIt.registerFactory(() => SetLanguageUseCase(getIt()));
     getIt.registerFactory(() => AddReportUseCase(getIt(), getIt()));
+
+    ///Wardrobe
+    getIt.registerFactory(() => WardrobeRepository(getIt()));
+    getIt.registerFactory(() => GetClothesUseCase(getIt(), getIt()));
   }
 }

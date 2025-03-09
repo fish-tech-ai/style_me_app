@@ -5,14 +5,18 @@ import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/core/views/ui_models/app_button_icon.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 
-
 class AppButton extends StatelessWidget {
   final String text;
   final Function()? onClick;
   final bool enabled;
   final bool isLoading;
   final AppButtonIcon? icon;
-  ///Replaces current [style], default is:
+  final double height;
+  final EdgeInsets padding;
+
+  ///Replaces current [style] merging default
+  ///
+  /// default is:
   ///```dart
   ///ElevatedButton.styleFrom(
   /// backgroundColor: enabled
@@ -20,6 +24,7 @@ class AppButton extends StatelessWidget {
   ///     : context.theme.disabledColor)
   ///```
   final ButtonStyle? style;
+
   ///Changes the background colour without changing the colour for the button in the inactive state
   final Color? backgroundColor;
 
@@ -32,19 +37,22 @@ class AppButton extends StatelessWidget {
     this.enabled = true,
     this.isLoading = false,
     this.backgroundColor,
+    this.height = 48,
+    this.padding = const EdgeInsets.symmetric(horizontal: 12),
   });
 
   @override
   Widget build(BuildContext context) {
     final backgroundColorLocal = backgroundColor ?? context.colorScheme.primary;
+    final defaultStyle = ElevatedButton.styleFrom(
+        padding: padding,
+        backgroundColor:
+            enabled ? backgroundColorLocal : context.theme.disabledColor);
     return SizedBox(
-      height: 48,
+      height: height,
       child: ElevatedButton(
         onPressed: onClick,
-        style: style ?? ElevatedButton.styleFrom(
-                backgroundColor: enabled
-                    ? backgroundColorLocal
-                    : context.theme.disabledColor),
+        style: style?.merge(defaultStyle) ?? defaultStyle,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

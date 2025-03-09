@@ -6,6 +6,7 @@ class AppDropdownButton<T> extends StatefulWidget {
   final List<T> items;
   final Widget Function(T item) itemBuilder;
   final Function(T item) onItemSelect;
+  final EdgeInsets iconPadding;
 
   const AppDropdownButton({
     super.key,
@@ -13,6 +14,7 @@ class AppDropdownButton<T> extends StatefulWidget {
     required this.selectedItem,
     required this.itemBuilder,
     required this.onItemSelect,
+    this.iconPadding = const EdgeInsets.all(12),
   });
 
   @override
@@ -141,25 +143,25 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> {
             border: Border.all(color: context.colorScheme.primary),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Padding(
-            padding: EdgeInsets.only(left: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                widget.itemBuilder(widget.selectedItem),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                  decoration: BoxDecoration(
-                      color: context.colorScheme.primary,
-                      borderRadius: BorderRadius.circular(11)),
-                  child: Icon(
-                    _isDropdownOpen
-                        ? Icons.expand_more_rounded
-                        : Icons.expand_less_rounded,
-                  ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                child: widget.itemBuilder(widget.selectedItem),
+              ),
+              Container(
+                padding: widget.iconPadding,
+                decoration: BoxDecoration(
+                    color: context.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(11)),
+                child: Icon(
+                  _isDropdownOpen //TODO dropdown not updated after first time change
+                      ? Icons.expand_more_rounded
+                      : Icons.expand_less_rounded,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
