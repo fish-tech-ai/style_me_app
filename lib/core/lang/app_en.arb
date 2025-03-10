@@ -113,5 +113,7 @@
   "nothingHere": "Nothing here.",
   "addPhotosEncouragement": "Click the “+” button and add photos to fill this screen",
   "nothingFound": "No results found.",
-  "nothingFoundSubText": "Try changing filters or click the “+” button and add photos."
+  "nothingFoundSubText": "Try changing filters or click the “+” button and add photos.",
+  "floatingAddClothingButtonText": "Add a picture of your clothes",
+  "floatingAddUserPhotoButtonText": "Add your photo"
 }

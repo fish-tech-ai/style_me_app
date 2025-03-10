@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/utils/constants.dart';
 
 class SearchTextField extends StatefulWidget {
   final String text;
@@ -54,7 +55,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
       height: 54,
       width: 54,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: GlobalUiConst.borderRadiusNormal,
           color: context.colorScheme.primary),
       child: IconButton(
         onPressed: () => widget.onTextChanged(controller.text),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/utils/constants.dart';
 
 class AppDropdownButton<T> extends StatefulWidget {
   final T selectedItem;
@@ -82,7 +83,7 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> {
                   : Offset(0, size.height + 4),
               child: Material(
                 elevation: 4.0,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: GlobalUiConst.borderRadiusNormal,
                 child: Container(
                   constraints: BoxConstraints(
                     maxHeight: contextMenuMaxHeight,
@@ -91,7 +92,7 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> {
                     color: context.theme.dialogBackgroundColor,
                     border: Border.all(
                         color: context.colorScheme.primary, width: 1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: GlobalUiConst.borderRadiusNormal,
                   ),
                   child: ListView(
                     padding: EdgeInsets.zero,
@@ -109,7 +110,7 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> {
                                 color: item == widget.selectedItem
                                     ? context.colorScheme.secondary
                                     : Colors.transparent,
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: GlobalUiConst.borderRadiusNormal,
                               ),
                               alignment: Alignment.center,
                               padding:
@@ -141,7 +142,7 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(color: context.colorScheme.primary),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: GlobalUiConst.borderRadiusNormal,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

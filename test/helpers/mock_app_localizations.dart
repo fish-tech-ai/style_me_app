@@ -347,4 +347,10 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get positionUpper => "positionUpper";
+
+  @override
+  String get floatingAddClothingButtonText => "floatingAddClothingButtonText";
+
+  @override
+  String get floatingAddUserPhotoButtonText => "floatingAddUserPhotoButtonText";
 }

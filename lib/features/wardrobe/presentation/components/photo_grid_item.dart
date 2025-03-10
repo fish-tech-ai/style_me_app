@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/utils/constants.dart';
 import 'package:style_me/features/wardrobe/presentation/components/image_error_widget.dart';
 import 'package:style_me/features/wardrobe/presentation/components/image_loading_widget.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
@@ -81,7 +82,7 @@ class PhotoGridItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: context.colorScheme.primary,
-          borderRadius: BorderRadius.circular(12)),
+          borderRadius: GlobalUiConst.borderRadiusNormal),
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: Text(localizations.defaultText),
     );

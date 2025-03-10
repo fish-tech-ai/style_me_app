@@ -7,6 +7,7 @@ class AnimatedVisibility extends StatefulWidget {
   final bool reversed;
   final AnimDirectionEnum animDirection;
   final EdgeInsets padding;
+  final Duration duration;
   final Widget child;
 
   const AnimatedVisibility({
@@ -17,6 +18,7 @@ class AnimatedVisibility extends StatefulWidget {
     this.padding = EdgeInsets.zero,
     this.reversed = false,
     this.animDirection = AnimDirectionEnum.rightToLeft,
+    this.duration = const Duration(milliseconds: 500),
   });
 
   @override
@@ -35,14 +37,14 @@ class _AnimatedVisibilityState extends State<AnimatedVisibility>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: widget.duration,
       vsync: this,
     );
 
     _slideAnimation = Tween<Offset>(
       begin: widget.animDirection == AnimDirectionEnum.bottomToTop
           ? Offset(0, widget.reversed ? -1 : 1)
-          : Offset(widget.reversed ? 1 : -1, 0),
+          : Offset(widget.reversed ? -1 : 1, 0),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,

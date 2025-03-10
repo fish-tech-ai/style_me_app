@@ -8,6 +8,7 @@ import 'package:style_me/core/app/presentation/ui_models/bottom_bar_state.dart';
 import 'package:style_me/core/app/presentation/ui_models/bottom_nav_item.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/utils/constants.dart';
 
 class AppBottomNavBar extends ConsumerWidget {
   final GoRouter router;
@@ -42,7 +43,7 @@ class AppBottomNavBar extends ConsumerWidget {
     final ColorScheme colorScheme = ref.context.colorScheme;
     return Expanded(
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: GlobalUiConst.borderRadiusNormal,
         child: GestureDetector(
           onTap: () {
             ref
