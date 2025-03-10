@@ -7,6 +7,7 @@ import 'package:style_me/features/wardrobe/data/models/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/domain/get_clothes_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/send_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/presentation/state/wardrobe_state_holder.dart';
 
 part 'wardrobe_view_model.g.dart';
@@ -14,9 +15,11 @@ part 'wardrobe_view_model.g.dart';
 @riverpod
 class WardrobeViewModel extends _$WardrobeViewModel {
   late final GetClothesUseCase _getClothesUseCase;
+  late final SendClothingPhotoUseCase _sendClothingPhotoUseCase;
 
   WardrobeViewModel() {
     _getClothesUseCase = getIt();
+    _sendClothingPhotoUseCase = getIt();
   }
 
   Timer? _spamTimer;

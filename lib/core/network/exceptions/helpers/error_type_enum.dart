@@ -1,0 +1,6 @@
+enum ErrorTypeEnum {
+  NOT_A_CLOTHING,
+  CANT_PROCESS,
+  NOT_A_PERSON,
+  NSFW_PICTURE;
+}

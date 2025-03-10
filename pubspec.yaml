@@ -41,6 +41,8 @@ dependencies:
   google_sign_in: ^6.2.2
   google_sign_in_ios: ^5.7.8
   shimmer: ^3.0.0
+  encrypt: ^5.0.3
+  pointycastle: ^3.6.2
 
 dev_dependencies:
   flutter_test:
