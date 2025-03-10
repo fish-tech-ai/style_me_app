@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/countdown_button.dart';
-import 'package:style_me/core/views/ui_models/app_button_icon.dart';
+import 'package:style_me/core/views/ui_models/app_button_icon_data.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 
 class AuthEmailConfirmation extends StatelessWidget {
@@ -47,7 +47,7 @@ class AuthEmailConfirmation extends StatelessWidget {
         AppButton(
           text: texts.backToLogin,
           onClick: onBackToLoginClicked,
-          icon: AppButtonIcon(
+          icon: AppButtonIconData.iconData(
             Icons.keyboard_arrow_right_rounded,
             IconPosition.trailing,
           ),

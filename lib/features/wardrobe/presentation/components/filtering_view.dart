@@ -5,7 +5,7 @@ import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_outlined_button.dart';
 import 'package:style_me/core/views/buttons/app_toggle_buttons.dart';
 import 'package:style_me/core/views/input/app_dropdown_button.dart';
-import 'package:style_me/core/views/ui_models/app_button_icon.dart';
+import 'package:style_me/core/views/ui_models/app_button_icon_data.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
@@ -61,7 +61,7 @@ class _FilteringViewState extends State<FilteringView> {
               onClick: () {
                 toggleFilters();
               },
-              icon: AppButtonIcon(
+              icon: AppButtonIconData.iconData(
                 Icons.filter_list_rounded,
                 IconPosition.trailing,
               ),
