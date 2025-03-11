@@ -7,6 +7,7 @@ enum AppPage {
   checkroom("/checkroom"),
   changePasswordPage("/changePassword"),
   privacyPolicy("/privacyPolicy"),
+  clothingAdd("/clothingAdd"),
   termsAndConditions("/termsAndConditions");
 
   final String path;

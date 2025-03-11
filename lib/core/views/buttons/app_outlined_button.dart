@@ -8,8 +8,8 @@ class AppOutlinedButton extends StatelessWidget {
   final Widget? trailingIcon;
   final double? spacing;
   final double? height;
+  final double? width;
   final EdgeInsets padding;
-
 
   const AppOutlinedButton({
     super.key,
@@ -21,6 +21,7 @@ class AppOutlinedButton extends StatelessWidget {
     this.spacing,
     this.height = 48,
     this.padding = const EdgeInsets.symmetric(horizontal: 12),
+    this.width,
   });
 
   @override
@@ -28,6 +29,7 @@ class AppOutlinedButton extends StatelessWidget {
     final defaultStyle = OutlinedButton.styleFrom(padding: padding);
     return SizedBox(
       height: height,
+      width: width,
       child: OutlinedButton(
           onPressed: onClick,
           style: style?.merge(defaultStyle) ?? defaultStyle,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/utils/constants.dart';
 import 'package:style_me/core/views/buttons/app_icon_button.dart';
 
 class AppBackButton extends StatelessWidget {
@@ -14,6 +15,7 @@ class AppBackButton extends StatelessWidget {
     return AppIconButton(
       backgroundColor: context.colorScheme.primaryContainer,
       border: border,
+      padding: EdgeInsets.all(GlobalUiConst.paddingNormal),
       onClick: () {
         onTap != null ? onTap!() : context.pop();
       },

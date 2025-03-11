@@ -7,9 +7,15 @@ import 'package:style_me/core/views/buttons/floating/floating_add_user_photo_but
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
 
 class PageWithFloatingAddButton extends StatefulWidget {
+  final Function() addClothingClicked;
+  final Function() addUserPhotoClicked;
   final Widget child;
 
-  const PageWithFloatingAddButton({super.key, required this.child});
+  const PageWithFloatingAddButton(
+      {super.key,
+      required this.child,
+      required this.addClothingClicked,
+      required this.addUserPhotoClicked});
 
   @override
   State<PageWithFloatingAddButton> createState() =>
@@ -79,8 +85,8 @@ class _PageWithFloatingAddButtonState extends State<PageWithFloatingAddButton> {
       spacing: 6,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        FloatingAddClothingButton(onClick: () {}),
-        FloatingAddUserPhotoButton(onClick: () {})
+        FloatingAddClothingButton(onClick: widget.addClothingClicked),
+        FloatingAddUserPhotoButton(onClick: widget.addUserPhotoClicked),
       ],
     );
   }

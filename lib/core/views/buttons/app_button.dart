@@ -13,6 +13,7 @@ class AppButton extends StatelessWidget {
   final bool isLoading;
   final AppButtonIconData? icon;
   final double height;
+  final double? width;
   final EdgeInsets padding;
 
   ///Replaces current [style] merging default
@@ -40,6 +41,7 @@ class AppButton extends StatelessWidget {
     this.backgroundColor,
     this.height = 48,
     this.padding = const EdgeInsets.symmetric(horizontal: 12),
+    this.width,
   });
 
   @override
@@ -52,6 +54,7 @@ class AppButton extends StatelessWidget {
             enabled ? backgroundColorLocal : context.theme.disabledColor);
     return SizedBox(
       height: height,
+      width: width,
       child: ElevatedButton(
         onPressed: onClick,
         style: style?.merge(defaultStyle) ?? defaultStyle,

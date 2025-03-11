@@ -114,5 +114,6 @@
   "nothingFound": "Brak wyników.",
   "nothingFoundSubText": "Spróbuj zmienić filtry lub kliknij przycisk „+” i dodaj nowe zdjęcia.",
   "floatingAddClothingButtonText": "Dodaj zdjęcie swoich ubrań",
-  "floatingAddUserPhotoButtonText": "Dodaj swoje zdjęcie"
+  "floatingAddUserPhotoButtonText": "Dodaj swoje zdjęcie",
+  "tryAgain": "Spróbuj ponownie"
 }

@@ -8,7 +8,8 @@ import 'package:style_me/features/settings/presentation/pages/privacy_policy_pag
 import 'package:style_me/features/settings/presentation/pages/settings_page.dart';
 import 'package:style_me/features/settings/presentation/pages/terms_and_contitions_page.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
-import 'package:style_me/features/wardrobe/presentation/wardrobe_page.dart';
+import 'package:style_me/features/wardrobe/presentation/pages/add_clothing_page.dart';
+import 'package:style_me/features/wardrobe/presentation/pages/wardrobe_page.dart';
 
 GoRouter getRouter(bool isAuthenticated) => GoRouter(
       initialLocation:
@@ -41,6 +42,10 @@ GoRouter getRouter(bool isAuthenticated) => GoRouter(
         GoRoute(
           path: AppPage.termsAndConditions.path,
           builder: (context, state) => const TermsAndConditionsPage(),
+        ),
+        GoRoute(
+          path: AppPage.clothingAdd.path,
+          builder: (context, state) => const AddClothingPage(),
         ),
         GoRoute(
           path: AppPage.changePasswordPage.path,
