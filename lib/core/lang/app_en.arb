@@ -116,5 +116,7 @@
   "nothingFoundSubText": "Try changing filters or click the “+” button and add photos.",
   "floatingAddClothingButtonText": "Add a picture of your clothes",
   "floatingAddUserPhotoButtonText": "Add your photo",
-  "tryAgain": "Try again"
+  "tryAgain": "Try again",
+  "noImageInClipboard": "Image not found in clipboard",
+  "pasteFromClipboard": "Paste from clipboard"
 }

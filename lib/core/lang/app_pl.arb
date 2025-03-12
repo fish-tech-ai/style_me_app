@@ -28,6 +28,7 @@
   "connectionError": "Brak połączenia z internetem",
   "yes": "Tak",
   "loginFailed": "Nieprawidłowy e-mail lub hasło",
+  "passwordWrong": "Nieprawidłowe hasło",
   "authEmailSentTitle": "Wysłaliśmy Ci e-mail!",
   "authEmailSentText": "Potwierdź swój e-mail, a następnie zaloguj się, aby zacząć bawić się stylizacjami.",
   "authResetEmailSentText": "Zresetuj hasło, a następnie zaloguj się, aby zacząć bawić się stylizacjami.",
@@ -76,10 +77,10 @@
   "send": "Wyślij",
   "youAreLoggedAs": "Jesteś zalogowany jako:",
   "onboarding": "Wprowadzenie",
-  "virtual_closet_and_fitting_room": "Wirtualna szafa i przymierzanie",
-  "history_and_favorite_outfits": "Historia i ulubione stylizacje",
-  "app_settings": "Ustawienia aplikacji",
-  "other_issues": "Inne problemy",
+  "virtualClosetAndFittingRoom": "Wirtualna szafa i przymierzanie",
+  "historyAndFavoriteOutfits": "Historia i ulubione stylizacje",
+  "appSettings": "Ustawienia aplikacji",
+  "otherIssues": "Inne problemy",
   "reportSuccessMessage": "Dziękujemy za przesłanie zgłoszenia.",
   "defaultText": "Domyślne",
   "search": "Szukaj",
@@ -115,5 +116,7 @@
   "nothingFoundSubText": "Spróbuj zmienić filtry lub kliknij przycisk „+” i dodaj nowe zdjęcia.",
   "floatingAddClothingButtonText": "Dodaj zdjęcie swoich ubrań",
   "floatingAddUserPhotoButtonText": "Dodaj swoje zdjęcie",
-  "tryAgain": "Spróbuj ponownie"
+  "tryAgain": "Spróbuj ponownie",
+  "noImageInClipboard": "W schowku nie znaleziono zdjęcia",
+  "pasteFromClipboard": "Wklej ze schowka"
 }

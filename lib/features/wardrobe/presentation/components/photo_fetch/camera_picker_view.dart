@@ -10,6 +10,7 @@ class CameraPickerView extends StatelessWidget {
   final Function() onOpenGalleryClicked;
   final Function() onRotateCameraClicked;
   final Function(double aspectRatio) onTakePictureClicked;
+  final Function() onPasteFromClipboard;
 
   const CameraPickerView({
     super.key,
@@ -17,6 +18,7 @@ class CameraPickerView extends StatelessWidget {
     required this.onOpenGalleryClicked,
     required this.onRotateCameraClicked,
     required this.onTakePictureClicked,
+    required this.onPasteFromClipboard,
   });
 
   @override
@@ -65,7 +67,15 @@ class CameraPickerView extends StatelessWidget {
               child: PhotoTakeButton(
                 onClick: () => onTakePictureClicked(parentAspectRatio),
               ),
-            )
+            ),
+            Positioned(
+              right: 12,
+              top: 12,
+              child: AppIconButton(
+                icon: Icon(Icons.content_paste_go_rounded),
+                onClick: onPasteFromClipboard,
+              ),
+            ),
           ],
         );
       }),

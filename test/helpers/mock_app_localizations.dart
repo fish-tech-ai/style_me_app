@@ -353,4 +353,14 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get floatingAddUserPhotoButtonText => "floatingAddUserPhotoButtonText";
+
+  @override
+  String get noImageInClipboard => "noImageInClipboard";
+
+  @override
+  String get pasteFromClipboard => "pasteFromClipboard";
+
+  @override
+  String get tryAgain => "tryAgain";
+
 }
