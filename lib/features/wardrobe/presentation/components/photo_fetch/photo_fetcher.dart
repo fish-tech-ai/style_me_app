@@ -3,73 +3,62 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/extensions/file_ext.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/utils/clipboard.dart';
-import 'package:style_me/core/views/app_top_bar.dart';
 import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/camera_picker_view.dart';
-import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/image_acceptation_view.dart';
 
 class PhotoFetcher extends ConsumerStatefulWidget {
-  final String topBarTitle;
-  final Function(File) onImageAccepted;
+  final Function(File, bool) onImageFetched;
 
   const PhotoFetcher({
     super.key,
-    required this.onImageAccepted,
-    required this.topBarTitle,
+    required this.onImageFetched,
   });
 
   @override
-  ConsumerState<PhotoFetcher> createState() => _PhotoFetcherState();
+  ConsumerState<PhotoFetcher> createState() => PhotoFetcherState();
 }
 
-class _PhotoFetcherState extends ConsumerState<PhotoFetcher> {
+class PhotoFetcherState extends ConsumerState<PhotoFetcher> {
   late CameraController _controller;
-  List<CameraDescription>? cameras;
-  bool isCameraInitialized = false;
-  File? imageFile;
-  bool fromGallery = false;
+  List<CameraDescription>? _cameras;
+  bool _isCameraInitialized = false;
   final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
-    initializeCamera();
+    _initializeCamera();
   }
 
-  Future<void> initializeCamera() async {
-    cameras = await availableCameras();
-    initCameraController(0);
+  Future<void> _initializeCamera() async {
+    _cameras = await availableCameras();
+    _initCameraController(0);
 
     await _controller.initialize();
     if (!mounted) return;
     setState(() {
-      isCameraInitialized = true;
+      _isCameraInitialized = true;
     });
   }
 
-  void initCameraController(int index) {
+  void _initCameraController(int index) {
     _controller = CameraController(
-      cameras![index],
+      _cameras![index],
       ResolutionPreset.medium,
       enableAudio: false,
     );
   }
 
-  void readClipboardForImage() async {
+  void _readClipboardForImage() async {
     final clipboard = Clipboard();
     clipboard.fetchImageFile(onImageReceived: (File file) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          imageFile = file;
-        });
-      });
+      _onImageFetched(file);
     }, onNoImageInClipboard: () {
       ref
           .read(appGlobalViewModelProvider.notifier)
@@ -77,7 +66,7 @@ class _PhotoFetcherState extends ConsumerState<PhotoFetcher> {
     });
   }
 
-  Future<void> takePicture(double parentAspectRatio) async {
+  Future<void> _takePicture(double parentAspectRatio) async {
     if (!_controller.value.isInitialized) return;
     try {
       XFile xFile = await _controller.takePicture();
@@ -86,29 +75,20 @@ class _PhotoFetcherState extends ConsumerState<PhotoFetcher> {
       final File croppedImage =
           await image.getWithAspectRatio(parentAspectRatio);
 
-      setState(() {
-        imageFile = croppedImage;
-      });
+      _onImageFetched(croppedImage);
     } catch (e) {
       debugMessagePrint("Error capturing image: $e");
     }
   }
 
-  Future<void> switchCamera() async {
-    if (cameras == null || cameras!.isEmpty) return;
+  Future<void> _switchCamera() async {
+    if (_cameras == null || _cameras!.isEmpty) return;
 
-    int newIndex = _controller.description == cameras?[0] ? 1 : 0;
-    initCameraController(newIndex);
+    int newIndex = _controller.description == _cameras?[0] ? 1 : 0;
+    _initCameraController(newIndex);
 
     await _controller.initialize();
     setState(() {});
-  }
-
-  void clearImage() {
-    setState(() {
-      imageFile = null;
-      fromGallery = false;
-    });
   }
 
   @override
@@ -119,61 +99,35 @@ class _PhotoFetcherState extends ConsumerState<PhotoFetcher> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: imageFile == null,
-      onPopInvokedWithResult: (_, __) {
-        clearImage();
-      },
-      child: Column(
-        children: [
-          AppTopBar(
-            title: widget.topBarTitle,
-            onBackButtonClicked: () {
-              if (imageFile != null) {
-                clearImage();
-              } else {
-                context.pop();
-              }
-            },
-          ),
-          isCameraInitialized
-              ? imageFile != null
-                  ? ImageAcceptationView(
-                      imageFile: imageFile!,
-                      shouldFlip: !fromGallery && _controller.description.lensDirection ==
-                              CameraLensDirection.front,
-                      onTryAgainClicked: clearImage,
-                      onAcceptClicked: () => onImageAccepted(imageFile!),
-                    )
-                  : CameraPickerView(
-                      controller: _controller,
-                      onOpenGalleryClicked: openGetGalleryImage,
-                      onRotateCameraClicked: switchCamera,
-                      onTakePictureClicked: (parentAspectRatio) =>
-                          takePicture(parentAspectRatio),
-                      onPasteFromClipboard: readClipboardForImage,
-                    )
-              : DefaultLoading(),
-        ],
-      ),
-    );
+    return _isCameraInitialized
+        ? CameraPickerView(
+            controller: _controller,
+            onOpenGalleryClicked: _openGetGalleryImage,
+            onRotateCameraClicked: _switchCamera,
+            onTakePictureClicked: (parentAspectRatio) =>
+                _takePicture(parentAspectRatio),
+            onPasteFromClipboard: _readClipboardForImage,
+          )
+        : DefaultLoading();
   }
 
-  void openGetGalleryImage() async {
+  void _openGetGalleryImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      setState(() {
-        fromGallery = true;
-        imageFile = File(image.path);
-      });
+      final imageFile = File(image.path);
+      _onImageFetched(imageFile, true);
     }
   }
 
-  void onImageAccepted(File imageFile) async {
+  void _onImageFetched(File imageFile, [bool fromGallery = false]) async {
     File image = imageFile;
-    if (_controller.description.lensDirection == CameraLensDirection.front) {
+    if (!fromGallery &&
+        _controller.description.lensDirection == CameraLensDirection.front) {
       image = await image.getFlippedHorizontally();
     }
-    widget.onImageAccepted(image);
+    widget.onImageFetched(
+      image,
+      false,
+    );
   }
 }
