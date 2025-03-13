@@ -12,7 +12,6 @@ class AddEditPhotoStateHolder with _$AddEditPhotoStateHolder {
   const factory AddEditPhotoStateHolder(
       {File? image,
       @Default(false) bool isImageAddLoading,
-      @Default(false) bool shouldFlip,
       ErrorTypeEnum? error,
       @Default(AddPhotoPageMode.pickPhoto)
       AddPhotoPageMode addPhotoPageMode}) = _AddEditPhotoStateHolder;

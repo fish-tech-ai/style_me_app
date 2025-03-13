@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -23,11 +22,11 @@ class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
     return AddEditPhotoStateHolder();
   }
 
-  void onImageFetched(File image, bool shouldFlip) {
+  void onImageFetched(File image) {
     state = state.copyWith(
-        addPhotoPageMode: AddPhotoPageMode.acceptPhoto,
-        image: image,
-        shouldFlip: shouldFlip);
+      addPhotoPageMode: AddPhotoPageMode.acceptPhoto,
+      image: image,
+    );
   }
 
   void onImageAccepted() {}

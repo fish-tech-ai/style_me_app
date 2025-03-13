@@ -13,7 +13,7 @@ import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/camera_picker_view.dart';
 
 class PhotoFetcher extends ConsumerStatefulWidget {
-  final Function(File, bool) onImageFetched;
+  final Function(File) onImageFetched;
 
   const PhotoFetcher({
     super.key,
@@ -127,7 +127,6 @@ class PhotoFetcherState extends ConsumerState<PhotoFetcher> {
     }
     widget.onImageFetched(
       image,
-      false,
     );
   }
 }

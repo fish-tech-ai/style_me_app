@@ -39,14 +39,14 @@ class AddClothingPage extends ConsumerWidget {
     switch (state.addPhotoPageMode) {
       case AddPhotoPageMode.pickPhoto:
         return PhotoFetcher(
-          onImageFetched: (image, shouldFlip) {
-            viewModel.onImageFetched(image, shouldFlip);
+          onImageFetched: (image) {
+            viewModel.onImageFetched(image);
           },
         );
       case AddPhotoPageMode.acceptPhoto:
         return ImageAcceptationView(
           imageFile: state.image!,
-          shouldFlip: state.shouldFlip,
+          shouldFlip: false,
           onTryAgainClicked: () => viewModel.onBackAction(),
           onAcceptClicked: () => viewModel.onImageAccepted(),
         );
