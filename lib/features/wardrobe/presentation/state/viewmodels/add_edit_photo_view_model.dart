@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/network/failures/image_process_failure.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/domain/send_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/presentation/state/add_edit_photo_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
@@ -29,7 +30,9 @@ class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
     );
   }
 
-  void onImageAccepted() {}
+  void onImageAccepted() {
+    state = state.copyWith(addPhotoPageMode: AddPhotoPageMode.fillData);
+  }
 
   Future sendClothingPhoto(File image) async {
     final result = await _sendClothingPhotoUseCase(image);
@@ -50,5 +53,15 @@ class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
     } else {
       pop?.call();
     }
+  }
+
+  void onCategorySelected(ClothingCategoryEnum category) {
+    state = state.copyWith(
+        clothingForm: state.clothingForm.copyWith(selectedCategory: category));
+  }
+
+  void onTextChanged(String text) {
+    state = state.copyWith(
+        clothingForm: state.clothingForm.copyWith(nameText: text));
   }
 }

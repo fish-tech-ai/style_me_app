@@ -50,6 +50,7 @@ class _PageWithFloatingAddButtonState extends State<PageWithFloatingAddButton> {
               children: [
                 AnimatedVisibility(
                   isVisible: isExpanded,
+                  animateAtFirstBuild: false,
                   animDirection: AnimDirectionEnum.bottomToTop,
                   duration: Duration(milliseconds: 300),
                   child: _buildExpandableButtons(),

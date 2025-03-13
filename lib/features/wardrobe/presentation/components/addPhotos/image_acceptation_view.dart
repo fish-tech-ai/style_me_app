@@ -2,30 +2,35 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_outlined_button.dart';
 
 class ImageAcceptationView extends StatelessWidget {
   final File imageFile;
-  final bool shouldFlip;
+  final bool hideButtons;
   final Function() onTryAgainClicked;
   final Function() onAcceptClicked;
+  final Widget imageDataForm;
 
   const ImageAcceptationView({
     super.key,
     required this.imageFile,
     required this.onTryAgainClicked,
     required this.onAcceptClicked,
-    required this.shouldFlip,
+    required this.hideButtons,
+    required this.imageDataForm,
   });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Stack(
+        fit: StackFit.expand,
+        alignment: Alignment.center,
         children: [
-          Transform.flip(flipX: shouldFlip, child: Image.file(imageFile)),
+          Image.file(imageFile),
           Positioned(
             left: 12,
             bottom: 12,
@@ -36,7 +41,7 @@ class ImageAcceptationView extends StatelessWidget {
                   backgroundColor: context.colorScheme.secondary),
               onClick: onTryAgainClicked,
             ),
-          ),
+          ).orEmpty(hideButtons),
           Positioned(
             right: 12,
             bottom: 12,
@@ -45,7 +50,10 @@ class ImageAcceptationView extends StatelessWidget {
               width: 120,
               onClick: onAcceptClicked,
             ),
-          )
+          ).orEmpty(hideButtons),
+          Positioned.fill(
+            child: Align(alignment: Alignment.center, child: imageDataForm),
+          ),
         ],
       ),
     );

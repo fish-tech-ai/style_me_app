@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
 
+///Widget allowing animated appearance and disappearance of [child], there are 3 animations on entry/exit:
+/// - slide
+/// - fade
+/// - animated size change
+///
+/// - [isVisible] - controls visibility
+/// - [animateAtFirstBuild] - specifies whether the widget should be animated on first widget build
+/// - [padding] - inner animation padding
+/// - [reversed] - specifies whether the animation should be reversed based on [animDirection]
+/// - [animDirection] - where to where should the [child] be animated from, defaults to [AnimDirectionEnum.rightToLeft]
+/// - [size] - it determines hardcoded size of whole [AnimatedVisibility], useful for smoother animations in Stack
 class AnimatedVisibility extends StatefulWidget {
   final bool isVisible;
   final bool animateAtFirstBuild;
@@ -8,6 +19,7 @@ class AnimatedVisibility extends StatefulWidget {
   final AnimDirectionEnum animDirection;
   final EdgeInsets padding;
   final Duration duration;
+  final Size? size;
   final Widget child;
 
   const AnimatedVisibility({
@@ -19,6 +31,7 @@ class AnimatedVisibility extends StatefulWidget {
     this.reversed = false,
     this.animDirection = AnimDirectionEnum.rightToLeft,
     this.duration = const Duration(milliseconds: 500),
+    this.size,
   });
 
   @override
@@ -88,17 +101,20 @@ class _AnimatedVisibilityState extends State<AnimatedVisibility>
 
   @override
   Widget build(BuildContext context) {
-    return SizeTransition(
-      sizeFactor: _sizeAnimation,
-      axisAlignment: -1.0,
-      child: ClipRect(
-        child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: SlideTransition(
-            position: _slideAnimation,
-            child: Padding(
-              padding: widget.padding,
-              child: widget.child,
+    return SizedBox.fromSize(
+      size: widget.size,
+      child: SizeTransition(
+        sizeFactor: _sizeAnimation,
+        axisAlignment: -1.0,
+        child: ClipRect(
+          child: FadeTransition(
+            opacity: _fadeAnimation,
+            child: SlideTransition(
+              position: _slideAnimation,
+              child: Padding(
+                padding: widget.padding,
+                child: widget.child,
+              ),
             ),
           ),
         ),

@@ -7,7 +7,7 @@ import 'package:style_me/core/views/input/search_text_field.dart';
 import 'package:style_me/features/wardrobe/presentation/components/filtering_view.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_grid.dart';
 import 'package:style_me/features/wardrobe/presentation/state/wardrobe_state_holder.dart';
-import 'package:style_me/features/wardrobe/presentation/state/wardrobe_view_model.dart';
+import 'package:style_me/features/wardrobe/presentation/state/viewmodels/wardrobe_view_model.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 
 class WardrobePage extends ConsumerWidget {

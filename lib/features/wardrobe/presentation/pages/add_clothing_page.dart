@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
-import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/image_acceptation_view.dart';
+import 'package:style_me/features/wardrobe/presentation/components/addPhotos/clothing_photo_add_form.dart';
+import 'package:style_me/features/wardrobe/presentation/components/addPhotos/image_acceptation_view.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/photo_fetcher.dart';
 import 'package:style_me/features/wardrobe/presentation/state/add_edit_photo_state_holder.dart';
-import 'package:style_me/features/wardrobe/presentation/state/add_edit_photo_view_model.dart';
+import 'package:style_me/features/wardrobe/presentation/state/viewmodels/add_edit_photo_view_model.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
 class AddClothingPage extends ConsumerWidget {
@@ -35,7 +36,8 @@ class AddClothingPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildPageContentBasedOn(AddEditPhotoStateHolder state, AddEditPhotoViewModel viewModel) {
+  Widget _buildPageContentBasedOn(
+      AddEditPhotoStateHolder state, AddEditPhotoViewModel viewModel) {
     switch (state.addPhotoPageMode) {
       case AddPhotoPageMode.pickPhoto:
         return PhotoFetcher(
@@ -43,16 +45,24 @@ class AddClothingPage extends ConsumerWidget {
             viewModel.onImageFetched(image);
           },
         );
+      case AddPhotoPageMode.fillData:
       case AddPhotoPageMode.acceptPhoto:
         return ImageAcceptationView(
           imageFile: state.image!,
-          shouldFlip: false,
+          hideButtons: state.addPhotoPageMode == AddPhotoPageMode.fillData,
           onTryAgainClicked: () => viewModel.onBackAction(),
           onAcceptClicked: () => viewModel.onImageAccepted(),
+          imageDataForm: ClothingPhotoAddForm(
+              isVisible: state.addPhotoPageMode == AddPhotoPageMode.fillData,
+              nameText: state.clothingForm.nameText,
+              category: state.clothingForm.selectedCategory,
+              onNameTextChanged: (text) {
+                viewModel.onTextChanged(text);
+              },
+              onCategorySelected: (category) {
+                viewModel.onCategorySelected(category);
+              }),
         );
-      case AddPhotoPageMode.fillData:
-        // TODO: Handle this case.
-        throw UnimplementedError();
     }
   }
 }
