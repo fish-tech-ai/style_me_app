@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:chopper/chopper.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothes_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
@@ -17,7 +15,8 @@ abstract class ClothesService extends ChopperService {
 
   @Post(path: '/image')
   @Multipart()
-  Future<Response<SendClothingPhotoResponse>> sendClothingPhoto(@PartFile() File encryptedImage);
+  Future<Response<SendClothingPhotoResponse>> sendClothingPhoto(
+      @PartFile("image") String encryptedImage);
 
   static ClothesService create([ChopperClient? client]) =>
       _$ClothesService(client);

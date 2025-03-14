@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:style_me/core/network/exceptions/expected_error_response.dart';
+import 'package:style_me/core/network/json_error_converter.dart';
 import 'package:style_me/core/network/json_serializable_converter.dart';
 import 'package:style_me/core/network/utils/app_authenticator.dart';
 import 'package:style_me/core/network/utils/app_headers_interceptor.dart';
@@ -37,8 +38,9 @@ class ChopperManager {
             SendClothingPhotoResponse: (json) =>
                 SendClothingPhotoResponse.fromJson(json),
           },
-          (json) => ExpectedErrorResponse.fromJson(json),
         ),
+        errorConverter:
+            JsonErrorConverter((json) => ExpectedErrorResponse.fromJson(json)),
         interceptors: [
           headersInterceptor,
           LoggingInterceptor(),

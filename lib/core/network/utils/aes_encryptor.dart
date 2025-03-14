@@ -7,8 +7,8 @@ import 'package:pointycastle/export.dart';
 
 class AESEncryptor {
   static const int keySize = 32;
-  static const int ivSize = 12;
-  static const int tagSize = 16;
+  static const int ivSize = 16;
+  static const int tagSize = 128;
 
   static Future<File> encryptImage(File imageFile) async {
     final Uint8List key = hexToUint8List(dotenv.env['AES_KEY'] ?? "");
@@ -23,23 +23,27 @@ class AESEncryptor {
   }
 
   static Uint8List _encryptAESGCM(Uint8List plainData, Uint8List key) {
-    final iv = _generateRandomIV();
+    final nonce = _generateRandomNonce();
     final cipher = GCMBlockCipher(AESEngine());
 
     final parameters = AEADParameters(
       KeyParameter(key),
-      128,
-      iv,
+      tagSize,
+      nonce,
       Uint8List(0),
     );
     cipher.init(true, parameters);
 
     final encrypted = cipher.process(plainData);
 
-    return Uint8List.fromList([...iv, ...encrypted]);
+    final ciphertextLength = encrypted.length - (tagSize ~/ 8);
+    final ciphertext = encrypted.sublist(0, ciphertextLength);
+    final tag = encrypted.sublist(ciphertextLength);
+
+    return Uint8List.fromList([...nonce, ...tag, ...ciphertext]);
   }
 
-  static Uint8List _generateRandomIV() {
+  static Uint8List _generateRandomNonce() {
     final secureRandom = SecureRandom("Fortuna")
       ..seed(
         KeyParameter(

@@ -12,6 +12,7 @@ class ImageAcceptationView extends StatelessWidget {
   final bool hideButtons;
   final Function() onTryAgainClicked;
   final Function() onAcceptClicked;
+  final bool isImageAddLoading;
   final Widget imageDataForm;
 
   const ImageAcceptationView({
@@ -21,6 +22,7 @@ class ImageAcceptationView extends StatelessWidget {
     required this.onAcceptClicked,
     required this.hideButtons,
     required this.imageDataForm,
+    this.isImageAddLoading = false,
   });
 
   @override
@@ -48,6 +50,7 @@ class ImageAcceptationView extends StatelessWidget {
             child: AppButton(
               text: localizations.continueText,
               width: 120,
+              isLoading: isImageAddLoading,
               onClick: onAcceptClicked,
             ),
           ).orEmpty(hideButtons),

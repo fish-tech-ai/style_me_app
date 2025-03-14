@@ -2,10 +2,11 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:image/image.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
+import 'package:style_me/core/utils/constants.dart';
 
 extension ImageTransformations on File {
   Future<File> getWithAspectRatio(double aspectRatio) async {
-    Uint8List imageBytes = await this.readAsBytes();
+    Uint8List imageBytes = await readAsBytes();
 
     Image? originalImage = decodeImage(imageBytes);
     if (originalImage == null) return this;
@@ -26,12 +27,12 @@ extension ImageTransformations on File {
         width: width,
         height: height);
 
-    return File(this.path)..writeAsBytesSync(encodeJpg(croppedImage));
+    return File(path)..writeAsBytesSync(encodeJpg(croppedImage));
   }
 
   Future<File> getFlippedHorizontally() async {
     try {
-      Uint8List imageBytes = await this.readAsBytes();
+      Uint8List imageBytes = await readAsBytes();
 
       Image? originalImage = decodeImage(imageBytes);
       if (originalImage == null) throw Exception("Failed to decode image");
@@ -46,6 +47,28 @@ extension ImageTransformations on File {
       return flippedFile;
     } catch (e) {
       debugMessagePrint("Error flipping image: $e");
+    }
+    return this;
+  }
+
+  Future<File> getCompressed() async {
+    try {
+      final Uint8List imageBytes = await readAsBytes();
+      Image? originalImage = decodeJpg(imageBytes);
+      if (originalImage == null) throw Exception("Failed to decode image");
+      final Image imageCompressed = copyResize(originalImage,
+          height: ImageTransformationsOptions.compressedHeight);
+      Uint8List compressedBytes = Uint8List.fromList(
+        encodeJpg(imageCompressed,
+            quality: ImageTransformationsOptions.compressedQuality),
+      );
+
+      File compressedFile = File(path);
+      await compressedFile.writeAsBytes(compressedBytes);
+
+      return compressedFile;
+    } catch (e) {
+      debugMessagePrint("Error while compressing: $e");
     }
     return this;
   }

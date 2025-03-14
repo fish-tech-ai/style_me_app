@@ -40,3 +40,8 @@ abstract class LanguageCodeConst {
   static const String english = "en";
   static const String polish = "pl";
 }
+
+abstract class ImageTransformationsOptions {
+  static const int compressedHeight = 600;
+  static const int compressedQuality = 60;
+}

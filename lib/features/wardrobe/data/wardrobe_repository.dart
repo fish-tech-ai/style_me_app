@@ -33,7 +33,7 @@ class WardrobeRepository {
       File encryptedImage) async {
     try {
       final Response<SendClothingPhotoResponse> response =
-          await _service.sendClothingPhoto(encryptedImage);
+          await _service.sendClothingPhoto(encryptedImage.path);
       if (!response.isSuccessful && response.error is ExpectedErrorResponse) {
         throw ImageProcessException(
             (response.error as ExpectedErrorResponse).type);
@@ -41,6 +41,9 @@ class WardrobeRepository {
       response.handleIfNotSuccessful();
       return response.body!;
     } catch (error) {
+      if (error is ImageProcessException) {
+        rethrow;
+      }
       throw ServerException(error.toString());
     }
   }

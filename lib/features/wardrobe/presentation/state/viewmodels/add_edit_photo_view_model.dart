@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/network/failures/image_process_failure.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
 import 'package:style_me/features/wardrobe/domain/send_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/presentation/state/add_edit_photo_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
@@ -31,18 +33,26 @@ class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
   }
 
   void onImageAccepted() {
-    state = state.copyWith(addPhotoPageMode: AddPhotoPageMode.fillData);
+    state = state.copyWith(isImageAddLoading: true);
+    sendClothingPhoto(state.image!);
   }
 
   Future sendClothingPhoto(File image) async {
     final result = await _sendClothingPhotoUseCase(image);
-    result.collect((response) {
-      state = state.copyWith(isImageAddLoading: false);
+    result.collect((SendClothingPhotoResponse response) {
+      state = state.copyWith(
+        isImageAddLoading: false,
+        clothingForm: state.clothingForm.copyWith(
+          selectedCategory: response.recommendedCategory,
+        ),
+      );
     }, (failure) {
       if (failure is ImageProcessFailure) {
-        state = state.copyWith(error: failure.type);
+        state = state.copyWith(error: failure.type, isImageAddLoading: false);
+        return;
       }
       state = state.copyWith(isImageAddLoading: false);
+      ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
     });
   }
 

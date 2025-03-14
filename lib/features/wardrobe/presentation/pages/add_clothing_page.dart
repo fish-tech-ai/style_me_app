@@ -15,8 +15,8 @@ class AddClothingPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(addEditPhotoViewModelProvider);
-    final viewModel = ref.read(addEditPhotoViewModelProvider.notifier);
+    final AddEditPhotoStateHolder state = ref.watch(addEditPhotoViewModelProvider);
+    final AddEditPhotoViewModel viewModel = ref.read(addEditPhotoViewModelProvider.notifier);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (_, __) {
@@ -50,6 +50,7 @@ class AddClothingPage extends ConsumerWidget {
         return ImageAcceptationView(
           imageFile: state.image!,
           hideButtons: state.addPhotoPageMode == AddPhotoPageMode.fillData,
+          isImageAddLoading: state.isImageAddLoading,
           onTryAgainClicked: () => viewModel.onBackAction(),
           onAcceptClicked: () => viewModel.onImageAccepted(),
           imageDataForm: ClothingPhotoAddForm(
