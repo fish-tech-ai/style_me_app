@@ -4,7 +4,7 @@ import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_outlined_button.dart';
 import 'package:style_me/core/views/buttons/app_toggle_buttons.dart';
-import 'package:style_me/core/views/input/app_dropdown_button.dart';
+import 'package:style_me/core/views/input/dropdowns/app_dropdown_button.dart';
 import 'package:style_me/core/views/ui_models/app_button_icon_data.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';

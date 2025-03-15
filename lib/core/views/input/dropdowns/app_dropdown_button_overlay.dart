@@ -2,58 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/utils/constants.dart';
 
-class AppDropdownButton<T> extends StatefulWidget {
-  final T selectedItem;
-  final List<T> items;
-  final Widget Function(T item) itemBuilder;
-  final Function(T item) onItemSelect;
-  final EdgeInsets iconPadding;
-
-  const AppDropdownButton({
-    super.key,
-    required this.items,
-    required this.selectedItem,
-    required this.itemBuilder,
-    required this.onItemSelect,
-    this.iconPadding = const EdgeInsets.all(12),
-  });
-
-  @override
-  State<AppDropdownButton<T>> createState() => _AppDropdownButtonState<T>();
-}
-
-class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> {
-  OverlayEntry? _overlayEntry;
-  final LayerLink _layerLink = LayerLink();
-  bool _isDropdownOpen = false;
-
-  void _toggleDropdown() {
-    setState(() {
-      if (_isDropdownOpen) {
-        _closeDropdown();
-      } else {
-        _openDropdown();
-      }
-    });
-  }
-
-  void _openDropdown() {
-    _overlayEntry = _createOverlayEntry();
-    Overlay.of(context).insert(_overlayEntry!);
-    _isDropdownOpen = true;
-  }
-
-  void _closeDropdown() {
-    _overlayEntry?.remove();
-    _isDropdownOpen = false;
-  }
-
-  OverlayEntry _createOverlayEntry() {
+class AppDropdownButtonOverlay {
+  static OverlayEntry buildOverlay<T>({
+    required BuildContext context,
+    required List<T> items,
+    required T selectedItem,
+    required LayerLink layerLink,
+    required Widget Function(T) itemBuilder,
+    required Function() onTapOutside,
+    required Function(T) onItemSelect,
+  }) {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     final Size size = renderBox.size;
     final Offset offset = renderBox.localToGlobal(Offset.zero);
-    final double contextMenuHeight = widget.items.length * 45;
-    final double contextMenuMaxHeight = 300;
+    final double contextMenuHeight = items.length * 45;
+    final double contextMenuMaxHeight = 250;
     final mediaQuery = MediaQuery.of(context);
     final double screenHeight =
         mediaQuery.size.height - mediaQuery.viewInsets.bottom;
@@ -67,7 +30,7 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> {
         children: [
           GestureDetector(
             onTap: () {
-              _closeDropdown();
+              onTapOutside();
             },
             child: Container(
               color: Colors.transparent,
@@ -76,7 +39,7 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> {
           Positioned(
             width: size.width,
             child: CompositedTransformFollower(
-              link: _layerLink,
+              link: layerLink,
               showWhenUnlinked: false,
               offset: showAbove
                   ? Offset(0, -contextMenuHeight - 4)
@@ -97,17 +60,17 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> {
                   child: ListView(
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
-                    children: widget.items
+                    children: items
                         .map(
                           (item) => InkWell(
                             onTap: () {
-                              widget.onItemSelect(item);
-                              _toggleDropdown();
+                              onItemSelect(item);
+                              //_toggleDropdown();
                             },
                             child: Container(
                               height: 45,
                               decoration: BoxDecoration(
-                                color: item == widget.selectedItem
+                                color: item == selectedItem
                                     ? context.colorScheme.secondary
                                     : Colors.transparent,
                                 borderRadius: GlobalUiConst.borderRadiusNormal,
@@ -117,7 +80,7 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> {
                                   const EdgeInsets.symmetric(horizontal: 12),
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: widget.itemBuilder(item),
+                                child: itemBuilder(item),
                               ),
                             ),
                           ),
@@ -129,42 +92,6 @@ class _AppDropdownButtonState<T> extends State<AppDropdownButton<T>> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CompositedTransformTarget(
-      link: _layerLink,
-      child: GestureDetector(
-        onTap: _toggleDropdown,
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: context.colorScheme.primary),
-            borderRadius: GlobalUiConst.borderRadiusNormal,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                child: widget.itemBuilder(widget.selectedItem),
-              ),
-              Container(
-                padding: widget.iconPadding,
-                decoration: BoxDecoration(
-                    color: context.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(11)),
-                child: Icon(
-                  _isDropdownOpen //TODO dropdown not updated after first time change
-                      ? Icons.expand_more_rounded
-                      : Icons.expand_less_rounded,
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

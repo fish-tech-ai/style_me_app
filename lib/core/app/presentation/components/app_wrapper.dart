@@ -25,6 +25,9 @@ class AppWrapper extends ConsumerStatefulWidget {
 }
 
 class _AppWrapperState extends ConsumerState<AppWrapper> {
+
+  late final EdgeInsets systemInsetsPadding;
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +38,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     LocalizationHelper.init(context.localizations);
+    systemInsetsPadding = MediaQuery.of(context).padding;
   }
 
   Future initApp(Duration _) async {
@@ -74,7 +78,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
     return Stack(children: [
       Container(
         padding:
-            bottomBarState.isVisible ? MediaQuery.of(context).padding : null,
+            bottomBarState.isVisible ? systemInsetsPadding : null,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Column(

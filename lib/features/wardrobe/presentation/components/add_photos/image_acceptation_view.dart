@@ -32,7 +32,7 @@ class ImageAcceptationView extends StatelessWidget {
         fit: StackFit.expand,
         alignment: Alignment.center,
         children: [
-          Image.file(imageFile),
+          Image.file(imageFile, fit: BoxFit.fitWidth,),
           Positioned(
             left: 12,
             bottom: 12,

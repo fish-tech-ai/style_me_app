@@ -13,6 +13,7 @@
   "oldPassword": "Current password",
   "newPassword": "New password",
   "verifyNewPassword": "Verify new password",
+  "nameLabel": "Name (optional)",
   "firstName": "First name",
   "surname": "Surname",
   "verifyPassword": "Verify password",
@@ -126,5 +127,6 @@
   "errorDialogNotAClothingTitle": "Your clothes are not in the picture!",
   "errorDialogNotAClothingDesc": "Make sure your clothing is fully visible in the frame and try again.",
   "errorDialogNotAPersonTitle": "Looks like you're not in the picture",
-  "errorDialogNotAPersonDesc": "Make sure your figure is fully visible in the frame and try again."
+  "errorDialogNotAPersonDesc": "Make sure your figure is fully visible in the frame and try again.",
+  "recommendedLabel": "(Recommended)"
 }

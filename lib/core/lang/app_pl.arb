@@ -13,6 +13,7 @@
   "oldPassword": "Aktualne hasło",
   "newPassword": "Nowe hasło",
   "verifyNewPassword": "Potwierdź nowe hasło",
+  "nameLabel": "Nazwa (opcjonalne)",
   "firstName": "Imię",
   "surname": "Nazwisko",
   "verifyPassword": "Potwierdź hasło",
@@ -90,7 +91,7 @@
   "positionBottom": "Dolna",
   "positionFull": "Całe ciało",
   "position": "Pozycja",
-  "category": "Kategorie",
+  "category": "Kategoria",
   "clothingCategoryAll": "Wszystkie",
   "clothingCategoryBlazer": "Marynarka",
   "clothingCategoryBlouse": "Bluzka",
@@ -126,5 +127,6 @@
   "errorDialogNotAClothingTitle": "Twoje ubranie nie jest na zdjęciu!",
   "errorDialogNotAClothingDesc": "Upewnij się, że twoje ubranie jest w pełni widoczne w kadrze i spróbuj ponownie.",
   "errorDialogNotAPersonTitle": "Wygląda na to, że nie ma cię na zdjęciu!",
-  "errorDialogNotAPersonDesc": "Upewnij się, że twoja sylwetka jest w pełni widoczna w kadrze i spróbuj ponownie."
+  "errorDialogNotAPersonDesc": "Upewnij się, że twoja sylwetka jest w pełni widoczna w kadrze i spróbuj ponownie.",
+  "recommendedLabel": "(Polecana)"
 }

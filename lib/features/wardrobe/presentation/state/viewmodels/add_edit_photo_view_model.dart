@@ -45,6 +45,7 @@ class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
         addPhotoPageMode: AddPhotoPageMode.fillData,
         clothingForm: state.clothingForm.copyWith(
           selectedCategory: response.recommendedCategory,
+          isRecommendedCategory: true,
         ),
       );
     }, (failure) {
@@ -71,7 +72,8 @@ class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
 
   void onCategorySelected(ClothingCategoryEnum category) {
     state = state.copyWith(
-        clothingForm: state.clothingForm.copyWith(selectedCategory: category));
+        clothingForm: state.clothingForm.copyWith(
+            selectedCategory: category, isRecommendedCategory: false));
   }
 
   void onTextChanged(String text) {

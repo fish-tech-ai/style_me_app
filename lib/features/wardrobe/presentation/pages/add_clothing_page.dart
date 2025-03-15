@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/network/exceptions/helpers/error_type_enum.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
-import 'package:style_me/features/wardrobe/presentation/components/addPhotos/clothing_photo_add_form.dart';
-import 'package:style_me/features/wardrobe/presentation/components/addPhotos/image_acceptation_view.dart';
+import 'package:style_me/features/wardrobe/presentation/components/add_photos/clothing_photo_add_form.dart';
+import 'package:style_me/features/wardrobe/presentation/components/add_photos/image_acceptation_view.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/photo_fetcher.dart';
 import 'package:style_me/features/wardrobe/presentation/state/add_edit_photo_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/add_edit_photo_view_model.dart';
@@ -70,7 +70,9 @@ class AddClothingPage extends ConsumerWidget {
               },
               onCategorySelected: (category) {
                 viewModel.onCategorySelected(category);
-              }),
+              },
+              isRecommendedCategory: state.clothingForm.isRecommendedCategory,
+          ),
         );
     }
   }

@@ -7,6 +7,7 @@ part 'clothing_form_state.freezed.dart';
 class ClothingFormState with _$ClothingFormState {
   const factory ClothingFormState({
     @Default("") String nameText,
-    @Default(ClothingCategoryEnum.ALL) ClothingCategoryEnum selectedCategory
+    @Default(ClothingCategoryEnum.ALL) ClothingCategoryEnum selectedCategory,
+    @Default(false) bool isRecommendedCategory
   }) = _ClothingFormState;
 }
