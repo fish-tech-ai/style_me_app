@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/network/exceptions/helpers/error_type_enum.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
 import 'package:style_me/features/wardrobe/presentation/components/addPhotos/clothing_photo_add_form.dart';
 import 'package:style_me/features/wardrobe/presentation/components/addPhotos/image_acceptation_view.dart';
@@ -15,8 +16,15 @@ class AddClothingPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final AddEditPhotoStateHolder state = ref.watch(addEditPhotoViewModelProvider);
-    final AddEditPhotoViewModel viewModel = ref.read(addEditPhotoViewModelProvider.notifier);
+    final AddEditPhotoStateHolder state =
+        ref.watch(addEditPhotoViewModelProvider);
+    final AddEditPhotoViewModel viewModel =
+        ref.read(addEditPhotoViewModelProvider.notifier);
+    showDialogOnImageError(
+      context,
+      state.imageProcessingError,
+      viewModel,
+    );
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (_, __) {
@@ -65,5 +73,22 @@ class AddClothingPage extends ConsumerWidget {
               }),
         );
     }
+  }
+
+  void showDialogOnImageError(
+    BuildContext context,
+    ImageErrorTypeEnum? imageProcessingError,
+    AddEditPhotoViewModel viewModel,
+  ) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (imageProcessingError != null) {
+        imageProcessingError.showImageProcessErrorDialog(
+          context,
+          () => viewModel.onBackAction(
+            () => context.pop(),
+          ),
+        );
+      }
+    });
   }
 }

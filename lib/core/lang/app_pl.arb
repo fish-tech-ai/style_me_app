@@ -118,5 +118,13 @@
   "floatingAddUserPhotoButtonText": "Dodaj swoje zdjęcie",
   "tryAgain": "Spróbuj ponownie",
   "noImageInClipboard": "W schowku nie znaleziono zdjęcia",
-  "pasteFromClipboard": "Wklej ze schowka"
+  "pasteFromClipboard": "Wklej ze schowka",
+  "errorDialogNSFWTitle": "Tego zdjęcia nie można użyć",
+  "errorDialogNSFWDesc": "Wygląda na to, że obraz zawiera nieodpowiednie treści. Wybierz inne zdjęcie i spróbuj ponownie.",
+  "errorDialogCantProcessTitle": "Coś poszło nie tak.",
+  "errorDialogCantProcessDesc": "Upewnij się, że twoje ubranie jest w pełni widoczne na zdjęciu. Nie wiesz, jak zrobić zdjęcie? Otwórz pomoc w prawym górnym rogu ekranu.",
+  "errorDialogNotAClothingTitle": "Twoje ubranie nie jest na zdjęciu!",
+  "errorDialogNotAClothingDesc": "Upewnij się, że twoje ubranie jest w pełni widoczne w kadrze i spróbuj ponownie.",
+  "errorDialogNotAPersonTitle": "Wygląda na to, że nie ma cię na zdjęciu!",
+  "errorDialogNotAPersonDesc": "Upewnij się, że twoja sylwetka jest w pełni widoczna w kadrze i spróbuj ponownie."
 }

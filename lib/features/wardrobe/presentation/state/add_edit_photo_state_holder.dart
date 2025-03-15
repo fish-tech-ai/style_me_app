@@ -13,7 +13,7 @@ class AddEditPhotoStateHolder with _$AddEditPhotoStateHolder {
   const factory AddEditPhotoStateHolder({
     File? image,
     @Default(false) bool isImageAddLoading,
-    ErrorTypeEnum? error,
+    ImageErrorTypeEnum? imageProcessingError,
     @Default(AddPhotoPageMode.pickPhoto) AddPhotoPageMode addPhotoPageMode,
     @Default(ClothingFormState()) ClothingFormState clothingForm,
   }) = _AddEditPhotoStateHolder;

@@ -118,5 +118,13 @@
   "floatingAddUserPhotoButtonText": "Add your photo",
   "tryAgain": "Try again",
   "noImageInClipboard": "Image not found in clipboard",
-  "pasteFromClipboard": "Paste from clipboard"
+  "pasteFromClipboard": "Paste from clipboard",
+  "errorDialogNSFWTitle": "This picture can't be used",
+  "errorDialogNSFWDesc": "It looks like the image contains inappropriate content. Please choose another photo and try again.",
+  "errorDialogCantProcessTitle": "Something has gone wrong.",
+  "errorDialogCantProcessDesc": "Make sure your clothing is fully in the photo. Not sure how to take a photo? open the help in the top right corner of the screen",
+  "errorDialogNotAClothingTitle": "Your clothes are not in the picture!",
+  "errorDialogNotAClothingDesc": "Make sure your clothing is fully visible in the frame and try again.",
+  "errorDialogNotAPersonTitle": "Looks like you're not in the picture",
+  "errorDialogNotAPersonDesc": "Make sure your figure is fully visible in the frame and try again."
 }

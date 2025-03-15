@@ -3,7 +3,7 @@ import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.da
 
 part 'send_clothing_photo_response.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable()
 class SendClothingPhotoResponse {
   final String id;
   final ClothingCategoryEnum recommendedCategory;

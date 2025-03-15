@@ -42,13 +42,15 @@ class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
     result.collect((SendClothingPhotoResponse response) {
       state = state.copyWith(
         isImageAddLoading: false,
+        addPhotoPageMode: AddPhotoPageMode.fillData,
         clothingForm: state.clothingForm.copyWith(
           selectedCategory: response.recommendedCategory,
         ),
       );
     }, (failure) {
       if (failure is ImageProcessFailure) {
-        state = state.copyWith(error: failure.type, isImageAddLoading: false);
+        state = state.copyWith(
+            imageProcessingError: failure.type, isImageAddLoading: false);
         return;
       }
       state = state.copyWith(isImageAddLoading: false);
@@ -59,7 +61,9 @@ class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
   void onBackAction([Function()? pop]) {
     if (state.addPhotoPageMode != AddPhotoPageMode.pickPhoto) {
       state = state.copyWith(
-          addPhotoPageMode: AddPhotoPageMode.pickPhoto, image: null);
+          addPhotoPageMode: AddPhotoPageMode.pickPhoto,
+          image: null,
+          imageProcessingError: null);
     } else {
       pop?.call();
     }

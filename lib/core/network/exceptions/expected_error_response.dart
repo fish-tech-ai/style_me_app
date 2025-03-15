@@ -3,9 +3,9 @@ import 'package:style_me/core/network/exceptions/helpers/error_type_enum.dart';
 
 part 'expected_error_response.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable()
 class ExpectedErrorResponse {
-  final ErrorTypeEnum type;
+  final ImageErrorTypeEnum type;
 
   ExpectedErrorResponse(this.type);
 

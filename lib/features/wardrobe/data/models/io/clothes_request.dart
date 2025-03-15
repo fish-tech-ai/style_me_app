@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'clothes_request.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable()
 class ClothesRequest {
   final String? searchText;
   final String? position;
