@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
-import 'package:style_me/core/network/exceptions/helpers/error_type_enum.dart';
+import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_type_enum.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
 import 'package:style_me/features/wardrobe/presentation/components/add_photos/clothing_photo_add_form.dart';
 import 'package:style_me/features/wardrobe/presentation/components/add_photos/image_acceptation_view.dart';
@@ -38,14 +38,14 @@ class AddClothingPage extends ConsumerWidget {
               viewModel.onBackAction(() => context.pop());
             },
           ),
-          _buildPageContentBasedOn(state, viewModel)
+          _buildPageContentBasedOn(state, viewModel, context)
         ],
       ),
     );
   }
 
-  Widget _buildPageContentBasedOn(
-      AddEditPhotoStateHolder state, AddEditPhotoViewModel viewModel) {
+  Widget _buildPageContentBasedOn(AddEditPhotoStateHolder state,
+      AddEditPhotoViewModel viewModel, BuildContext context) {
     switch (state.addPhotoPageMode) {
       case AddPhotoPageMode.pickPhoto:
         return PhotoFetcher(
@@ -57,21 +57,23 @@ class AddClothingPage extends ConsumerWidget {
       case AddPhotoPageMode.acceptPhoto:
         return ImageAcceptationView(
           imageFile: state.image!,
-          hideButtons: state.addPhotoPageMode == AddPhotoPageMode.fillData,
+          actionButtonText: state.addPhotoPageMode == AddPhotoPageMode.fillData
+              ? localizations.addPhoto
+              : localizations.continueText,
           isImageAddLoading: state.isImageAddLoading,
           onTryAgainClicked: () => viewModel.onBackAction(),
-          onAcceptClicked: () => viewModel.onImageAccepted(),
+          onAcceptClicked: () => viewModel.onAcceptClicked(() => context.pop()),
           imageDataForm: ClothingPhotoAddForm(
-              isVisible: state.addPhotoPageMode == AddPhotoPageMode.fillData,
-              nameText: state.clothingForm.nameText,
-              category: state.clothingForm.selectedCategory,
-              onNameTextChanged: (text) {
-                viewModel.onTextChanged(text);
-              },
-              onCategorySelected: (category) {
-                viewModel.onCategorySelected(category);
-              },
-              isRecommendedCategory: state.clothingForm.isRecommendedCategory,
+            isVisible: state.addPhotoPageMode == AddPhotoPageMode.fillData,
+            nameText: state.clothingForm.nameText,
+            category: state.clothingForm.selectedCategory,
+            onNameTextChanged: (text) {
+              viewModel.onTextChanged(text);
+            },
+            onCategorySelected: (category) {
+              viewModel.onCategorySelected(category);
+            },
+            isRecommendedCategory: state.clothingForm.isRecommendedCategory,
           ),
         );
     }

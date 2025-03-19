@@ -128,5 +128,6 @@
   "errorDialogNotAClothingDesc": "Make sure your clothing is fully visible in the frame and try again.",
   "errorDialogNotAPersonTitle": "Looks like you're not in the picture",
   "errorDialogNotAPersonDesc": "Make sure your figure is fully visible in the frame and try again.",
-  "recommendedLabel": "(Recommended)"
+  "recommendedLabel": "(Recommended)",
+  "addPhoto": "Add photo"
 }

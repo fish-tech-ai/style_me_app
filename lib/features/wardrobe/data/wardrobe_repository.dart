@@ -8,6 +8,7 @@ import 'package:style_me/core/network/exceptions/server_exception.dart';
 import 'package:style_me/core/network/services/clothes_service.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothes_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothes_response.dart';
+import 'package:style_me/features/wardrobe/data/models/io/clothing_confirmation_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
 
 class WardrobeRepository {
@@ -44,6 +45,15 @@ class WardrobeRepository {
       if (error is ImageProcessException) {
         rethrow;
       }
+      throw ServerException(error.toString());
+    }
+  }
+  
+  Future confirmClothingPhoto(ClothingConfirmationRequest request) async {
+    try {
+      final Response response = await _service.confirmClothingPhoto(request);
+      response.handleIfNotSuccessful();
+    } catch (error) {
       throw ServerException(error.toString());
     }
   }

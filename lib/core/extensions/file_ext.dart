@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image/image.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/utils/constants.dart';
@@ -53,17 +54,29 @@ extension ImageTransformations on File {
 
   Future<File> getCompressed() async {
     try {
-      final Uint8List imageBytes = await readAsBytes();
-      Image? originalImage = decodeJpg(imageBytes);
-      if (originalImage == null) throw Exception("Failed to decode image");
-      final Image imageCompressed = copyResize(originalImage,
-          height: ImageTransformationsOptions.compressedHeight);
-      Uint8List compressedBytes = Uint8List.fromList(
-        encodeJpg(imageCompressed,
-            quality: ImageTransformationsOptions.compressedQuality),
+      Uint8List imageBytes = await readAsBytes();
+      Image? image = decodeImage(imageBytes);
+      if (image == null) {
+        throw CompressError("Failed to decode image from file_ext.dart: getCompressed()");
+      }
+      int newWidth = 600;
+      int newHeight = (image.height * newWidth / image.width).round();
+
+      Uint8List? compressedBytes = await FlutterImageCompress.compressWithFile(
+        path,
+        quality: 90,
+        minWidth: newWidth,
+        minHeight: newHeight,
+        format: CompressFormat.webp,
+        keepExif: true
       );
 
-      File compressedFile = File(path);
+      if (compressedBytes == null) {
+        throw CompressError("compressedBytes = null from file_ext.dart: getCompressed()");
+      }
+
+      String newPath = path.replaceAll(RegexConst.fileExtension, '.webp');
+      File compressedFile = File(newPath);
       await compressedFile.writeAsBytes(compressedBytes);
 
       return compressedFile;

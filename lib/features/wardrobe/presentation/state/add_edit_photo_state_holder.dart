@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:style_me/core/network/exceptions/helpers/error_type_enum.dart';
+import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_type_enum.dart';
 import 'package:style_me/features/wardrobe/presentation/state/clothing_form_state.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 

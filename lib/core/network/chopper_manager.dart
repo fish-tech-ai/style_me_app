@@ -15,6 +15,7 @@ import 'package:style_me/features/auth/data/models/reset_password_request.dart';
 import 'package:style_me/features/settings/data/models/delete_user_request.dart';
 import 'package:style_me/features/settings/data/models/report_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothes_response.dart';
+import 'package:style_me/features/wardrobe/data/models/io/clothing_confirmation_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
 
 class ChopperManager {
@@ -37,6 +38,8 @@ class ChopperManager {
             ClothesResponse: (json) => ClothesResponse.fromJson(json),
             SendClothingPhotoResponse: (json) =>
                 SendClothingPhotoResponse.fromJson(json),
+            ClothingConfirmationRequest: (json) =>
+                ClothingConfirmationRequest.fromJson(json)
           },
         ),
         errorConverter:

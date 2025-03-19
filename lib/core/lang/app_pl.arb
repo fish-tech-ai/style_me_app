@@ -128,5 +128,6 @@
   "errorDialogNotAClothingDesc": "Upewnij się, że twoje ubranie jest w pełni widoczne w kadrze i spróbuj ponownie.",
   "errorDialogNotAPersonTitle": "Wygląda na to, że nie ma cię na zdjęciu!",
   "errorDialogNotAPersonDesc": "Upewnij się, że twoja sylwetka jest w pełni widoczna w kadrze i spróbuj ponownie.",
-  "recommendedLabel": "(Polecana)"
+  "recommendedLabel": "(Polecana)",
+  "addPhoto": "Dodaj zdjęcie"
 }

@@ -11,6 +11,10 @@ class JsonErrorConverter extends JsonConverter {
   @override
   Future<Response> convertError<BodyType, InnerType>(Response response) async {
     try {
+      if (response.bodyString.isEmpty) {
+        return response;
+      }  
+      
       final jsonBody = jsonDecode(response.bodyString);
 
       if (jsonBody is Map<String, dynamic> && jsonBody.containsKey('type')) {
@@ -18,7 +22,7 @@ class JsonErrorConverter extends JsonConverter {
         return response.copyWith<dynamic>(bodyError: errorObject);
       }
 
-      return response.copyWith<BodyType>();
+      return response;
     } catch (e) {
       debugMessagePrint(e.toString());
       return response.copyWith<BodyType>();

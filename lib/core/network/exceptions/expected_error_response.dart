@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:style_me/core/network/exceptions/helpers/error_type_enum.dart';
+import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_type_enum.dart';
 
 part 'expected_error_response.g.dart';
 

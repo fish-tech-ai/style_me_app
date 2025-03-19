@@ -39,6 +39,8 @@ import 'package:style_me/features/auth/domain/resend_confirmation_use_case.dart'
 import 'package:style_me/features/auth/domain/send_reset_password_mail_use_case.dart';
 import 'package:style_me/features/settings/domain/delete_account_use_case.dart';
 import 'package:style_me/features/wardrobe/data/wardrobe_repository.dart';
+import 'package:style_me/features/wardrobe/domain/confirm_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/delete_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/get_clothes_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/send_clothing_photo_use_case.dart';
 
@@ -104,5 +106,7 @@ class GetItManager {
     getIt.registerFactory(() => WardrobeRepository(getIt()));
     getIt.registerFactory(() => GetClothesUseCase(getIt(), getIt()));
     getIt.registerFactory(() => SendClothingPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => ConfirmClothingPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => DeleteClothingPhotoUseCase(getIt(), getIt()));
   }
 }

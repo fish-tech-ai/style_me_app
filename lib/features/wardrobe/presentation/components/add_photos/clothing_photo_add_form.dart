@@ -38,7 +38,9 @@ class ClothingPhotoAddForm extends StatelessWidget {
                 labelText: localizations.nameLabel,
                 onTextChanged: (text) {}),
             AppDropdownButton(
-              items: ClothingCategoryEnum.values,
+              items: ClothingCategoryEnum.values
+                  .where((item) => item != ClothingCategoryEnum.ALL)
+                  .toList(),
               selectedItem: category,
               itemBuilder: (item) => Center(child: Text(item.text)),
               onItemSelect: onCategorySelected,

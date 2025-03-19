@@ -29,6 +29,7 @@ abstract class RegexConst {
   static const passwordRegex =
       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$';
   static const emailRegex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+  static var fileExtension = RegExp(r'\.(jpg|jpeg|png|bmp|heif)$', caseSensitive: false);
 }
 
 abstract class NetworkHeaders {
@@ -42,6 +43,8 @@ abstract class LanguageCodeConst {
 }
 
 abstract class ImageTransformationsOptions {
-  static const int compressedHeight = 600;
+  static const int compressedHeight = 800;
+  static const int compressedWidth = 800;
   static const int compressedQuality = 60;
 }
+

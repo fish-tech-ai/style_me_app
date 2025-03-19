@@ -363,4 +363,36 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get tryAgain => "tryAgain";
 
+  @override
+  String get addPhoto => "addPhoto";
+
+  @override
+  String get errorDialogCantProcessDesc => "errorDialogCantProcessDesc";
+
+  @override
+  String get errorDialogCantProcessTitle => "errorDialogCantProcessTitle";
+
+  @override
+  String get errorDialogNSFWDesc => "errorDialogNSFWDesc";
+
+  @override
+  String get errorDialogNSFWTitle => "errorDialogNSFWTitle";
+
+  @override
+  String get errorDialogNotAClothingDesc => "errorDialogNotAClothingDesc";
+
+  @override
+  String get errorDialogNotAClothingTitle => "errorDialogNotAClothingTitle";
+
+  @override
+  String get errorDialogNotAPersonDesc => "errorDialogNotAPersonDesc";
+
+  @override
+  String get errorDialogNotAPersonTitle => "errorDialogNotAPersonTitle";
+
+  @override
+  String get nameLabel => "nameLabel";
+
+  @override
+  String get recommendedLabel => "recommendedLabel";
 }
