@@ -3,6 +3,7 @@ import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/utils/constants.dart';
+import 'package:style_me/core/views/encrypted_image.dart';
 import 'package:style_me/features/wardrobe/presentation/components/image_error_widget.dart';
 import 'package:style_me/features/wardrobe/presentation/components/image_loading_widget.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
@@ -24,14 +25,13 @@ class PhotoGridItem extends StatelessWidget {
           Positioned.fill(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(32),
-              child: Image.network(
-                item.imageUrl,
+              child: EncryptedImage(
+                imageUrl: item.imageUrl,
                 fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
+                loadingBuilder: () {
                   return ImageLoadingWidget();
                 },
-                errorBuilder: (context, error, stackTrace) {
+                errorBuilder: () {
                   return ImageErrorWidget();
                 },
               ),
