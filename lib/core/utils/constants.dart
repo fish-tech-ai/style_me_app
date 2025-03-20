@@ -43,8 +43,7 @@ abstract class LanguageCodeConst {
 }
 
 abstract class ImageTransformationsOptions {
-  static const int compressedHeight = 800;
-  static const int compressedWidth = 800;
-  static const int compressedQuality = 60;
+  static const int compressedWidth = 600;
+  static const int compressedQuality = 90;
 }
 

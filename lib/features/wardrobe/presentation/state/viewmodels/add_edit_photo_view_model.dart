@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
+import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/network/failures/image_process_failure.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
@@ -89,14 +90,25 @@ class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
   }
 
   void onBackAction([Function()? pop]) {
+    clearImageData();
     if (state.addPhotoPageMode != AddPhotoPageMode.pickPhoto) {
-      state = state.copyWith(
-          addPhotoPageMode: AddPhotoPageMode.pickPhoto,
-          image: null,
-          imageProcessingError: null);
+      backToPickPhotoMode();
     } else {
       pop?.call();
     }
+  }
+
+  void onAppPaused() {
+    if (_imageId != null) {
+      onBackAction();
+    }
+  }
+
+  void backToPickPhotoMode() {
+    state = state.copyWith(
+        addPhotoPageMode: AddPhotoPageMode.pickPhoto,
+        image: null,
+        imageProcessingError: null);
   }
 
   void onCategorySelected(ClothingCategoryEnum category) {
@@ -108,5 +120,14 @@ class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
   void onTextChanged(String text) {
     state = state.copyWith(
         clothingForm: state.clothingForm.copyWith(nameText: text));
+  }
+
+  Future clearImageData() async {
+    if (_imageId != null) {
+      final result = await _deleteClothingPhotoUseCase(_imageId!);
+      result.collect((_) {}, (failure) {
+        debugMessagePrint(failure.toString());
+      });
+    }
   }
 }

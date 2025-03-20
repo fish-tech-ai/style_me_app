@@ -11,15 +11,40 @@ import 'package:style_me/features/wardrobe/presentation/state/add_edit_photo_sta
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/add_edit_photo_view_model.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
-class AddClothingPage extends ConsumerWidget {
+class AddClothingPage extends ConsumerStatefulWidget {
   const AddClothingPage({super.key});
+  @override
+  ConsumerState<AddClothingPage> createState() => _AddClothingPageState();
+}
+
+class _AddClothingPageState extends ConsumerState<AddClothingPage> with WidgetsBindingObserver {
+
+  late final AddEditPhotoViewModel viewModel;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    viewModel = ref.read(addEditPhotoViewModelProvider.notifier);
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      viewModel.onAppPaused();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final AddEditPhotoStateHolder state =
         ref.watch(addEditPhotoViewModelProvider);
-    final AddEditPhotoViewModel viewModel =
-        ref.read(addEditPhotoViewModelProvider.notifier);
     showDialogOnImageError(
       context,
       state.imageProcessingError,

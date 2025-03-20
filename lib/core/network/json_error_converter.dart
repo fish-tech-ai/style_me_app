@@ -17,7 +17,7 @@ class JsonErrorConverter extends JsonConverter {
       
       final jsonBody = jsonDecode(response.bodyString);
 
-      if (jsonBody is Map<String, dynamic> && jsonBody.containsKey('type')) {
+      if (jsonBody is Map<String, dynamic> && jsonBody.containsKey('error')) {
         final errorObject = errorConverter(jsonBody);
         return response.copyWith<dynamic>(bodyError: errorObject);
       }

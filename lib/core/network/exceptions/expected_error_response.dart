@@ -5,9 +5,9 @@ part 'expected_error_response.g.dart';
 
 @JsonSerializable()
 class ExpectedErrorResponse {
-  final ImageErrorTypeEnum type;
+  final ImageErrorTypeEnum error;
 
-  ExpectedErrorResponse(this.type);
+  ExpectedErrorResponse(this.error);
 
   factory ExpectedErrorResponse.fromJson(Map<String, dynamic> json) {
     return _$ExpectedErrorResponseFromJson(json);

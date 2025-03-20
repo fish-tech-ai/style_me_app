@@ -42,7 +42,7 @@ extension ImageTransformations on File {
 
       Uint8List flippedBytes = Uint8List.fromList(encodeJpg(flippedImage));
 
-      File flippedFile = File(this.path);
+      File flippedFile = File(path);
       await flippedFile.writeAsBytes(flippedBytes);
 
       return flippedFile;
@@ -59,12 +59,12 @@ extension ImageTransformations on File {
       if (image == null) {
         throw CompressError("Failed to decode image from file_ext.dart: getCompressed()");
       }
-      int newWidth = 600;
+      int newWidth = ImageTransformationsOptions.compressedWidth;
       int newHeight = (image.height * newWidth / image.width).round();
 
       Uint8List? compressedBytes = await FlutterImageCompress.compressWithFile(
         path,
-        quality: 90,
+        quality: ImageTransformationsOptions.compressedQuality,
         minWidth: newWidth,
         minHeight: newHeight,
         format: CompressFormat.webp,

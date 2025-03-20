@@ -37,7 +37,7 @@ class WardrobeRepository {
           await _service.sendClothingPhoto(encryptedImage.path);
       if (!response.isSuccessful && response.error is ExpectedErrorResponse) {
         throw ImageProcessException(
-            (response.error as ExpectedErrorResponse).type);
+            (response.error as ExpectedErrorResponse).error);
       }
       response.handleIfNotSuccessful();
       return response.body!;
