@@ -8,7 +8,7 @@ import 'package:style_me/features/wardrobe/presentation/components/add_photos/cl
 import 'package:style_me/features/wardrobe/presentation/components/add_photos/image_acceptation_view.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/photo_fetcher.dart';
 import 'package:style_me/features/wardrobe/presentation/state/add_edit_photo_state_holder.dart';
-import 'package:style_me/features/wardrobe/presentation/state/viewmodels/add_edit_photo_view_model.dart';
+import 'package:style_me/features/wardrobe/presentation/state/viewmodels/add_photo_view_model.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
 class AddClothingPage extends ConsumerStatefulWidget {
@@ -19,12 +19,12 @@ class AddClothingPage extends ConsumerStatefulWidget {
 
 class _AddClothingPageState extends ConsumerState<AddClothingPage> with WidgetsBindingObserver {
 
-  late final AddEditPhotoViewModel viewModel;
+  late final AddPhotoViewModel viewModel;
 
   @override
   void initState() {
     super.initState();
-    viewModel = ref.read(addEditPhotoViewModelProvider.notifier);
+    viewModel = ref.read(addPhotoViewModelProvider.notifier);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -44,7 +44,7 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage> with WidgetsB
   @override
   Widget build(BuildContext context) {
     final AddEditPhotoStateHolder state =
-        ref.watch(addEditPhotoViewModelProvider);
+        ref.watch(addPhotoViewModelProvider);
     showDialogOnImageError(
       context,
       state.imageProcessingError,
@@ -70,7 +70,7 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage> with WidgetsB
   }
 
   Widget _buildPageContentBasedOn(AddEditPhotoStateHolder state,
-      AddEditPhotoViewModel viewModel, BuildContext context) {
+      AddPhotoViewModel viewModel, BuildContext context) {
     switch (state.addPhotoPageMode) {
       case AddPhotoPageMode.pickPhoto:
         return PhotoFetcher(
@@ -107,7 +107,7 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage> with WidgetsB
   void showDialogOnImageError(
     BuildContext context,
     ImageErrorTypeEnum? imageProcessingError,
-    AddEditPhotoViewModel viewModel,
+    AddPhotoViewModel viewModel,
   ) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (imageProcessingError != null) {

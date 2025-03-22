@@ -11,24 +11,25 @@ import 'package:style_me/features/wardrobe/data/wardrobe_repository.dart';
 class SendClothingPhotoUseCase {
   final WardrobeRepository _repository;
   final NetworkRequestUtil _networkUtil;
+  final AESEncryptor _encryptor;
 
-  SendClothingPhotoUseCase(this._repository, this._networkUtil);
+  SendClothingPhotoUseCase(this._repository, this._networkUtil, this._encryptor);
 
   Future<Result<SendClothingPhotoResponse>> call(File image) async {
     final compressedImage = await image.getCompressed();
-    final encryptedFile = await AESEncryptor.encryptImage(compressedImage);
+    final encryptedFile = await _encryptor.encryptImage(compressedImage);
     return _networkUtil.makeRepositoryRequest(
       () async {
         final SendClothingPhotoResponse result =
             await _repository.sendClothingPhoto(encryptedFile);
         return result;
       },
-      onSuccess: (_) => deleteFiles(
+      onSuccess: (_) => _deleteFiles(
         image,
         compressedImage,
         encryptedFile,
       ),
-      onError: (_) => deleteFiles(
+      onError: (_) => _deleteFiles(
         image,
         compressedImage,
         encryptedFile,
@@ -36,7 +37,7 @@ class SendClothingPhotoUseCase {
     );
   }
 
-  Future deleteFiles(
+  Future _deleteFiles(
       File imageFile, File compressedImageFile, File encryptedFile) async {
     Directory? parentDir = imageFile.parent;
     try {

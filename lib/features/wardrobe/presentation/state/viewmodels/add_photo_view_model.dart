@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
@@ -13,15 +14,15 @@ import 'package:style_me/features/wardrobe/domain/send_clothing_photo_use_case.d
 import 'package:style_me/features/wardrobe/presentation/state/add_edit_photo_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
-part 'add_edit_photo_view_model.g.dart';
+part 'add_photo_view_model.g.dart';
 
 @riverpod
-class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
+class AddPhotoViewModel extends _$AddPhotoViewModel {
   late final SendClothingPhotoUseCase _sendClothingPhotoUseCase;
   late final ConfirmClothingPhotoUseCase _confirmClothingPhotoUseCase;
   late final DeleteClothingPhotoUseCase _deleteClothingPhotoUseCase;
 
-  AddEditPhotoViewModel() {
+  AddPhotoViewModel() {
     _sendClothingPhotoUseCase = getIt();
     _confirmClothingPhotoUseCase = getIt();
     _deleteClothingPhotoUseCase = getIt();
@@ -130,4 +131,11 @@ class AddEditPhotoViewModel extends _$AddEditPhotoViewModel {
       });
     }
   }
+
+  @visibleForTesting
+  AddPhotoViewModel.test(
+    this._sendClothingPhotoUseCase,
+    this._confirmClothingPhotoUseCase,
+    this._deleteClothingPhotoUseCase,
+  );
 }

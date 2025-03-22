@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 import 'package:convert/convert.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -12,7 +13,7 @@ class AESEncryptor {
   static const int ivSize = 16;
   static const int tagSize = 128;
 
-  static Future<File> encryptImage(File imageFile) async {
+  Future<File> encryptImage(File imageFile) async {
     final Uint8List key = hexToUint8List(dotenv.env['AES_KEY'] ?? "");
     final imageBytes = await imageFile.readAsBytes();
     final encryptedBytes = _encryptAESGCM(imageBytes, key);
@@ -24,11 +25,11 @@ class AESEncryptor {
     return encryptedFile;
   }
 
-  static Future<Uint8List> decryptImageFrom(String encryptedImageUrl) async {
+  Future<Uint8List> decryptImageFrom(String encryptedImageUrl) async {
     try {
       final response = await http.get(Uri.parse(encryptedImageUrl));
       if (response.statusCode == 200) {
-        return AESEncryptor.decryptImage(response.bodyBytes);
+        return decryptImage(response.bodyBytes);
       } else {
         throw Exception("${response.statusCode}: ${response.body}");
       }
@@ -38,15 +39,15 @@ class AESEncryptor {
     }
   }
 
-  static Future<Uint8List> decryptImage(Uint8List encryptedImageBytes) async {
+  Future<Uint8List> decryptImage(Uint8List encryptedImageBytes) async {
     final Uint8List key = hexToUint8List(dotenv.env['AES_KEY'] ?? "");
     final decryptedBytes = _decryptAESGCM(encryptedImageBytes, key);
 
     return decryptedBytes;
   }
 
-  static Uint8List _encryptAESGCM(Uint8List plainData, Uint8List key) {
-    final nonce = _generateRandomNonce();
+  Uint8List _encryptAESGCM(Uint8List plainData, Uint8List key) {
+    final nonce = generateRandomNonce();
     final cipher = GCMBlockCipher(AESEngine());
 
     final parameters = AEADParameters(
@@ -66,7 +67,7 @@ class AESEncryptor {
     return Uint8List.fromList([...nonce, ...tag, ...ciphertext]);
   }
 
-  static Uint8List _decryptAESGCM(Uint8List encryptedData, Uint8List key) {
+  Uint8List _decryptAESGCM(Uint8List encryptedData, Uint8List key) {
     if (encryptedData.length < (ivSize + (tagSize ~/ 8))) {
       throw ArgumentError("Invalid encrypted data length");
     }
@@ -88,19 +89,19 @@ class AESEncryptor {
     return cipher.process(Uint8List.fromList([...ciphertext, ...tag]));
   }
 
-  static Uint8List _generateRandomNonce() {
-    final secureRandom = SecureRandom("Fortuna")
-      ..seed(
-        KeyParameter(
-          Uint8List.fromList(
-            List.generate(32, (i) => i),
-          ),
-        ),
-      );
-    return secureRandom.nextBytes(ivSize);
+  Uint8List generateRandomNonce() {
+    final timestamp = DateTime.now().microsecondsSinceEpoch;
+    final timestampBytes = ByteData(8)..setInt64(0, timestamp);
+
+    final random = Random.secure();
+    final randomBytes = Uint8List.fromList(
+      List.generate(8, (_) => random.nextInt(256)),
+    );
+
+    return Uint8List.fromList([...timestampBytes.buffer.asUint8List(), ...randomBytes]);
   }
 
-  static Uint8List hexToUint8List(String hexString) {
+  Uint8List hexToUint8List(String hexString) {
     final bytes = hex.decode(hexString);
     return Uint8List.fromList(bytes);
   }

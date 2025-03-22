@@ -19,6 +19,7 @@ import 'package:style_me/core/network/services/app_service.dart';
 import 'package:style_me/core/network/services/auth_service.dart';
 import 'package:style_me/core/network/services/clothes_service.dart';
 import 'package:style_me/core/network/services/user_service.dart';
+import 'package:style_me/core/network/utils/aes_encryptor.dart';
 import 'package:style_me/core/network/utils/app_authenticator.dart';
 import 'package:style_me/core/network/utils/app_headers_interceptor.dart';
 import 'package:style_me/core/network/utils/network_request_util.dart';
@@ -70,6 +71,7 @@ class GetItManager {
     getIt.registerLazySingleton<AppDatabase>(() => AppDatabase());
     getIt.registerLazySingleton(() => AppLinks());
     getIt.registerLazySingleton(() => DeepLinkManager(getIt()));
+    getIt.registerLazySingleton(() => AESEncryptor());
 
     ///Global
     getIt.registerFactory(() => AppRepository(getIt(), getIt()));
@@ -105,7 +107,8 @@ class GetItManager {
     ///Wardrobe
     getIt.registerFactory(() => WardrobeRepository(getIt()));
     getIt.registerFactory(() => GetClothesUseCase(getIt(), getIt()));
-    getIt.registerFactory(() => SendClothingPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(
+        () => SendClothingPhotoUseCase(getIt(), getIt(), getIt()));
     getIt.registerFactory(() => ConfirmClothingPhotoUseCase(getIt(), getIt()));
     getIt.registerFactory(() => DeleteClothingPhotoUseCase(getIt(), getIt()));
   }

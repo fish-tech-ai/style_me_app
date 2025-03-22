@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
@@ -70,4 +71,7 @@ class WardrobeViewModel extends _$WardrobeViewModel {
       },
     );
   }
+
+  @visibleForTesting
+  WardrobeViewModel.test(this._getClothesUseCase);
 }
