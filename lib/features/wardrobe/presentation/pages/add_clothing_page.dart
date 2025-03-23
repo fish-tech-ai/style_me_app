@@ -7,7 +7,7 @@ import 'package:style_me/core/views/app_top_bar.dart';
 import 'package:style_me/features/wardrobe/presentation/components/add_photos/clothing_photo_add_form.dart';
 import 'package:style_me/features/wardrobe/presentation/components/add_photos/image_acceptation_view.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/photo_fetcher.dart';
-import 'package:style_me/features/wardrobe/presentation/state/add_edit_photo_state_holder.dart';
+import 'package:style_me/features/wardrobe/presentation/state/add_photo_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/add_photo_view_model.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
@@ -43,7 +43,7 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage> with WidgetsB
 
   @override
   Widget build(BuildContext context) {
-    final AddEditPhotoStateHolder state =
+    final AddPhotoStateHolder state =
         ref.watch(addPhotoViewModelProvider);
     showDialogOnImageError(
       context,
@@ -69,7 +69,7 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage> with WidgetsB
     );
   }
 
-  Widget _buildPageContentBasedOn(AddEditPhotoStateHolder state,
+  Widget _buildPageContentBasedOn(AddPhotoStateHolder state,
       AddPhotoViewModel viewModel, BuildContext context) {
     switch (state.addPhotoPageMode) {
       case AddPhotoPageMode.pickPhoto:

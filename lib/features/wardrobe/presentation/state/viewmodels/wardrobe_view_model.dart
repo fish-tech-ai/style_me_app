@@ -33,6 +33,7 @@ class WardrobeViewModel extends _$WardrobeViewModel {
       filterPosition: null,
       filterCategory: ClothingCategoryEnum.ALL,
     );
+    getClothes();
   }
 
   void onSearchTextChanged(String text) {

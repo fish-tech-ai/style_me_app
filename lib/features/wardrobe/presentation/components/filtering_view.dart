@@ -53,6 +53,7 @@ class _FilteringViewState extends State<FilteringView> {
               height: 40,
               onClick: () {
                 toggleFilters();
+                widget.onFiltersClose();
               },
             )
           : AppButton(

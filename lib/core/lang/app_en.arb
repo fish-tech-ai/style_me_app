@@ -129,5 +129,7 @@
   "errorDialogNotAPersonTitle": "Looks like you're not in the picture",
   "errorDialogNotAPersonDesc": "Make sure your figure is fully visible in the frame and try again.",
   "recommendedLabel": "(Recommended)",
-  "addPhoto": "Add photo"
+  "addPhoto": "Add photo",
+  "yourPhotos": "Your Photos",
+  "yourClothes": "Your Clothes"
 }

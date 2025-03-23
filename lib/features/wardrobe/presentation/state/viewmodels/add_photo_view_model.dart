@@ -11,7 +11,7 @@ import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_re
 import 'package:style_me/features/wardrobe/domain/confirm_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/delete_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/send_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/presentation/state/add_edit_photo_state_holder.dart';
+import 'package:style_me/features/wardrobe/presentation/state/add_photo_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
 part 'add_photo_view_model.g.dart';
@@ -31,8 +31,8 @@ class AddPhotoViewModel extends _$AddPhotoViewModel {
   String? _imageId;
 
   @override
-  AddEditPhotoStateHolder build() {
-    return AddEditPhotoStateHolder();
+  AddPhotoStateHolder build() {
+    return AddPhotoStateHolder();
   }
 
   void onImageFetched(File image) {
