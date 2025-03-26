@@ -21,7 +21,7 @@ class PhotoGrid extends StatelessWidget {
       ),
       itemCount: items.length,
       itemBuilder: (context, index) => PhotoGridItem(
-        item: items[index],
+        photo: items[index],
         onItemClicked: onItemClicked,
       ),
     );

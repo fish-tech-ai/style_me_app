@@ -10,6 +10,7 @@ import 'package:style_me/features/wardrobe/data/models/io/clothes_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothes_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothing_confirmation_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
+import 'package:style_me/features/wardrobe/data/models/io/update_clothing_request.dart';
 
 class WardrobeRepository {
   final ClothesService _service;
@@ -48,10 +49,28 @@ class WardrobeRepository {
       throw ServerException(error.toString());
     }
   }
-  
+
   Future confirmClothingPhoto(ClothingConfirmationRequest request) async {
     try {
       final Response response = await _service.confirmClothingPhoto(request);
+      response.handleIfNotSuccessful();
+    } catch (error) {
+      throw ServerException(error.toString());
+    }
+  }
+
+  Future updateClothing(String id, UpdateClothingRequest request) async {
+    try {
+      final Response response = await _service.updateClothing(id, request);
+      response.handleIfNotSuccessful();
+    } catch (error) {
+      throw ServerException(error.toString());
+    }
+  }
+
+  Future deleteClothing(String id) async {
+    try {
+      final Response response = await _service.deleteClothing(id);
       response.handleIfNotSuccessful();
     } catch (error) {
       throw ServerException(error.toString());

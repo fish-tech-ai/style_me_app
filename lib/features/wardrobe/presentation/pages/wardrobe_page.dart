@@ -43,12 +43,6 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
         children: [
           AppTabBar(controller: _tabController, tabs: [
             buildTabBarItem(
-                text: localizations.yourPhotos,
-                icon: Icon(
-                  Icons.accessibility_new_rounded,
-                  color: context.colorScheme.onPrimary,
-                )),
-            buildTabBarItem(
               text: localizations.yourClothes,
               icon: SvgPicture.asset(
                 "assets/apparel_icon.svg",
@@ -59,7 +53,14 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
                   BlendMode.srcIn,
                 ),
               ),
-            )
+            ),
+            buildTabBarItem(
+              text: localizations.yourPhotos,
+              icon: Icon(
+                Icons.accessibility_new_rounded,
+                color: context.colorScheme.onPrimary,
+              ),
+            ),
           ]),
           Expanded(
             child: TabBarView(
@@ -70,6 +71,7 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
                   onFilterClosed: viewModel.clearFilters,
                   onFiltersChange: viewModel.onFilterChanged,
                   onTextChanged: viewModel.onSearchTextChanged,
+                  onModifyResult: viewModel.onClothingModifyResult,
                 ),
                 UserPhotosListPage()
               ],

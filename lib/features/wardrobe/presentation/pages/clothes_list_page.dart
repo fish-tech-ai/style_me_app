@@ -1,27 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/input/search_text_field.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/presentation/components/filtering_view.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_grid.dart';
 import 'package:style_me/features/wardrobe/presentation/state/wardrobe_state_holder.dart';
+import 'package:style_me/features/wardrobe/presentation/ui_models/clothing_with_action.dart';
 
 class ClothesListPage extends StatelessWidget {
   final WardrobeStateHolder state;
   final Function() onFilterClosed;
   final Function(ClothingPositionEnum?, ClothingCategoryEnum) onFiltersChange;
   final Function(String) onTextChanged;
+  final Function(ClothingWithAction) onModifyResult;
 
   const ClothesListPage(
       {required this.state,
       super.key,
       required this.onFilterClosed,
       required this.onFiltersChange,
-      required this.onTextChanged});
+      required this.onTextChanged,
+      required this.onModifyResult});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +44,7 @@ class ClothesListPage extends StatelessWidget {
               buildFilterView(),
             ],
           ),
-          _buildClothesPage(),
+          _buildClothesPage(context),
         ],
       ),
     );
@@ -60,14 +66,14 @@ class ClothesListPage extends StatelessWidget {
     );
   }
 
-  Widget _buildClothesPage() {
+  Widget _buildClothesPage(BuildContext context) {
     if (!state.isLoading && state.clothes.isEmpty) {
       return _buildEmptyPage();
     }
     return Expanded(
       child: PhotoGrid(
         items: state.clothes,
-        onItemClicked: (PhotoItem photoItem) {},
+        onItemClicked: (item) => onItemClicked(item, context),
       ).orLoading(state.isLoading),
     );
   }
@@ -94,5 +100,13 @@ class ClothesListPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void onItemClicked(PhotoItem photoItem, BuildContext context) async {
+    final ClothingWithAction? clothingWithAction = await context
+        .push(AppPage.editClothingPage.path, extra: photoItem as Clothing);
+    if (clothingWithAction != null) {
+      onModifyResult(clothingWithAction);
+    }
   }
 }

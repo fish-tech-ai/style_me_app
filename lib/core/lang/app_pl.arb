@@ -131,5 +131,10 @@
   "recommendedLabel": "(Polecana)",
   "addPhoto": "Dodaj zdjęcie",
   "yourPhotos": "Twoje zdjęcia",
-  "yourClothes": "Twoje ubrania"
+  "yourClothes": "Twoje ubrania",
+  "save": "Zapisz zmiany",
+  "deleteClothing": "Usuń ubrania",
+  "deletePhoto": "Usuń zdjęcie",
+  "clothingName": "Nazwa ubrania",
+  "photoName": "Nazwa zdjęcia"
 }

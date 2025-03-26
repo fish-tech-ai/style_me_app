@@ -2,6 +2,7 @@ import 'package:chopper/chopper.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothes_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothing_confirmation_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
+import 'package:style_me/features/wardrobe/data/models/io/update_clothing_request.dart';
 
 part "clothes_service.chopper.dart";
 
@@ -22,6 +23,13 @@ abstract class ClothesService extends ChopperService {
   @Post(path: '/confirm')
   Future<Response> confirmClothingPhoto(
       @Body() ClothingConfirmationRequest request);
+
+  @Put(path: '/update')
+  Future<Response> updateClothing(
+      @Query('id') String id, @Body() UpdateClothingRequest request);
+
+  @Delete(path: '/delete')
+  Future<Response> deleteClothing(@Query('id') String id);
 
   static ClothesService create([ChopperClient? client]) =>
       _$ClothesService(client);

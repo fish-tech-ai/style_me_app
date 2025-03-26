@@ -17,6 +17,7 @@ import 'package:style_me/features/settings/data/models/report_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothes_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothing_confirmation_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
+import 'package:style_me/features/wardrobe/data/models/io/update_clothing_request.dart';
 
 class ChopperManager {
   static ChopperClient createClient(
@@ -39,7 +40,9 @@ class ChopperManager {
             SendClothingPhotoResponse: (json) =>
                 SendClothingPhotoResponse.fromJson(json),
             ClothingConfirmationRequest: (json) =>
-                ClothingConfirmationRequest.fromJson(json)
+                ClothingConfirmationRequest.fromJson(json),
+            UpdateClothingRequest: (json) =>
+                UpdateClothingRequest.fromJson(json),
           },
         ),
         errorConverter:

@@ -20,8 +20,8 @@ class AppOutlinedButton extends StatelessWidget {
     this.trailingIcon,
     this.spacing,
     this.height = 48,
-    this.padding = const EdgeInsets.symmetric(horizontal: 12),
     this.width,
+    this.padding = const EdgeInsets.symmetric(horizontal: 12),
   });
 
   @override

@@ -44,4 +44,9 @@ enum ClothingCategoryEnum {
         ClothingCategoryEnum.UNDERSHIRT =>
           localizations.clothingCategoryUndershirt
       };
+  static List<ClothingCategoryEnum> withoutAllCategory() {
+    return values
+        .where((item) => item != ClothingCategoryEnum.ALL)
+        .toList();
+  }
 }

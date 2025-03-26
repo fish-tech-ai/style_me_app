@@ -9,47 +9,51 @@ import 'package:style_me/features/wardrobe/presentation/components/image_loading
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 
 class PhotoGridItem extends StatelessWidget {
-  final PhotoItem item;
-  final Function(PhotoItem photoItem) onItemClicked;
+  final PhotoItem photo;
+  final Function(PhotoItem photo) onItemClicked;
 
   const PhotoGridItem(
-      {super.key, required this.item, required this.onItemClicked});
+      {super.key, required this.photo, required this.onItemClicked});
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return Stack(
-        fit: StackFit.loose,
-        clipBehavior: Clip.none,
-        children: [
-          Positioned.fill(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(32),
-              child: EncryptedImage(
-                imageUrl: item.imageUrl,
-                fit: BoxFit.cover,
-                loadingBuilder: () {
-                  return ImageLoadingWidget();
-                },
-                errorBuilder: () {
-                  return ImageErrorWidget();
-                },
+    return InkWell(
+      onTap: () => onItemClicked(photo),
+      borderRadius: GlobalUiConst.borderRadiusExtraLarge,
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Stack(
+          fit: StackFit.loose,
+          clipBehavior: Clip.none,
+          children: [
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: GlobalUiConst.borderRadiusExtraLarge,
+                child: EncryptedImage(
+                  imageUrl: photo.image,
+                  fit: BoxFit.cover,
+                  loadingBuilder: () {
+                    return ImageLoadingWidget();
+                  },
+                  errorBuilder: () {
+                    return ImageErrorWidget();
+                  },
+                ),
               ),
             ),
-          ),
-          Positioned(
-            top: -6,
-            left: -6,
-            child: _buildIsDefaultIndicator(context),
-          ).orEmpty(!item.isDefault),
-          Positioned(
-            bottom: 28,
-            left: 0,
-            child: _buildNameLabel(context, constraints),
-          ),
-        ],
-      );
-    });
+            Positioned(
+              top: -6,
+              left: -6,
+              child: _buildIsDefaultIndicator(context),
+            ).orEmpty(!photo.isDefault),
+            Positioned(
+              bottom: 28,
+              left: 0,
+              child: _buildNameLabel(context, constraints),
+            ),
+          ],
+        );
+      }),
+    );
   }
 
   Widget _buildNameLabel(BuildContext context, BoxConstraints constraints) {
@@ -69,7 +73,7 @@ class PhotoGridItem extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         margin: EdgeInsets.only(right: 12),
         child: Text(
-          item.imageName,
+          photo.name,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(fontWeight: FontWeight.w500),

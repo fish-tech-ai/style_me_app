@@ -16,11 +16,13 @@ class SearchTextField extends StatefulWidget {
 
 class _SearchTextFieldState extends State<SearchTextField> {
   late final TextEditingController controller;
+  late final FocusNode focusNode;
 
   @override
   void initState() {
     super.initState();
     controller = TextEditingController(text: widget.text);
+    focusNode = FocusNode();
   }
 
   @override
@@ -39,6 +41,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
         controller: controller,
         textInputAction: TextInputAction.done,
         onChanged: widget.onTextChanged,
+        focusNode: focusNode,
         decoration: InputDecoration(
             suffixIcon: buildIconButton(),
             labelText: localizations.search,
@@ -58,7 +61,10 @@ class _SearchTextFieldState extends State<SearchTextField> {
           borderRadius: GlobalUiConst.borderRadiusNormal,
           color: context.colorScheme.primary),
       child: IconButton(
-        onPressed: () => widget.onTextChanged(controller.text),
+        onPressed: () {
+          focusNode.unfocus();
+          widget.onTextChanged(controller.text);
+        },
         icon: Icon(
           Icons.keyboard_arrow_right_rounded,
           color: context.colorScheme.onPrimary,

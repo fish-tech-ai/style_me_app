@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
+import 'package:style_me/core/extensions/list_ext.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/domain/get_clothes_use_case.dart';
 import 'package:style_me/features/wardrobe/presentation/state/wardrobe_state_holder.dart';
+import 'package:style_me/features/wardrobe/presentation/ui_models/clothing_with_action.dart';
+import 'package:style_me/features/wardrobe/presentation/ui_models/modification_action_enum.dart';
 
 part 'wardrobe_view_model.g.dart';
 
@@ -48,6 +51,25 @@ class WardrobeViewModel extends _$WardrobeViewModel {
       filterCategory: clothingCategory,
     );
     getClothes();
+  }
+
+  void onClothingModifyResult(ClothingWithAction clothingWithAction) {
+    switch (clothingWithAction.action) {
+      case ModificationActionEnum.update:
+        state = state.copyWith(
+          clothes: state.clothes
+              .getUpdatedWith(clothingWithAction.clothing)
+              .asClothingList(),
+        );
+        break;
+      case ModificationActionEnum.delete:
+        state = state.copyWith(
+          clothes: state.clothes
+              .getReducedWith(clothingWithAction.clothing)
+              .asClothingList(),
+        );
+        break;
+    }
   }
 
   Future getClothes() async {

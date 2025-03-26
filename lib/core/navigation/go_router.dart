@@ -8,7 +8,9 @@ import 'package:style_me/features/settings/presentation/pages/privacy_policy_pag
 import 'package:style_me/features/settings/presentation/pages/settings_page.dart';
 import 'package:style_me/features/settings/presentation/pages/terms_and_contitions_page.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing.dart';
 import 'package:style_me/features/wardrobe/presentation/pages/add_clothing_page.dart';
+import 'package:style_me/features/wardrobe/presentation/pages/edit_clothing_page.dart';
 import 'package:style_me/features/wardrobe/presentation/pages/wardrobe_page.dart';
 
 GoRouter getRouter(bool isAuthenticated) => GoRouter(
@@ -53,6 +55,13 @@ GoRouter getRouter(bool isAuthenticated) => GoRouter(
             final ChangePasswordPageArgs args =
                 state.extra as ChangePasswordPageArgs;
             return ChangePasswordPage(changePasswordArgs: args);
+          },
+        ),
+        GoRoute(
+          path: AppPage.editClothingPage.path,
+          builder: (context, state) {
+            final Clothing clothing = state.extra as Clothing;
+            return EditClothingPage(clothing: clothing);
           },
         ),
       ],

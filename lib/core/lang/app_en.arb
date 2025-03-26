@@ -131,5 +131,10 @@
   "recommendedLabel": "(Recommended)",
   "addPhoto": "Add photo",
   "yourPhotos": "Your Photos",
-  "yourClothes": "Your Clothes"
+  "yourClothes": "Your Clothes",
+  "save": "Save changes",
+  "deleteClothing": "Delete clothing",
+  "deletePhoto": "Delete photo",
+  "clothingName": "Clothing name",
+  "photoName": "Photo name"
 }

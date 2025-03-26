@@ -24,18 +24,38 @@ class EncryptedImage extends StatefulWidget {
 }
 
 class _EncryptedImageState extends State<EncryptedImage> {
+  String? _imageUrl;
+  late Future<Uint8List> image;
+
+  @override
+  void initState() {
+    super.initState();
+    _imageUrl = widget.imageUrl;
+    image = _fetchAndDecryptImage();
+  }
+
+  @override
+  void didUpdateWidget(EncryptedImage oldWidget) {
+    if (widget.imageUrl != oldWidget.imageUrl) {
+      _imageUrl = widget.imageUrl;
+      image = _fetchAndDecryptImage();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
   Future<Uint8List> _fetchAndDecryptImage() async {
-    return getIt<AESEncryptor>().decryptImageFrom(widget.imageUrl);
+    return getIt<AESEncryptor>().decryptImageFrom(_imageUrl!);
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Uint8List>(
-      future: _fetchAndDecryptImage(),
+      future: image,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return widget.loadingBuilder();
         } else if (snapshot.hasError) {
+          debugMessagePrint("No image found on $_imageUrl");
           return widget.errorBuilder();
         } else if (snapshot.hasData) {
           return Image.memory(
@@ -43,7 +63,7 @@ class _EncryptedImageState extends State<EncryptedImage> {
             fit: widget.fit,
           );
         } else {
-          debugMessagePrint("No image found on ${widget.imageUrl}");
+          debugMessagePrint("No image found on $_imageUrl");
           return widget.errorBuilder();
         }
       },
