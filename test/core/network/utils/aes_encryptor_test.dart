@@ -58,19 +58,6 @@ void main() {
       expect(await encrypted.length(), greaterThan(0));
     });
 
-    test('decryptImageFrom throws on HTTP error', () async {
-      final mockResponse = MockHttpResponse();
-      when(() => mockResponse.statusCode).thenReturn(404);
-      when(() => mockResponse.body).thenReturn("Not found");
-
-      when(() => mockClient.get(any())).thenAnswer((_) async => mockResponse);
-
-      expect(
-        () => encryptor.decryptImageFrom("https://not-found.url"),
-        throwsException,
-      );
-    });
-
     test('decryptImage properly decrypts bytes', () async {
       final tempDir = Directory.systemTemp.createTempSync();
       when(() => mockPathProvider.getTemporaryPath())

@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
-import 'package:style_me/core/network/utils/aes_encryptor.dart';
+import 'package:style_me/core/network/utils/encrypted_image_fetcher.dart';
 
 class EncryptedImage extends StatefulWidget {
   final String imageUrl;
@@ -44,7 +44,7 @@ class _EncryptedImageState extends State<EncryptedImage> {
   }
 
   Future<Uint8List> _fetchAndDecryptImage() async {
-    return getIt<AESEncryptor>().decryptImageFrom(_imageUrl!);
+    return getIt<EncryptedImageFetcher>().fetchAndDecryptImageFrom(_imageUrl!);
   }
 
   @override

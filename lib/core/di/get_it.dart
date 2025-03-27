@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_me/core/app/data/app_repository.dart';
+import 'package:style_me/core/app/domain/usecases/fetch_image_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_current_theme_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_language_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_user_use_case.dart';
@@ -22,6 +23,7 @@ import 'package:style_me/core/network/services/user_service.dart';
 import 'package:style_me/core/network/utils/aes_encryptor.dart';
 import 'package:style_me/core/network/utils/app_authenticator.dart';
 import 'package:style_me/core/network/utils/app_headers_interceptor.dart';
+import 'package:style_me/core/network/utils/encrypted_image_fetcher.dart';
 import 'package:style_me/core/network/utils/network_request_util.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
 import 'package:style_me/core/utils/deep_link_manager.dart';
@@ -69,16 +71,20 @@ class GetItManager {
     final sharedPrefs = await SharedPreferences.getInstance();
     getIt.registerLazySingleton(() => sharedPrefs);
     getIt.registerLazySingleton(() => Connection());
-    getIt.registerFactory(() => NetworkRequestUtil());
     getIt.registerLazySingleton<AppDatabase>(() => AppDatabase());
-    getIt.registerLazySingleton(() => AppLinks());
-    getIt.registerLazySingleton(() => DeepLinkManager(getIt()));
-    getIt.registerLazySingleton(() => AESEncryptor());
 
     ///Global
     getIt.registerFactory(() => AppRepository(getIt(), getIt()));
     getIt.registerFactory(() => GetCurrentThemeUseCase(getIt()));
     getIt.registerFactory(() => SaveCurrentThemeUseCase(getIt()));
+    getIt.registerFactory(() => FetchImageUseCase(getIt()));
+
+    ///Utils
+    getIt.registerFactory(() => NetworkRequestUtil());
+    getIt.registerLazySingleton(() => AppLinks());
+    getIt.registerLazySingleton(() => DeepLinkManager(getIt()));
+    getIt.registerLazySingleton(() => AESEncryptor());
+    getIt.registerFactory(() => EncryptedImageFetcher(getIt(), getIt()));
 
     ///Global auth
     getIt.registerFactory(() => GoogleSignIn.standard());

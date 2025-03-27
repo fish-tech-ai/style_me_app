@@ -29,6 +29,7 @@ class PhotoGridItem extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: GlobalUiConst.borderRadiusExtraLarge,
                 child: EncryptedImage(
+                  //TODO fetch all images first in separated isolate then process and show as files or from cache (implement cache)
                   imageUrl: photo.image,
                   fit: BoxFit.cover,
                   loadingBuilder: () {
