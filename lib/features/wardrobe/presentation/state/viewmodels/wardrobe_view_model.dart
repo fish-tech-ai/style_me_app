@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/list_ext.dart';
+import 'package:style_me/core/network/utils/image_process/multiple_image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
@@ -86,13 +88,36 @@ class WardrobeViewModel extends _$WardrobeViewModel {
     );
     result.collect(
       (clothes) {
-        state = state.copyWith(clothes: clothes, isLoading: false);
+        convertImagesAndShow(clothes);
       },
       (failure) {
         ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
         state = state.copyWith(isLoading: false);
       },
     );
+  }
+
+  void convertImagesAndShow(List<Clothing> clothesWithUrls) async {
+    final cacheDir = await getTemporaryDirectory();
+    final List<Clothing> clothesWithPaths = clothesWithUrls.map(
+      (clothing) {
+        return clothing.copyWith(image: '${cacheDir.path}/${clothing.id}.webp');
+      },
+    ).toList();
+    await _fetchAndDecryptImageFromIsolate(
+      clothesWithUrls.map((clothingWithUrl) => clothingWithUrl.image).toList(),
+      clothesWithPaths
+          .map((clothingWithPath) => clothingWithPath.image)
+          .toList(),
+    );
+
+    state = state.copyWith(clothes: clothesWithPaths, isLoading: false);
+  }
+
+  Future _fetchAndDecryptImageFromIsolate(
+      List<String> urls, List<String> paths) async {
+    await getIt<MultipleImageFetcher>()
+        .handleImagesLoadingAndCache(urls, paths);
   }
 
   @visibleForTesting

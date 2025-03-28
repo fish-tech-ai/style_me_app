@@ -18,6 +18,11 @@ class AESEncryptor {
     key = hexToUint8List(dotenv.env['AES_KEY'] ?? "");
   }
 
+  AESEncryptor.withKey(String key) {
+    this.key = hexToUint8List(key);
+  }
+
+
   Future<File> encryptImage(File imageFile) async {
     final imageBytes = await imageFile.readAsBytes();
     final encryptedBytes = _encryptAESGCM(imageBytes, key);
@@ -53,7 +58,7 @@ class AESEncryptor {
     return _decryptAESGCM(encryptedImageBytes, key);
   }
 
-  static Uint8List _decryptAESGCM(Uint8List encryptedData, Uint8List key) {
+  Uint8List _decryptAESGCM(Uint8List encryptedData, Uint8List key) {
     if (encryptedData.length < (ivSize + (tagSize ~/ 8))) {
       throw ArgumentError("Invalid encrypted data length");
     }

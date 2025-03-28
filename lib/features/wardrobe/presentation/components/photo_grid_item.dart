@@ -1,9 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/utils/constants.dart';
-import 'package:style_me/core/views/encrypted_image.dart';
+import 'package:style_me/core/views/encrypted_image/encrypted_image.dart';
 import 'package:style_me/features/wardrobe/presentation/components/image_error_widget.dart';
 import 'package:style_me/features/wardrobe/presentation/components/image_loading_widget.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
@@ -29,13 +30,13 @@ class PhotoGridItem extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: GlobalUiConst.borderRadiusExtraLarge,
                 child: EncryptedImage(
-                  //TODO fetch all images first in separated isolate then process and show as files or from cache (implement cache)
-                  imageUrl: photo.image,
+                  imagePath: photo.image,
                   fit: BoxFit.cover,
                   loadingBuilder: () {
                     return ImageLoadingWidget();
                   },
-                  errorBuilder: () {
+                  errorBuilder: (stackTrace) {
+                    debugPrintStack(stackTrace: stackTrace);
                     return ImageErrorWidget();
                   },
                 ),

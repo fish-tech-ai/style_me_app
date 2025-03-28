@@ -6,7 +6,7 @@ import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/buttons/app_back_button.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_outlined_button.dart';
-import 'package:style_me/core/views/encrypted_image.dart';
+import 'package:style_me/core/views/encrypted_image/encrypted_image.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
 import 'package:style_me/core/views/input/dropdowns/app_dropdown_button.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing.dart';
@@ -73,8 +73,8 @@ class _EditClothingPageState extends ConsumerState<EditClothingPage> {
             children: [
               Positioned.fill(
                 child: EncryptedImage(
-                  imageUrl: state.clothing.image,
-                  errorBuilder: () => ImageErrorWidget(),
+                  imagePath: state.clothing.image,
+                  errorBuilder: (_) => ImageErrorWidget(),
                   loadingBuilder: () => ImageLoadingWidget(),
                   fit: BoxFit.cover,
                 ),
@@ -86,16 +86,17 @@ class _EditClothingPageState extends ConsumerState<EditClothingPage> {
                   spacing: 12,
                   children: [
                     AppOutlinedButton(
+                      text: localizations.deleteClothing,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: context.colorScheme.error,
+                        backgroundColor: context.colorScheme.onError,
+                        side: BorderSide(color: context.colorScheme.error),
+                      ),
+                      isLoading: state.isDeleteLoading,
                       onClick: () async {
                         await viewModel.deleteClothing(() =>
                             context.pop(widget.clothing.withDeleteAction()));
                       },
-                      //TODO add loading
-                      text: localizations.deleteClothing,
-                      style: OutlinedButton.styleFrom(
-                          foregroundColor: context.colorScheme.error,
-                          backgroundColor: context.colorScheme.onError,
-                          side: BorderSide(color: context.colorScheme.error)),
                     ),
                     AppButton(
                         text: localizations.save,

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/views/default_loading_page.dart';
 
 class AppOutlinedButton extends StatelessWidget {
   final String text;
@@ -9,6 +12,7 @@ class AppOutlinedButton extends StatelessWidget {
   final double? spacing;
   final double? height;
   final double? width;
+  final bool isLoading;
   final EdgeInsets padding;
 
   const AppOutlinedButton({
@@ -22,6 +26,7 @@ class AppOutlinedButton extends StatelessWidget {
     this.height = 48,
     this.width,
     this.padding = const EdgeInsets.symmetric(horizontal: 12),
+    this.isLoading = false,
   });
 
   @override
@@ -41,7 +46,14 @@ class AppOutlinedButton extends StatelessWidget {
               Text(text),
               trailingIcon ?? SizedBox(),
             ],
-          )),
+          ).or(
+              DefaultLoading(
+                color: style?.foregroundColor
+                        ?.resolve(WidgetState.values.toSet()) ??
+                    context.colorScheme.primary,
+                size: Size.square(24),
+              ),
+              isLoading)),
     );
   }
 }

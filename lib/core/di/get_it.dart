@@ -23,12 +23,13 @@ import 'package:style_me/core/network/services/user_service.dart';
 import 'package:style_me/core/network/utils/aes_encryptor.dart';
 import 'package:style_me/core/network/utils/app_authenticator.dart';
 import 'package:style_me/core/network/utils/app_headers_interceptor.dart';
-import 'package:style_me/core/network/utils/encrypted_image_fetcher.dart';
+import 'package:style_me/core/network/utils/image_process/multiple_image_fetcher.dart';
 import 'package:style_me/core/network/utils/network_request_util.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
 import 'package:style_me/core/utils/deep_link_manager.dart';
 import 'package:style_me/core/utils/google_auth_service.dart';
 import 'package:style_me/core/utils/token_authenticator.dart';
+import 'package:style_me/core/views/encrypted_image/isolated_decrypt_manager.dart';
 import 'package:style_me/features/auth/data/auth_repository.dart';
 import 'package:style_me/features/settings/data/settings_repository.dart';
 import 'package:style_me/features/settings/domain/add_report_use_case.dart';
@@ -77,14 +78,15 @@ class GetItManager {
     getIt.registerFactory(() => AppRepository(getIt(), getIt()));
     getIt.registerFactory(() => GetCurrentThemeUseCase(getIt()));
     getIt.registerFactory(() => SaveCurrentThemeUseCase(getIt()));
-    getIt.registerFactory(() => FetchImageUseCase(getIt()));
+    getIt.registerFactory(() => FetchImageUseCase());
 
     ///Utils
     getIt.registerFactory(() => NetworkRequestUtil());
     getIt.registerLazySingleton(() => AppLinks());
     getIt.registerLazySingleton(() => DeepLinkManager(getIt()));
     getIt.registerLazySingleton(() => AESEncryptor());
-    getIt.registerFactory(() => EncryptedImageFetcher(getIt(), getIt()));
+    getIt.registerFactory(() => MultipleImageFetcher(getIt()));
+    getIt.registerLazySingleton(() => IsolatedDecryptCompressManager());
 
     ///Global auth
     getIt.registerFactory(() => GoogleSignIn.standard());
