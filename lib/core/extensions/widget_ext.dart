@@ -6,6 +6,9 @@ extension WidgetExt on Widget {
 
   Widget orEmpty(bool condition) => condition ? SizedBox() : this;
 
+  Widget orWrapWithSafeArea(bool condition) =>
+      condition ? SafeArea(child: this) : this;
+
   Widget or(Widget otherWidget, bool ifConditionTrue) =>
       ifConditionTrue ? otherWidget : this;
 }

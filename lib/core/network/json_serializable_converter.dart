@@ -24,7 +24,12 @@ class JsonSerializableConverter extends JsonConverter {
       throw Exception('Cannot convert response to $ResultType');
     }
 
-    final converted = fromJson(jsonBody) as ResultType;
-    return response.copyWith<ResultType>(body: converted);
+    try {
+      final converted = fromJson(jsonBody) as ResultType;
+      return response.copyWith<ResultType>(body: converted);
+    } on ArgumentError catch (e) {
+      debugMessagePrint("\x1b[31m ${e.stackTrace.toString()} \x1B[0m");
+      rethrow;
+    }
   }
 }

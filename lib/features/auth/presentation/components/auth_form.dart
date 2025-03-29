@@ -6,7 +6,7 @@ import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
-import 'package:style_me/core/views/ui_models/app_button_icon.dart';
+import 'package:style_me/core/views/ui_models/app_button_icon_data.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 import 'package:style_me/features/auth/presentation/state/auth_state_holder.dart';
 import 'package:style_me/features/auth/presentation/state/auth_view_model.dart';
@@ -118,7 +118,7 @@ class AuthForm extends StatelessWidget {
           text: context.localizations.continueText,
           enabled: state.isAllValidated,
           isLoading: state.isLoading,
-          icon: AppButtonIcon(
+          icon: AppButtonIconData.iconData(
               Icons.keyboard_arrow_right_rounded, IconPosition.trailing),
           onClick: () => continueIfValidated(context),
         ),

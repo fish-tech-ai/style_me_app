@@ -47,22 +47,26 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>GIDClientID</key>
+		<!-- Copied from GoogleService-Info.plist key CLIENT_ID -->
+		<string>461396037978-g4s0gjba1d94rr5qaa5i5noa3frd4o6m.apps.googleusercontent.com</string>
+		<!-- Google Sign-in Section -->
+		<key>CFBundleURLTypes</key>
+		<key>NSCameraUsageDescription</key>
+        <string>We need access to your camera to take photos of your clothes and yourself</string>
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>We need access to your photo library to pick images of your clothes and yourself.</string>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+					<string>com.googleusercontent.apps.461396037978-g4s0gjba1d94rr5qaa5i5noa3frd4o6m</string>
+				</array>
+			</dict>
+		</array>
+		<!-- End of the Google Sign-in Section -->
 	</dict>
 </plist>
-<key>GIDClientID</key>
-<!-- Copied from GoogleService-Info.plist key CLIENT_ID -->
-<string>461396037978-g4s0gjba1d94rr5qaa5i5noa3frd4o6m.apps.googleusercontent.com</string>
-<!-- Google Sign-in Section -->
-<key>CFBundleURLTypes</key>
-<array>
-	<dict>
-		<key>CFBundleTypeRole</key>
-		<string>Editor</string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-			<string>com.googleusercontent.apps.461396037978-g4s0gjba1d94rr5qaa5i5noa3frd4o6m</string>
-		</array>
-	</dict>
-</array>
-<!-- End of the Google Sign-in Section -->

@@ -72,7 +72,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                   SizedBox(
                       height:
                           state.mode == AuthPageModeEnum.emailOnly ? 72 : 24),
-                  AppBackButton(onTap: () {
+                  AppBackButton(border: Border.all(color: context.colorScheme.primary), onTap: () {
                     viewModel.changePageMode(AuthPageModeEnum.emailOnly);
                   }).orEmpty(state.mode == AuthPageModeEnum.emailOnly),
                   SizedBox(height: GlobalUiConst.paddingNormal),
@@ -105,7 +105,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         : Show.first,
                   ),
                   SizedBox(height: GlobalUiConst.paddingNormal),
-                  SizedBox(height: GlobalUiConst.defaultSystemNavBarHeight),
+                  SizedBox(height: MediaQuery.of(context).padding.bottom),
                 ],
               ),
             ),

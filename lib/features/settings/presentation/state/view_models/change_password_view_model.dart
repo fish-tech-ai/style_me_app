@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/utils/validator.dart';
 import 'package:style_me/features/settings/domain/change_password_use_case.dart';
 import 'package:style_me/features/settings/presentation/state/change_password_state_holder.dart';
@@ -25,8 +26,8 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
     return ChangePasswordStateHolder();
   }
 
-  void initFormValidators(
-      AppLocalizations localizations, bool isResettingPass) {
+  void initFormValidators(AppLocalizations localizations,
+      bool isResettingPass) {
     final Validator validator = Validator(localizations);
     state = state.copyWith(
       oldPassword: state.oldPassword.copyWith(
@@ -55,7 +56,7 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
       oldPassword: state.oldPassword.copyWithTextResettingError(oldPassword),
       newPassword: state.newPassword.copyWithTextResettingError(newPassword),
       verifyPassword:
-          state.verifyPassword.copyWithTextResettingError(verifyPassword),
+      state.verifyPassword.copyWithTextResettingError(verifyPassword),
     );
     _silentValidateAll();
   }
@@ -69,16 +70,16 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
       oldPassword: state.oldPassword.copyWithErrorMessage(oldPasswordError),
       newPassword: state.newPassword.copyWithErrorMessage(newPasswordError),
       verifyPassword:
-          state.verifyPassword.copyWithErrorMessage(verifyPasswordError),
+      state.verifyPassword.copyWithErrorMessage(verifyPasswordError),
     );
   }
 
   void _silentValidateAll() {
     state = state.copyWith(
       isAllValidated:
-          state.oldPassword.validate!(state.oldPassword.text) == null &&
-              state.newPassword.validate!(state.newPassword.text) == null &&
-              state.verifyPassword.validate!(state.verifyPassword.text) == null,
+      state.oldPassword.validate!(state.oldPassword.text) == null &&
+          state.newPassword.validate!(state.newPassword.text) == null &&
+          state.verifyPassword.validate!(state.verifyPassword.text) == null,
     );
   }
 
@@ -94,10 +95,9 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
     );
   }
 
-  void changePassword(
-      ChangePasswordPageArgs args, AppLocalizations localizations, Function() onSuccess) {
+  Future changePassword(ChangePasswordPageArgs args, Function() onSuccess) async {
     if (state.isAllValidated) {
-      _performPasswordChange(args, localizations, onSuccess);
+      await _performPasswordChange(args, onSuccess);
     } else {
       _validateAndShowAll();
     }
@@ -114,11 +114,8 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
     );
   }
 
-  void _performPasswordChange(
-    ChangePasswordPageArgs args,
-    AppLocalizations localizations,
-    Function() onSuccess,
-  ) async {
+  Future _performPasswordChange(ChangePasswordPageArgs args,
+      Function() onSuccess,) async {
     state = state.copyWith(isLoading: true);
     final result = await _changePasswordUseCase(
       args.token,
@@ -140,4 +137,7 @@ class ChangePasswordViewModel extends _$ChangePasswordViewModel {
       ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
     });
   }
+
+  @visibleForTesting
+  ChangePasswordViewModel.test(this._changePasswordUseCase);
 }

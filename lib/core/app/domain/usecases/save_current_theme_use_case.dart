@@ -6,7 +6,7 @@ class SaveCurrentThemeUseCase {
 
   SaveCurrentThemeUseCase(this.appRepository);
 
-  void call(Brightness theme) {
-    appRepository.saveCurrentThemeName(theme.name);
+  void call(Brightness? theme) {
+    appRepository.saveCurrentThemeName(theme?.name);
   }
 }
