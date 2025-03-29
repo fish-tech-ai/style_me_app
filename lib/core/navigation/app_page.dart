@@ -7,7 +7,9 @@ enum AppPage {
   checkroom("/checkroom"),
   changePasswordPage("/changePassword"),
   privacyPolicy("/privacyPolicy"),
-  termsAndConditions("/termsAndConditions");
+  clothingAdd("/clothingAdd"),
+  termsAndConditions("/termsAndConditions"),
+  editClothingPage("/editClothingPage");
 
   final String path;
   final bool shouldShowBottomNavBar;

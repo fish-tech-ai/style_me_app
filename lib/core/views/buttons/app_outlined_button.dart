@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/views/default_loading_page.dart';
 
 class AppOutlinedButton extends StatelessWidget {
   final String text;
@@ -7,23 +10,34 @@ class AppOutlinedButton extends StatelessWidget {
   final Widget? leadingIcon;
   final Widget? trailingIcon;
   final double? spacing;
+  final double? height;
+  final double? width;
+  final bool isLoading;
+  final EdgeInsets padding;
 
-  const AppOutlinedButton(
-      {super.key,
-      required this.text,
-      required this.onClick,
-      this.style,
-      this.leadingIcon,
-      this.trailingIcon,
-      this.spacing});
+  const AppOutlinedButton({
+    super.key,
+    required this.text,
+    required this.onClick,
+    this.style,
+    this.leadingIcon,
+    this.trailingIcon,
+    this.spacing,
+    this.height = 48,
+    this.width,
+    this.padding = const EdgeInsets.symmetric(horizontal: 12),
+    this.isLoading = false,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final defaultStyle = OutlinedButton.styleFrom(padding: padding);
     return SizedBox(
-      height: 48,
+      height: height,
+      width: width,
       child: OutlinedButton(
           onPressed: onClick,
-          style: style,
+          style: style?.merge(defaultStyle) ?? defaultStyle,
           child: Row(
             spacing: spacing ?? 0,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -32,7 +46,14 @@ class AppOutlinedButton extends StatelessWidget {
               Text(text),
               trailingIcon ?? SizedBox(),
             ],
-          )),
+          ).or(
+              DefaultLoading(
+                color: style?.foregroundColor
+                        ?.resolve(WidgetState.values.toSet()) ??
+                    context.colorScheme.primary,
+                size: Size.square(24),
+              ),
+              isLoading)),
     );
   }
 }

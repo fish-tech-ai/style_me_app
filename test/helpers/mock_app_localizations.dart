@@ -251,4 +251,169 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get youAreLoggedAs => "youAreLoggedAs";
+
+  @override
+  String get defaultText => "defaultText";
+
+  @override
+  String get search => "search";
+
+  @override
+  String get addPhotosEncouragement => "addPhotosEncouragement";
+
+  @override
+  String get category => "category";
+
+  @override
+  String get clearFilters => "clearFilters";
+
+  @override
+  String get clothingCategoryAll => "clothingCategoryAll";
+
+  @override
+  String get clothingCategoryBlazer => "clothingCategoryBlazer";
+
+  @override
+  String get clothingCategoryBlouse => "clothingCategoryBlouse";
+
+  @override
+  String get clothingCategoryBody => "clothingCategoryBody";
+
+  @override
+  String get clothingCategoryDress => "clothingCategoryDress";
+
+  @override
+  String get clothingCategoryHat => "clothingCategoryHat";
+
+  @override
+  String get clothingCategoryHoodie => "clothingCategoryHoodie";
+
+  @override
+  String get clothingCategoryLongsleeve => "clothingCategoryLongsleeve";
+
+  @override
+  String get clothingCategoryOutwear => "clothingCategoryOutwear";
+
+  @override
+  String get clothingCategoryPants => "clothingCategoryPants";
+
+  @override
+  String get clothingCategoryPolo => "clothingCategoryPolo";
+
+  @override
+  String get clothingCategoryShirt => "clothingCategoryShirt";
+
+  @override
+  String get clothingCategoryShoes => "clothingCategoryShoes";
+
+  @override
+  String get clothingCategoryShorts => "clothingCategoryShorts";
+
+  @override
+  String get clothingCategorySkip => "clothingCategorySkip";
+
+  @override
+  String get clothingCategorySkirt => "clothingCategorySkirt";
+
+  @override
+  String get clothingCategoryTop => "clothingCategoryTop";
+
+  @override
+  String get clothingCategoryTshirt => "clothingCategoryTshirt";
+
+  @override
+  String get clothingCategoryUndershirt => "clothingCategoryUndershirt";
+
+  @override
+  String get filters => "filters";
+
+  @override
+  String get nothingFound => "nothingFound";
+
+  @override
+  String get nothingFoundSubText => "nothingFoundSubText";
+
+  @override
+  String get nothingHere => "nothingHere";
+
+  @override
+  String get position => "position";
+
+  @override
+  String get positionBottom => "positionBottom";
+
+  @override
+  String get positionFull => "positionFull";
+
+  @override
+  String get positionUpper => "positionUpper";
+
+  @override
+  String get floatingAddClothingButtonText => "floatingAddClothingButtonText";
+
+  @override
+  String get floatingAddUserPhotoButtonText => "floatingAddUserPhotoButtonText";
+
+  @override
+  String get noImageInClipboard => "noImageInClipboard";
+
+  @override
+  String get pasteFromClipboard => "pasteFromClipboard";
+
+  @override
+  String get tryAgain => "tryAgain";
+
+  @override
+  String get addPhoto => "addPhoto";
+
+  @override
+  String get errorDialogCantProcessDesc => "errorDialogCantProcessDesc";
+
+  @override
+  String get errorDialogCantProcessTitle => "errorDialogCantProcessTitle";
+
+  @override
+  String get errorDialogNSFWDesc => "errorDialogNSFWDesc";
+
+  @override
+  String get errorDialogNSFWTitle => "errorDialogNSFWTitle";
+
+  @override
+  String get errorDialogNotAClothingDesc => "errorDialogNotAClothingDesc";
+
+  @override
+  String get errorDialogNotAClothingTitle => "errorDialogNotAClothingTitle";
+
+  @override
+  String get errorDialogNotAPersonDesc => "errorDialogNotAPersonDesc";
+
+  @override
+  String get errorDialogNotAPersonTitle => "errorDialogNotAPersonTitle";
+
+  @override
+  String get nameLabel => "nameLabel";
+
+  @override
+  String get recommendedLabel => "recommendedLabel";
+
+  @override
+  String get clothingName => "clothingName";
+
+  @override
+  String get deleteClothing => "deleteClothing";
+
+  @override
+  String get deletePhoto => "deletePhoto";
+
+  @override
+  String get photoName => "photoName";
+
+  @override
+  String get save => "save";
+
+  @override
+  String get yourClothes => "yourClothes";
+
+  @override
+  String get yourPhotos => "yourPhotos";
 }

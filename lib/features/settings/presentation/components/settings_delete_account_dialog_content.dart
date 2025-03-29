@@ -51,10 +51,16 @@ class SettingsDeleteAccountDialogContent extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AppOutlinedButton(
-                text: localizations.cancel, onClick: () => context.pop()),
+              text: localizations.cancel,
+              height: 46,
+              width: 128,
+              onClick: () => context.pop(),
+            ),
             AppButton(
               text: localizations.deleteAccount,
               backgroundColor: context.colorScheme.error,
+              height: 46,
+              width: 128,
               onClick: isValidated
                   ? () {
                       onDeleteClicked();

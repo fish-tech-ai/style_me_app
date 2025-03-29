@@ -7,7 +7,7 @@ import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
-import 'package:style_me/core/views/ui_models/app_button_icon.dart';
+import 'package:style_me/core/views/ui_models/app_button_icon_data.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 import 'package:style_me/features/auth/presentation/ui_models/text_field_state.dart';
 import 'package:style_me/features/settings/presentation/state/change_password_state_holder.dart';
@@ -110,7 +110,7 @@ class _ChangePasswordPageState extends ConsumerState<ChangePasswordPage> {
                     }),
                 AppButton(
                   text: context.localizations.changePasswordTitle,
-                  icon: AppButtonIcon(Icons.keyboard_arrow_right_rounded,
+                  icon: AppButtonIconData.iconData(Icons.keyboard_arrow_right_rounded,
                       IconPosition.trailing),
                   enabled: state.isAllValidated,
                   isLoading: state.isLoading,

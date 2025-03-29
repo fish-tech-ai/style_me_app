@@ -11,6 +11,7 @@ void debugMessagePrint(String message) {
 void showAppDialog({
   required BuildContext context,
   required Widget child,
+  Function()? onDismiss,
   Color? borderColor,
 }) {
   showDialog(
@@ -29,7 +30,9 @@ void showAppDialog({
         ),
       );
     },
-  );
+  ).then((_) {
+    onDismiss?.call();
+  });
 }
 
 void showAppModalBottomSheet({

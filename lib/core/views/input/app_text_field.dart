@@ -73,6 +73,14 @@ class _AppTextFieldState extends State<AppTextField> {
     if (widget.text != oldWidget.text && widget.text.isEmpty) {
       controller.clear();
     }
+    if (widget.text != oldWidget.text) {
+      final previousSelection = controller.selection;
+      controller.value = TextEditingValue(
+        text: widget.text,
+        selection: previousSelection,
+      );
+    }
+
   }
 
   @override

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
-import 'package:style_me/core/views/input/app_dropdown_button.dart';
+import 'package:style_me/core/views/input/dropdowns/app_dropdown_button.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
 import 'package:style_me/features/settings/data/models/report_category.dart';
 import 'package:style_me/features/settings/presentation/state/view_models/settings_view_model.dart';
@@ -60,6 +60,7 @@ class _SettingsReportBottomSheetState
                   .read(settingsViewModelProvider.notifier)
                   .selectIssueReportCategory(category);
             },
+            labelText: localizations.category,
           ),
           AppButton(
             text: localizations.send,
