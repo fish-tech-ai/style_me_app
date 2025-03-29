@@ -18,14 +18,16 @@ class MockPathProvider extends Mock
     implements PathProviderPlatform {}
 
 void main() {
-  late MockHttpClient mockClient;
   late MockPathProvider mockPathProvider;
   late AESEncryptor encryptor;
 
   setUpAll(() async {
-    mockClient = MockHttpClient();
     mockPathProvider = MockPathProvider();
-    encryptor = AESEncryptor();
+    final key = List.generate(32, (i) => i)
+        .map((e) => e.toRadixString(16).padLeft(2, '0'))
+        .join();
+    dotenv.testLoad(fileInput: "AES_KEY=$key");
+    encryptor = AESEncryptor.withKey(key);
 
     PathProviderPlatform.instance = mockPathProvider;
 

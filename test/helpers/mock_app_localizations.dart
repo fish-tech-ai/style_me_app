@@ -395,4 +395,25 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get recommendedLabel => "recommendedLabel";
+
+  @override
+  String get clothingName => "clothingName";
+
+  @override
+  String get deleteClothing => "deleteClothing";
+
+  @override
+  String get deletePhoto => "deletePhoto";
+
+  @override
+  String get photoName => "photoName";
+
+  @override
+  String get save => "save";
+
+  @override
+  String get yourClothes => "yourClothes";
+
+  @override
+  String get yourPhotos => "yourPhotos";
 }

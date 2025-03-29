@@ -9,7 +9,7 @@ class MultipleImageFetcher {
   MultipleImageFetcher(this.fetchImageUseCase);
 
   Future handleImagesLoadingAndCache(List<String> urls, List<String> paths) async {
-    final imagesBytesList = await fetchImages(urls);
+    final imagesBytesList = await _fetchImages(urls);
 
     final Map<String, Uint8List> pathToImageBytesMap =
         Map.fromIterables(paths, imagesBytesList);
@@ -21,7 +21,7 @@ class MultipleImageFetcher {
     }
   }
 
-  Future<List<Uint8List>> fetchImages(
+  Future<List<Uint8List>> _fetchImages(
       List<String> encryptedImageUrls) async {
     final decryptedBytesList = encryptedImageUrls.map((imageUrl) async {
       final encryptedImageBytes = await fetchImageUseCase.call(imageUrl);

@@ -20,9 +20,11 @@ part 'wardrobe_view_model.g.dart';
 @riverpod
 class WardrobeViewModel extends _$WardrobeViewModel {
   late final GetClothesUseCase _getClothesUseCase;
+  late final MultipleImageFetcher _multipleImageFetcher;
 
   WardrobeViewModel() {
     _getClothesUseCase = getIt();
+    _multipleImageFetcher = getIt<MultipleImageFetcher>();
   }
 
   Timer? _spamTimer;
@@ -88,7 +90,7 @@ class WardrobeViewModel extends _$WardrobeViewModel {
     );
     result.collect(
       (clothes) {
-        convertImagesAndShow(clothes);
+        _convertImagesAndShow(clothes);
       },
       (failure) {
         ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
@@ -97,7 +99,7 @@ class WardrobeViewModel extends _$WardrobeViewModel {
     );
   }
 
-  void convertImagesAndShow(List<Clothing> clothesWithUrls) async {
+  void _convertImagesAndShow(List<Clothing> clothesWithUrls) async {
     final cacheDir = await getTemporaryDirectory();
     final List<Clothing> clothesWithPaths = clothesWithUrls.map(
       (clothing) {
@@ -116,10 +118,9 @@ class WardrobeViewModel extends _$WardrobeViewModel {
 
   Future _fetchAndDecryptImageFromIsolate(
       List<String> urls, List<String> paths) async {
-    await getIt<MultipleImageFetcher>()
-        .handleImagesLoadingAndCache(urls, paths);
+    await _multipleImageFetcher.handleImagesLoadingAndCache(urls, paths);
   }
 
   @visibleForTesting
-  WardrobeViewModel.test(this._getClothesUseCase);
+  WardrobeViewModel.test(this._getClothesUseCase, this._multipleImageFetcher);
 }
