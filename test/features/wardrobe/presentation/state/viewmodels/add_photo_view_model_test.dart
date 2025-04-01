@@ -9,11 +9,11 @@ import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_
 import 'package:style_me/core/network/failures/image_process_failure.dart';
 import 'package:style_me/core/network/failures/server_failure.dart';
 import 'package:style_me/core/network/utils/result.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
-import 'package:style_me/features/wardrobe/domain/confirm_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/delete_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/send_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/clear_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/confirm_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/send_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/add_photo_view_model.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
@@ -24,7 +24,7 @@ class MockConfirmClothingPhotoUseCase extends Mock
     implements ConfirmClothingPhotoUseCase {}
 
 class MockDeleteClothingPhotoUseCase extends Mock
-    implements DeleteClothingPhotoUseCase {}
+    implements ClearClothingPhotoUseCase {}
 
 class MockAppGlobalViewModel extends AutoDisposeNotifier<AppGlobalStateHolder>
     with Mock

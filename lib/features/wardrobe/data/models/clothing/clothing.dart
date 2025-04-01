@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_position_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/clothing_with_action.dart';
 

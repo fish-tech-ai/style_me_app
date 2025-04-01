@@ -1,11 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_position_enum.dart';
-import 'package:style_me/features/wardrobe/domain/delete_clothing_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/update_clothing_use_case.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/delete_clothing_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/update_clothing_use_case.dart';
 import 'package:style_me/features/wardrobe/presentation/state/edit_photo_state_holder.dart';
 
 part 'edit_photo_view_model.g.dart';

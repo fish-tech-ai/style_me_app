@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 
 part 'clothing_form_state.freezed.dart';
 

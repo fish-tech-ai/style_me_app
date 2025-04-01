@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 
 part 'edit_photo_state_holder.freezed.dart';
 

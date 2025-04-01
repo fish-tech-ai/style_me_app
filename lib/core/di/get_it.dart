@@ -43,12 +43,12 @@ import 'package:style_me/features/auth/domain/resend_confirmation_use_case.dart'
 import 'package:style_me/features/auth/domain/send_reset_password_mail_use_case.dart';
 import 'package:style_me/features/settings/domain/delete_account_use_case.dart';
 import 'package:style_me/features/wardrobe/data/wardrobe_repository.dart';
-import 'package:style_me/features/wardrobe/domain/confirm_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/delete_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/delete_clothing_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/get_clothes_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/send_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/update_clothing_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/clear_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/confirm_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/delete_clothing_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/send_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/update_clothing_use_case.dart';
 
 final getIt = GetIt.instance;
 
@@ -120,7 +120,7 @@ class GetItManager {
     getIt.registerFactory(
         () => SendClothingPhotoUseCase(getIt(), getIt(), getIt()));
     getIt.registerFactory(() => ConfirmClothingPhotoUseCase(getIt(), getIt()));
-    getIt.registerFactory(() => DeleteClothingPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => ClearClothingPhotoUseCase(getIt(), getIt()));
     getIt.registerFactory(() => DeleteClothingUseCase(getIt(), getIt()));
     getIt.registerFactory(() => UpdateClothingUseCase(getIt(), getIt()));
   }

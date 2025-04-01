@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 
 part 'clothes_response.g.dart';
 

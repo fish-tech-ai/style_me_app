@@ -8,7 +8,7 @@ import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_
 import 'package:style_me/core/network/exceptions/image_process_exception.dart';
 import 'package:style_me/core/network/exceptions/server_exception.dart';
 import 'package:style_me/core/network/services/clothes_service.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
 import 'package:style_me/features/wardrobe/data/wardrobe_repository.dart';
 

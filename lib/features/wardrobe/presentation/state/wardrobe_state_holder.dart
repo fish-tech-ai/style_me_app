@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_position_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 
 part 'wardrobe_state_holder.freezed.dart';

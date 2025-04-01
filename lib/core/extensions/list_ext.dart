@@ -1,4 +1,4 @@
-import 'package:style_me/features/wardrobe/data/models/clothing.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 
 extension FirstWhereExt<T> on List<T> {

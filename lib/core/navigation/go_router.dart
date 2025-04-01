@@ -8,7 +8,7 @@ import 'package:style_me/features/settings/presentation/pages/privacy_policy_pag
 import 'package:style_me/features/settings/presentation/pages/settings_page.dart';
 import 'package:style_me/features/settings/presentation/pages/terms_and_contitions_page.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/presentation/pages/add_clothing_page.dart';
 import 'package:style_me/features/wardrobe/presentation/pages/edit_clothing_page.dart';
 import 'package:style_me/features/wardrobe/presentation/pages/wardrobe_page.dart';

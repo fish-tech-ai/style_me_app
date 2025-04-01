@@ -6,11 +6,11 @@ import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/network/failures/image_process_failure.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
-import 'package:style_me/features/wardrobe/domain/confirm_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/delete_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/send_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/confirm_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/send_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/clear_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/presentation/state/add_photo_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
@@ -20,7 +20,7 @@ part 'add_photo_view_model.g.dart';
 class AddPhotoViewModel extends _$AddPhotoViewModel {
   late final SendClothingPhotoUseCase _sendClothingPhotoUseCase;
   late final ConfirmClothingPhotoUseCase _confirmClothingPhotoUseCase;
-  late final DeleteClothingPhotoUseCase _deleteClothingPhotoUseCase;
+  late final ClearClothingPhotoUseCase _deleteClothingPhotoUseCase;
 
   AddPhotoViewModel() {
     _sendClothingPhotoUseCase = getIt();
