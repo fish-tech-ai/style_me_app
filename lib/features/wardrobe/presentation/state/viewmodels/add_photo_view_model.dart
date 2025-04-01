@@ -82,7 +82,10 @@ class AddPhotoViewModel extends _$AddPhotoViewModel {
       state.clothingForm.selectedCategory,
     );
     result.collect((_) {
-      state = state.copyWith(isImageAddLoading: false);
+      state = state.copyWith(
+        isImageAddLoading: false,
+        shouldDeletePhoto: false,
+      );
       onSuccess();
     }, (failure) {
       state = state.copyWith(isImageAddLoading: false);
@@ -91,7 +94,9 @@ class AddPhotoViewModel extends _$AddPhotoViewModel {
   }
 
   void onBackAction([Function()? pop]) {
-    clearImageData();
+    if (state.shouldDeletePhoto) {
+      clearImageData();
+    }
     if (state.addPhotoPageMode != AddPhotoPageMode.pickPhoto) {
       backToPickPhotoMode();
     } else {
@@ -124,7 +129,7 @@ class AddPhotoViewModel extends _$AddPhotoViewModel {
   }
 
   Future clearImageData() async {
-    if (_imageId != null) {
+    if (state.addPhotoPageMode == AddPhotoPageMode.fillData) {
       final result = await _deleteClothingPhotoUseCase(_imageId!);
       result.collect((_) {}, (failure) {
         debugMessagePrint(failure.toString());

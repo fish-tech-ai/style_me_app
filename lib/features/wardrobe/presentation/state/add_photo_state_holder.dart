@@ -16,5 +16,6 @@ class AddPhotoStateHolder with _$AddPhotoStateHolder {
     ImageErrorTypeEnum? imageProcessingError,
     @Default(AddPhotoPageMode.pickPhoto) AddPhotoPageMode addPhotoPageMode,
     @Default(ClothingFormState()) ClothingFormState clothingForm,
+    @Default(true) shouldDeletePhoto
   }) = _AddPhotoStateHolder;
 }

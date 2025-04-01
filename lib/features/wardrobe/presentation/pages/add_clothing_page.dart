@@ -13,12 +13,13 @@ import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page
 
 class AddClothingPage extends ConsumerStatefulWidget {
   const AddClothingPage({super.key});
+
   @override
   ConsumerState<AddClothingPage> createState() => _AddClothingPageState();
 }
 
-class _AddClothingPageState extends ConsumerState<AddClothingPage> with WidgetsBindingObserver {
-
+class _AddClothingPageState extends ConsumerState<AddClothingPage>
+    with WidgetsBindingObserver {
   late final AddPhotoViewModel viewModel;
 
   @override
@@ -43,8 +44,7 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage> with WidgetsB
 
   @override
   Widget build(BuildContext context) {
-    final AddPhotoStateHolder state =
-        ref.watch(addPhotoViewModelProvider);
+    final AddPhotoStateHolder state = ref.watch(addPhotoViewModelProvider);
     showDialogOnImageError(
       context,
       state.imageProcessingError,
