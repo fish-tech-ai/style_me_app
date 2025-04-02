@@ -1,5 +1,6 @@
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
+import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
 
 extension FirstWhereExt<T> on List<T> {
   T? firstWhereOrNull(bool Function(T element) where) {
@@ -35,5 +36,16 @@ extension PhotoListExt on List<PhotoItem> {
 
   List<Clothing> asClothingList() {
     return map((item) => item as Clothing).toList();
+  }
+
+  List<UserPhoto> asUserPhotosList() {
+    return map((item) => item as UserPhoto).toList();
+  }
+}
+
+extension UserPhotoListExt on List<UserPhoto> {
+  List<UserPhoto> withDefaultOn(UserPhoto item) {
+    return map((photo) => photo.copyWith(isDefault: photo.id == item.id))
+        .toList();
   }
 }

@@ -25,16 +25,19 @@ class PhotoModifyButtons extends StatelessWidget {
       children: [
         AppOutlinedButton(
           text: localizations.deleteClothing,
+          width: 130,
           style: OutlinedButton.styleFrom(
             foregroundColor: context.colorScheme.error,
             backgroundColor: context.colorScheme.onError,
             side: BorderSide(color: context.colorScheme.error),
           ),
+          loadingIndicatorColor: context.colorScheme.error,
           isLoading: isDeleteLoading,
           onClick: onDeleteClicked,
         ),
         AppButton(
           text: localizations.save,
+          width: 130,
           isLoading: isSaveLoading,
           onClick: onSaveClicked,
         ),

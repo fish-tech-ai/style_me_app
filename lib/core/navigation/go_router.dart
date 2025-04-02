@@ -9,8 +9,11 @@ import 'package:style_me/features/settings/presentation/pages/settings_page.dart
 import 'package:style_me/features/settings/presentation/pages/terms_and_contitions_page.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
-import 'package:style_me/features/wardrobe/presentation/pages/add_clothing_page.dart';
-import 'package:style_me/features/wardrobe/presentation/pages/edit_clothing_page.dart';
+import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
+import 'package:style_me/features/wardrobe/presentation/pages/clothes/add_clothing_page.dart';
+import 'package:style_me/features/wardrobe/presentation/pages/clothes/edit_clothing_page.dart';
+import 'package:style_me/features/wardrobe/presentation/pages/user_photos/add_user_photo_page.dart';
+import 'package:style_me/features/wardrobe/presentation/pages/user_photos/edit_user_photos_page.dart';
 import 'package:style_me/features/wardrobe/presentation/pages/wardrobe_page.dart';
 
 GoRouter getRouter(bool isAuthenticated) => GoRouter(
@@ -46,10 +49,6 @@ GoRouter getRouter(bool isAuthenticated) => GoRouter(
           builder: (context, state) => const TermsAndConditionsPage(),
         ),
         GoRoute(
-          path: AppPage.clothingAdd.path,
-          builder: (context, state) => const AddClothingPage(),
-        ),
-        GoRoute(
           path: AppPage.changePasswordPage.path,
           builder: (context, state) {
             final ChangePasswordPageArgs args =
@@ -58,10 +57,25 @@ GoRouter getRouter(bool isAuthenticated) => GoRouter(
           },
         ),
         GoRoute(
+          path: AppPage.clothingAdd.path,
+          builder: (context, state) => const AddClothingPage(),
+        ),
+        GoRoute(
           path: AppPage.editClothingPage.path,
           builder: (context, state) {
             final Clothing clothing = state.extra as Clothing;
             return EditClothingPage(clothing: clothing);
+          },
+        ),
+        GoRoute(
+          path: AppPage.userPhotoAdd.path,
+          builder: (context, state) => const AddUserPhotoPage(),
+        ),
+        GoRoute(
+          path: AppPage.editUserPhotoPage.path,
+          builder: (context, state) {
+            final UserPhoto userPhoto = state.extra as UserPhoto;
+            return EditUserPhotoPage(userPhoto: userPhoto);
           },
         ),
       ],

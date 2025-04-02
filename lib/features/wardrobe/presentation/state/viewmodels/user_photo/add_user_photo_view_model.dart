@@ -8,9 +8,9 @@ import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/network/failures/image_process_failure.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_user_photo_response.dart';
-import 'package:style_me/features/wardrobe/domain/user_photo/clear_user_photo_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/user_photo/confirm_user_photo_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/user_photo/send_user_photo_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/clear_user_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/confirm_user_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/send_user_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/presentation/state/states/user_photo/add_user_photo_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
@@ -18,9 +18,9 @@ part 'add_user_photo_view_model.g.dart';
 
 @riverpod
 class AddUserPhotoPhotoViewModel extends _$AddUserPhotoPhotoViewModel {
-  late final SendUserPhotoPhotoUseCase _sendUserPhotoPhotoUseCase;
-  late final ConfirmUserPhotoPhotoUseCase _confirmUserPhotoPhotoUseCase;
-  late final ClearUserPhotoPhotoUseCase _deleteUserPhotoPhotoUseCase;
+  late final SendUserPhotoUseCase _sendUserPhotoPhotoUseCase;
+  late final ConfirmUserPhotoUseCase _confirmUserPhotoPhotoUseCase;
+  late final ClearUserPhotoUseCase _deleteUserPhotoPhotoUseCase;
 
   AddUserPhotoPhotoViewModel() {
     _sendUserPhotoPhotoUseCase = getIt();
@@ -52,7 +52,8 @@ class AddUserPhotoPhotoViewModel extends _$AddUserPhotoPhotoViewModel {
   }
 
   Future sendUserPhotoPhoto(File image) async {
-    final Result<SendUserPhotoResponse> result = await _sendUserPhotoPhotoUseCase(image);
+    final Result<SendUserPhotoResponse> result =
+        await _sendUserPhotoPhotoUseCase(image);
     result.collect((SendUserPhotoResponse response) {
       _imageId = response.id;
       state = state.copyWith(
@@ -133,4 +134,9 @@ class AddUserPhotoPhotoViewModel extends _$AddUserPhotoPhotoViewModel {
     this._confirmUserPhotoPhotoUseCase,
     this._deleteUserPhotoPhotoUseCase,
   );
+
+  void onIsDefaultChanged(bool isChecked) {
+    state = state.copyWith(
+        userPhotoForm: state.userPhotoForm.copyWith(isDefault: isChecked));
+  }
 }

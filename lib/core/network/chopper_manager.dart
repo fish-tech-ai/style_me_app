@@ -18,6 +18,7 @@ import 'package:style_me/features/wardrobe/data/models/io/clothes_response.dart'
 import 'package:style_me/features/wardrobe/data/models/io/clothing_confirmation_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/original_image_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
+import 'package:style_me/features/wardrobe/data/models/io/send_user_photo_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/update_clothing_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/update_user_photo_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/user_photo_confirmation_request.dart';
@@ -54,6 +55,8 @@ class ChopperManager {
                 UpdateUserPhotoRequest.fromJson(json),
             OriginalImageUrlResponse: (json) =>
                 OriginalImageUrlResponse.fromJson(json),
+            SendUserPhotoResponse: (json) =>
+                SendUserPhotoResponse.fromJson(json),
           },
         ),
         errorConverter:

@@ -3,7 +3,7 @@ import 'package:style_me/features/wardrobe/data/models/clothing/clothing_categor
 
 part 'clothing_confirmation_request.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable()
 class ClothingConfirmationRequest {
   final String id;
   final String? name;

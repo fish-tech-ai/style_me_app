@@ -58,7 +58,7 @@ class WardrobeRepository {
     }
   }
 
-  Future<OriginalImageUrlResponse> getOriginalImage(String id) async {
+  Future<OriginalImageUrlResponse> getOriginalClothingImage(String id) async {
     try {
       final Response<OriginalImageUrlResponse> response =
           await _clothesService.getOriginalImageUrl(id);
@@ -151,6 +151,17 @@ class WardrobeRepository {
     try {
       final Response response = await _userPhotosService.deleteUserPhoto(id);
       response.handleIfNotSuccessful();
+    } catch (error) {
+      throw ServerException(error.toString());
+    }
+  }
+
+  Future<OriginalImageUrlResponse> getOriginalUserDataImage(String id) async {
+    try {
+      final Response<OriginalImageUrlResponse> response =
+      await _userPhotosService.getOriginalImageUrl(id);
+      response.handleIfNotSuccessful();
+      return response.body!;
     } catch (error) {
       throw ServerException(error.toString());
     }

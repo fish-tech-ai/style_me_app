@@ -8,12 +8,12 @@ import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_user_photo_response.dart';
 import 'package:style_me/features/wardrobe/data/wardrobe_repository.dart';
 
-class SendUserPhotoPhotoUseCase {
+class SendUserPhotoUseCase {
   final WardrobeRepository _repository;
   final NetworkRequestUtil _networkUtil;
   final AESEncryptor _encryptor;
 
-  SendUserPhotoPhotoUseCase(this._repository, this._networkUtil, this._encryptor);
+  SendUserPhotoUseCase(this._repository, this._networkUtil, this._encryptor);
 
   Future<Result<SendUserPhotoResponse>> call(File image) async {
     final compressedImage = await image.getCompressed();

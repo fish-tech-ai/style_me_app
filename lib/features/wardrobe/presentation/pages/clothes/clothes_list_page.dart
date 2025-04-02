@@ -20,18 +20,19 @@ class ClothesListPage extends StatelessWidget {
   final Function(String) onTextChanged;
   final Function(PhotoWithAction) onModifyResult;
 
-  const ClothesListPage(
-      {required this.state,
-      super.key,
-      required this.onFilterClosed,
-      required this.onFiltersChange,
-      required this.onTextChanged,
-      required this.onModifyResult});
+  const ClothesListPage({
+    super.key,
+    required this.state,
+    required this.onFilterClosed,
+    required this.onFiltersChange,
+    required this.onTextChanged,
+    required this.onModifyResult,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 4),
+      padding: EdgeInsets.only(top: 4, left: 12, right: 12),
       child: Column(
         spacing: 12,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,14 +67,14 @@ class ClothesListPage extends StatelessWidget {
   }
 
   Widget _buildClothesPage(BuildContext context) {
-    if (!state.isLoading && state.clothes.isEmpty) {
+    if (!state.isClothesLoading && state.clothes.isEmpty) {
       return EmptyPage();
     }
     return Expanded(
       child: PhotoGrid(
         items: state.clothes,
         onItemClicked: (item) => onItemClicked(item, context),
-      ).orLoading(state.isLoading),
+      ).orLoading(state.isClothesLoading),
     );
   }
 

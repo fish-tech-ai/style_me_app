@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/app_tab_bar.dart';
-import 'package:style_me/features/wardrobe/presentation/pages/clothes_list_page.dart';
-import 'package:style_me/features/wardrobe/presentation/pages/user_photos_list_page.dart';
+import 'package:style_me/features/wardrobe/presentation/pages/clothes/clothes_list_page.dart';
+import 'package:style_me/features/wardrobe/presentation/pages/user_photos/user_photos_list_page.dart';
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/wardrobe_view_model.dart';
 
 class WardrobePage extends ConsumerStatefulWidget {
@@ -37,7 +37,7 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
     final state = ref.watch(wardrobeViewModelProvider);
     final viewModel = ref.watch(wardrobeViewModelProvider.notifier);
     return Padding(
-      padding: EdgeInsets.all(12),
+      padding: EdgeInsets.symmetric(vertical: 12),
       child: Column(
         spacing: 12,
         children: [
@@ -73,7 +73,10 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
                   onTextChanged: viewModel.onSearchTextChanged,
                   onModifyResult: viewModel.onClothingModifyResult,
                 ),
-                UserPhotosListPage()
+                UserPhotosListPage(
+                  state: state,
+                  onModifyResult: viewModel.onUserPhotoModifyResult,
+                )
               ],
             ),
           )

@@ -9,7 +9,10 @@ enum AppPage {
   privacyPolicy("/privacyPolicy"),
   clothingAdd("/clothingAdd"),
   termsAndConditions("/termsAndConditions"),
-  editClothingPage("/editClothingPage");
+  editClothingPage("/editClothingPage"),
+  userPhotoAdd("/userPhotoAdd"),
+  editUserPhotoPage("/editUserPhotoPage");
+
 
   final String path;
   final bool shouldShowBottomNavBar;

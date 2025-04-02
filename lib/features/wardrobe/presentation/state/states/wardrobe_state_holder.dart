@@ -3,7 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
-import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
 
 part 'wardrobe_state_holder.freezed.dart';
@@ -16,6 +15,7 @@ class WardrobeStateHolder with _$WardrobeStateHolder {
     @Default("") String searchText,
     ClothingPositionEnum? filterPosition,
     @Default(ClothingCategoryEnum.ALL) ClothingCategoryEnum filterCategory,
-    @Default(true) bool isLoading,
+    @Default(true) bool isClothesLoading,
+    @Default(true) bool isUserPhotosLoading,
   }) = _WardrobeStateHolder;
 }

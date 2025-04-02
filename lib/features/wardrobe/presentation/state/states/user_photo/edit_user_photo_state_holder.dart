@@ -12,6 +12,5 @@ class EditUserPhotoStateHolder with _$EditUserPhotoStateHolder {
     @Default(true) bool isPageLoading,
     @Default("") String originalImagePath,
     required UserPhoto userPhoto,
-    @Default(false) bool isDefault,
   }) = _EditUserPhotoStateHolder;
 }

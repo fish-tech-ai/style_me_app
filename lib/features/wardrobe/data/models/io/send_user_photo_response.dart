@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'send_user_photo_response.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable()
 class SendUserPhotoResponse {
   final String id;
 

@@ -50,12 +50,13 @@ import 'package:style_me/features/wardrobe/domain/clothing/delete_clothing_use_c
 import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/send_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/update_clothing_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/get_original_image_url_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/user_photo/clear_user_photo_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/user_photo/confirm_user_photo_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/get_original_clothing_image_url_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/clear_user_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/confirm_user_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/user_photo/delete_user_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/get_original_user_image_url_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/user_photo/get_user_photos_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/user_photo/send_user_photo_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/send_user_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/user_photo/update_user_photo_use_case.dart';
 
 final getIt = GetIt.instance;
@@ -77,7 +78,7 @@ class GetItManager {
     getIt.registerFactory<ClothesService>(
         () => ClothesService.create(getIt<ChopperClient>()));
     getIt.registerFactory<UserPhotosService>(
-            () => UserPhotosService.create(getIt<ChopperClient>()));
+        () => UserPhotosService.create(getIt<ChopperClient>()));
     getIt.registerLazySingleton(() => ThemeManager());
     final sharedPrefs = await SharedPreferences.getInstance();
     getIt.registerLazySingleton(() => sharedPrefs);
@@ -126,8 +127,6 @@ class GetItManager {
 
     ///Wardrobe
     getIt.registerFactory(() => WardrobeRepository(getIt(), getIt()));
-    getIt.registerFactory(() => GetOriginalImageUrlUseCase(getIt(), getIt()));
-
 
     ///Wardrobe clothes
     getIt.registerFactory(() => GetClothesUseCase(getIt(), getIt()));
@@ -137,14 +136,18 @@ class GetItManager {
     getIt.registerFactory(() => ClearClothingPhotoUseCase(getIt(), getIt()));
     getIt.registerFactory(() => DeleteClothingUseCase(getIt(), getIt()));
     getIt.registerFactory(() => UpdateClothingUseCase(getIt(), getIt()));
+    getIt.registerFactory(
+        () => GetOriginalClothingImageUrlUseCase(getIt(), getIt()));
 
     ///Wardrobe user photos
     getIt.registerFactory(() => GetUserPhotosUseCase(getIt(), getIt()));
-    getIt.registerFactory(
-        () => SendUserPhotoPhotoUseCase(getIt(), getIt(), getIt()));
-    getIt.registerFactory(() => ConfirmUserPhotoPhotoUseCase(getIt(), getIt()));
-    getIt.registerFactory(() => ClearUserPhotoPhotoUseCase(getIt(), getIt()));
+    getIt
+        .registerFactory(() => SendUserPhotoUseCase(getIt(), getIt(), getIt()));
+    getIt.registerFactory(() => ConfirmUserPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => ClearUserPhotoUseCase(getIt(), getIt()));
     getIt.registerFactory(() => DeleteUserPhotoUseCase(getIt(), getIt()));
     getIt.registerFactory(() => UpdateUserPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(
+        () => GetOriginalUserImageUrlUseCase(getIt(), getIt()));
   }
 }
