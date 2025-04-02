@@ -8,21 +8,26 @@ import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_
 import 'package:style_me/core/network/exceptions/image_process_exception.dart';
 import 'package:style_me/core/network/exceptions/server_exception.dart';
 import 'package:style_me/core/network/services/clothes_service.dart';
+import 'package:style_me/core/network/services/user_photos_service.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
 import 'package:style_me/features/wardrobe/data/wardrobe_repository.dart';
 
 class MockClothesService extends Mock implements ClothesService {}
 
+class MockUserPhotosService extends Mock implements UserPhotosService {}
+
 base class MockResponse<T> extends Mock with MockResponseMixin<T> {}
 
 void main() {
-  late MockClothesService service;
+  late MockClothesService clothesService;
+  late MockUserPhotosService userService;
   late WardrobeRepository repo;
 
   setUp(() {
-    service = MockClothesService();
-    repo = WardrobeRepository(service);
+    clothesService = MockClothesService();
+    userService = MockUserPhotosService();
+    repo = WardrobeRepository(clothesService, userService);
   });
 
   group('WardrobeRepository.sendClothingPhoto', () {
@@ -33,36 +38,38 @@ void main() {
 
       when(() => response.isSuccessful).thenReturn(true);
       when(() => response.body).thenReturn(expected);
-      when(() => service.sendClothingPhoto(any()))
+      when(() => clothesService.sendClothingPhoto(any()))
           .thenAnswer((_) async => response);
 
       final result = await repo.sendClothingPhoto(file);
       expect(result, expected);
     });
 
-    test('throws ImageProcessException when error is ExpectedErrorResponse', () async {
+    test('throws ImageProcessException when error is ExpectedErrorResponse',
+        () async {
       final file = File('test/path.jpg');
       final response = MockResponse<SendClothingPhotoResponse>();
-      final errorResponse = ExpectedErrorResponse(ImageErrorTypeEnum.CANT_PROCESS);
+      final errorResponse =
+          ExpectedErrorResponse(ImageErrorTypeEnum.CANT_PROCESS);
 
       when(() => response.isSuccessful).thenReturn(false);
       when(() => response.error).thenReturn(errorResponse);
-      when(() => service.sendClothingPhoto(any()))
+      when(() => clothesService.sendClothingPhoto(any()))
           .thenAnswer((_) async => response);
 
       expect(
-            () => repo.sendClothingPhoto(file),
+        () => repo.sendClothingPhoto(file),
         throwsA(isA<ImageProcessException>()),
       );
     });
 
     test('throws ServerException for generic error', () async {
       final file = File('test/path.jpg');
-      when(() => service.sendClothingPhoto(any()))
+      when(() => clothesService.sendClothingPhoto(any()))
           .thenThrow(Exception('network failed'));
 
       expect(
-            () => repo.sendClothingPhoto(file),
+        () => repo.sendClothingPhoto(file),
         throwsA(isA<ServerException>()),
       );
     });
@@ -74,10 +81,11 @@ void main() {
         throw ImageProcessException(ImageErrorTypeEnum.IMAGE_IS_NSFW);
       }
 
-      when(() => service.sendClothingPhoto(any())).thenAnswer((_) async => throwIt());
+      when(() => clothesService.sendClothingPhoto(any()))
+          .thenAnswer((_) async => throwIt());
 
       expect(
-            () => repo.sendClothingPhoto(file),
+        () => repo.sendClothingPhoto(file),
         throwsA(isA<ImageProcessException>()),
       );
     });

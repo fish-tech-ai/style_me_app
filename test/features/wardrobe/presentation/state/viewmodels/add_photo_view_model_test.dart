@@ -14,7 +14,7 @@ import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_re
 import 'package:style_me/features/wardrobe/domain/clothing/clear_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/confirm_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/send_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/presentation/state/viewmodels/add_photo_view_model.dart';
+import 'package:style_me/features/wardrobe/presentation/state/viewmodels/clothing/add_clothing_photo_view_model.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
 class MockSendClothingPhotoUseCase extends Mock
@@ -45,8 +45,8 @@ void main() {
 
     container = ProviderContainer(
       overrides: [
-        addPhotoViewModelProvider.overrideWith(
-          () => AddPhotoViewModel.test(
+        addClothingPhotoViewModelProvider.overrideWith(
+          () => AddClothingPhotoViewModel.test(
             mockSend,
             mockConfirm,
             mockDelete,
@@ -63,11 +63,11 @@ void main() {
 
   test('onImageFetched sets image and mode', () {
     final file = File('test.jpg');
-    final notifier = container.read(addPhotoViewModelProvider.notifier);
+    final notifier = container.read(addClothingPhotoViewModelProvider.notifier);
 
     notifier.onImageFetched(file);
 
-    final state = container.read(addPhotoViewModelProvider);
+    final state = container.read(addClothingPhotoViewModelProvider);
     expect(state.image, file);
     expect(state.addPhotoPageMode, AddPhotoPageMode.acceptPhoto);
   });
@@ -82,11 +82,11 @@ void main() {
     when(() => mockSend.call(file))
         .thenAnswer((_) async => Result.success(response));
 
-    final notifier = container.read(addPhotoViewModelProvider.notifier);
+    final notifier = container.read(addClothingPhotoViewModelProvider.notifier);
     notifier.onImageFetched(file);
     await notifier.sendClothingPhoto(file);
 
-    final state = container.read(addPhotoViewModelProvider);
+    final state = container.read(addClothingPhotoViewModelProvider);
 
     expect(state.isImageAddLoading, false);
     expect(state.addPhotoPageMode, AddPhotoPageMode.fillData);
@@ -102,10 +102,10 @@ void main() {
     when(() => mockSend.call(file))
         .thenAnswer((_) async => Result.fail(failure));
 
-    final notifier = container.read(addPhotoViewModelProvider.notifier);
+    final notifier = container.read(addClothingPhotoViewModelProvider.notifier);
     await notifier.sendClothingPhoto(file);
 
-    final state = container.read(addPhotoViewModelProvider);
+    final state = container.read(addClothingPhotoViewModelProvider);
 
     expect(state.isImageAddLoading, false);
     expect(state.imageProcessingError, ImageErrorTypeEnum.NO_CLOTHING_DETECTED);
@@ -118,11 +118,11 @@ void main() {
     when(() => mockSend.call(file))
         .thenAnswer((_) async => Result.fail(failure));
 
-    final notifier = container.read(addPhotoViewModelProvider.notifier);
+    final notifier = container.read(addClothingPhotoViewModelProvider.notifier);
     await notifier.sendClothingPhoto(file);
 
     verify(() => mockGlobal.showFailure(failure)).called(1);
-    expect(container.read(addPhotoViewModelProvider).isImageAddLoading, false);
+    expect(container.read(addClothingPhotoViewModelProvider).isImageAddLoading, false);
   });
 
   test('sendConfirmationData calls onSuccess on success', () async {
@@ -132,7 +132,7 @@ void main() {
     when(() => mockConfirm.call(any(), any(), any()))
         .thenAnswer((_) async => Result.success(null));
 
-    final notifier = container.read(addPhotoViewModelProvider.notifier);
+    final notifier = container.read(addClothingPhotoViewModelProvider.notifier);
     await notifier.sendClothingPhoto(File('file.jpg'));
 
     var called = false;
@@ -141,43 +141,43 @@ void main() {
     });
 
     expect(called, true);
-    expect(container.read(addPhotoViewModelProvider).isImageAddLoading, false);
+    expect(container.read(addClothingPhotoViewModelProvider).isImageAddLoading, false);
   });
 
   test('sendConfirmationData calls showFailure on failure', () async {
     when(() => mockConfirm.call(any(), any(), any()))
         .thenAnswer((_) async => Result.fail(ServerFailure('fail', 500)));
 
-    final notifier = container.read(addPhotoViewModelProvider.notifier);
+    final notifier = container.read(addClothingPhotoViewModelProvider.notifier);
     await notifier.sendConfirmationData(() {});
 
     verify(() => mockGlobal.showFailure(any())).called(1);
   });
 
   test('onTextChanged updates clothing form', () {
-    final notifier = container.read(addPhotoViewModelProvider.notifier);
+    final notifier = container.read(addClothingPhotoViewModelProvider.notifier);
     notifier.onTextChanged("Jacket");
 
-    final state = container.read(addPhotoViewModelProvider);
+    final state = container.read(addClothingPhotoViewModelProvider);
     expect(state.clothingForm.nameText, "Jacket");
   });
 
   test('onCategorySelected updates form and disables recommendation', () {
-    final notifier = container.read(addPhotoViewModelProvider.notifier);
+    final notifier = container.read(addClothingPhotoViewModelProvider.notifier);
     notifier.onCategorySelected(ClothingCategoryEnum.HOODIE);
 
-    final state = container.read(addPhotoViewModelProvider);
+    final state = container.read(addClothingPhotoViewModelProvider);
     expect(state.clothingForm.selectedCategory, ClothingCategoryEnum.HOODIE);
     expect(state.clothingForm.isRecommendedCategory, false);
   });
 
   test('onBackAction clears state or pops', () async {
-    final notifier = container.read(addPhotoViewModelProvider.notifier);
+    final notifier = container.read(addClothingPhotoViewModelProvider.notifier);
     notifier.onImageFetched(File('dummy.jpg'));
 
     notifier.onBackAction();
 
-    final state = container.read(addPhotoViewModelProvider);
+    final state = container.read(addClothingPhotoViewModelProvider);
     expect(state.addPhotoPageMode, AddPhotoPageMode.pickPhoto);
     expect(state.image, null);
   });
@@ -190,7 +190,7 @@ void main() {
     when(() => mockDelete.call(imageId))
         .thenAnswer((_) async => Result.success(null));
 
-    final notifier = container.read(addPhotoViewModelProvider.notifier);
+    final notifier = container.read(addClothingPhotoViewModelProvider.notifier);
     await notifier.sendClothingPhoto(File('dummy.jpg'));
 
     await notifier.clearImageData();

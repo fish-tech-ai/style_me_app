@@ -11,8 +11,8 @@ import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
-import 'package:style_me/features/wardrobe/presentation/state/wardrobe_state_holder.dart';
-import 'package:style_me/features/wardrobe/presentation/ui_models/clothing_with_action.dart';
+import 'package:style_me/features/wardrobe/presentation/state/states/wardrobe_state_holder.dart';
+import 'package:style_me/features/wardrobe/presentation/ui_models/photo_with_action.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/modification_action_enum.dart';
 
 part 'wardrobe_view_model.g.dart';
@@ -57,19 +57,19 @@ class WardrobeViewModel extends _$WardrobeViewModel {
     getClothes();
   }
 
-  void onClothingModifyResult(ClothingWithAction clothingWithAction) {
+  void onClothingModifyResult(PhotoWithAction clothingWithAction) {
     switch (clothingWithAction.action) {
       case ModificationActionEnum.update:
         state = state.copyWith(
           clothes: state.clothes
-              .getUpdatedWith(clothingWithAction.clothing)
+              .getUpdatedWith(clothingWithAction.item)
               .asClothingList(),
         );
         break;
       case ModificationActionEnum.delete:
         state = state.copyWith(
           clothes: state.clothes
-              .getReducedWith(clothingWithAction.clothing)
+              .getReducedWith(clothingWithAction.item)
               .asClothingList(),
         );
         break;

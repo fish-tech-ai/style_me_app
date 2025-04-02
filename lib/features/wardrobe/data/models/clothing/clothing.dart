@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
-import 'package:style_me/features/wardrobe/presentation/ui_models/clothing_with_action.dart';
+import 'package:style_me/features/wardrobe/presentation/ui_models/photo_with_action.dart';
 
 part 'clothing.g.dart';
 
@@ -20,12 +20,12 @@ class Clothing extends PhotoItem {
 
   Map<String, dynamic> toJson() => _$ClothingToJson(this);
 
-  ClothingWithAction withDeleteAction() {
-    return ClothingWithAction.delete(this);
+  PhotoWithAction withDeleteAction() {
+    return PhotoWithAction.delete(this);
   }
 
-  ClothingWithAction withUpdateAction() {
-    return ClothingWithAction.update(this);
+  PhotoWithAction withUpdateAction() {
+    return PhotoWithAction.update(this);
   }
 
   Clothing copyWith({

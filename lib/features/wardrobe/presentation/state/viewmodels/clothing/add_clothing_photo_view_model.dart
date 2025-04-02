@@ -11,18 +11,18 @@ import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_re
 import 'package:style_me/features/wardrobe/domain/clothing/confirm_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/send_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/clear_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/presentation/state/add_photo_state_holder.dart';
+import 'package:style_me/features/wardrobe/presentation/state/states/clothing/add_clothing_photo_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
-part 'add_photo_view_model.g.dart';
+part 'add_clothing_photo_view_model.g.dart';
 
 @riverpod
-class AddPhotoViewModel extends _$AddPhotoViewModel { //TODO adapt to user photos crud feature
+class AddClothingPhotoViewModel extends _$AddClothingPhotoViewModel {
   late final SendClothingPhotoUseCase _sendClothingPhotoUseCase;
   late final ConfirmClothingPhotoUseCase _confirmClothingPhotoUseCase;
   late final ClearClothingPhotoUseCase _deleteClothingPhotoUseCase;
 
-  AddPhotoViewModel() {
+  AddClothingPhotoViewModel() {
     _sendClothingPhotoUseCase = getIt();
     _confirmClothingPhotoUseCase = getIt();
     _deleteClothingPhotoUseCase = getIt();
@@ -31,8 +31,8 @@ class AddPhotoViewModel extends _$AddPhotoViewModel { //TODO adapt to user photo
   String? _imageId;
 
   @override
-  AddPhotoStateHolder build() {
-    return AddPhotoStateHolder();
+  AddClothingPhotoStateHolder build() {
+    return AddClothingPhotoStateHolder();
   }
 
   void onImageFetched(File image) {
@@ -138,7 +138,7 @@ class AddPhotoViewModel extends _$AddPhotoViewModel { //TODO adapt to user photo
   }
 
   @visibleForTesting
-  AddPhotoViewModel.test(
+  AddClothingPhotoViewModel.test(
     this._sendClothingPhotoUseCase,
     this._confirmClothingPhotoUseCase,
     this._deleteClothingPhotoUseCase,

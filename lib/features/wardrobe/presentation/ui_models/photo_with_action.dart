@@ -1,13 +1,13 @@
-import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
+import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/modification_action_enum.dart';
 
-class ClothingWithAction {
-  final Clothing clothing;
+class PhotoWithAction {
+  final PhotoItem item;
   final ModificationActionEnum action;
 
-  ClothingWithAction.delete(this.clothing)
+  PhotoWithAction.delete(this.item)
       : action = ModificationActionEnum.delete;
 
-  ClothingWithAction.update(this.clothing)
+  PhotoWithAction.update(this.item)
       : action = ModificationActionEnum.update;
 }

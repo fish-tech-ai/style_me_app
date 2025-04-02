@@ -4,59 +4,55 @@ import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/io/original_image_response.dart';
-import 'package:style_me/features/wardrobe/domain/clothing/delete_clothing_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/clothing/update_clothing_use_case.dart';
+import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
 import 'package:style_me/features/wardrobe/domain/get_original_image_url_use_case.dart';
-import 'package:style_me/features/wardrobe/presentation/state/edit_photo_state_holder.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/delete_user_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/update_user_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/presentation/state/states/user_photo/edit_user_photo_state_holder.dart';
 
-part 'edit_photo_view_model.g.dart';
+part 'edit_user_photo_view_model.g.dart';
 
 @riverpod
-class EditPhotoViewModel extends _$EditPhotoViewModel {
-  late final DeleteClothingUseCase _deleteClothingUseCase;
-  late final UpdateClothingUseCase _updateClothingUseCase;
+class EditUserPhotoViewModel extends _$EditUserPhotoViewModel {
+  late final DeleteUserPhotoUseCase _deleteUserPhotoUseCase;
+  late final UpdateUserPhotoUseCase _updateUserPhotoUseCase;
   late final GetOriginalImageUrlUseCase _getOriginalImageUrlUseCase;
   late final ImageFetcher _multipleImageFetcher;
 
-  EditPhotoViewModel() {
-    _deleteClothingUseCase = getIt();
-    _updateClothingUseCase = getIt();
+  EditUserPhotoViewModel() {
+    _deleteUserPhotoUseCase = getIt();
+    _updateUserPhotoUseCase = getIt();
     _getOriginalImageUrlUseCase = getIt();
     _multipleImageFetcher = getIt();
   }
 
   @override
-  EditPhotoStateHolder build() {
-    return EditPhotoStateHolder(
-      clothing: Clothing(
+  EditUserPhotoStateHolder build() {
+    return EditUserPhotoStateHolder(
+      userPhoto: UserPhoto(
         "",
         "",
         "",
-        ClothingCategoryEnum.ALL,
-        ClothingPositionEnum.BOTTOM,
       ),
     );
   }
 
-  void init(Clothing clothing) async {
-    state = state.copyWith(isPageLoading: true);
+  void init(UserPhoto userPhoto) async {
+    state = state.copyWith(userPhoto: userPhoto, isPageLoading: true);
 
     final Result<OriginalImageUrlResponse> result =
-        await _getOriginalImageUrlUseCase(clothing.id);
+        await _getOriginalImageUrlUseCase(userPhoto.id);
 
     final cacheDir = await getTemporaryDirectory();
     result.collect((data) async {
       final String originalImagePath =
-          '${cacheDir.path}/${clothing.id}_original.webp';
+          '${cacheDir.path}/${userPhoto.id}_original.webp';
       await _multipleImageFetcher.handleSingleImageLoadingAndCache(
           data.signedUrl, originalImagePath);
 
       state = state.copyWith(
-          clothing: clothing,
+          userPhoto: userPhoto,
           originalImagePath: originalImagePath,
           isPageLoading: false);
     }, (failure) {
@@ -65,9 +61,9 @@ class EditPhotoViewModel extends _$EditPhotoViewModel {
     });
   }
 
-  Future deleteClothing(Function() onSuccess) async {
+  Future deleteUserPhoto(Function() onSuccess) async {
     state = state.copyWith(isDeleteLoading: true);
-    final result = await _deleteClothingUseCase(state.clothing.image);
+    final result = await _deleteUserPhotoUseCase(state.userPhoto.image);
     result.collect((_) {
       onSuccess();
     }, (failure) {
@@ -76,12 +72,12 @@ class EditPhotoViewModel extends _$EditPhotoViewModel {
     state = state.copyWith(isDeleteLoading: false);
   }
 
-  Future updateClothing(Function(Clothing) onSuccess) async {
+  Future updateUserPhoto(Function(UserPhoto) onSuccess) async {
     state = state.copyWith(isSaveLoading: true);
-    final result = await _updateClothingUseCase(
-        state.clothing.id, state.clothing.name, state.clothing.category);
+    final result = await _updateUserPhotoUseCase(
+        state.userPhoto.id, state.userPhoto.name, state.userPhoto.isDefault);
     result.collect((_) {
-      onSuccess(state.clothing);
+      onSuccess(state.userPhoto);
     }, (failure) {
       ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
     });
@@ -89,11 +85,6 @@ class EditPhotoViewModel extends _$EditPhotoViewModel {
   }
 
   void onNameTextChanged(String text) {
-    state = state.copyWith(clothing: state.clothing.copyWith(name: text));
-  }
-
-  void onCategorySelected(ClothingCategoryEnum category) {
-    state =
-        state.copyWith(clothing: state.clothing.copyWith(category: category));
+    state = state.copyWith(userPhoto: state.userPhoto.copyWith(name: text));
   }
 }

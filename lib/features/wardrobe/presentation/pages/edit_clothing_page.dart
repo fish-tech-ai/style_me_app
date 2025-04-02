@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/buttons/app_back_button.dart';
-import 'package:style_me/core/views/buttons/app_button.dart';
-import 'package:style_me/core/views/buttons/app_outlined_button.dart';
 import 'package:style_me/core/views/encrypted_image/encrypted_image.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
 import 'package:style_me/core/views/input/dropdowns/app_dropdown_button.dart';
@@ -14,8 +11,9 @@ import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/presentation/components/image_error_widget.dart';
 import 'package:style_me/features/wardrobe/presentation/components/image_loading_widget.dart';
-import 'package:style_me/features/wardrobe/presentation/state/edit_photo_state_holder.dart';
-import 'package:style_me/features/wardrobe/presentation/state/viewmodels/edit_photo_view_model.dart';
+import 'package:style_me/features/wardrobe/presentation/components/photo_modify_buttons.dart';
+import 'package:style_me/features/wardrobe/presentation/state/states/clothing/edit_clothing_photo_state_holder.dart';
+import 'package:style_me/features/wardrobe/presentation/state/viewmodels/clothing/edit_clothing_photo_view_model.dart';
 
 class EditClothingPage extends ConsumerStatefulWidget {
   final Clothing clothing;
@@ -27,12 +25,12 @@ class EditClothingPage extends ConsumerStatefulWidget {
 }
 
 class _EditClothingPageState extends ConsumerState<EditClothingPage> {
-  late final EditPhotoViewModel viewModel;
+  late final EditClothingPhotoViewModel viewModel;
 
   @override
   void initState() {
     super.initState();
-    viewModel = ref.read(editPhotoViewModelProvider.notifier);
+    viewModel = ref.read(editClothingPhotoViewModelProvider.notifier);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       viewModel.init(widget.clothing);
     });
@@ -40,7 +38,8 @@ class _EditClothingPageState extends ConsumerState<EditClothingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final EditPhotoStateHolder state = ref.watch(editPhotoViewModelProvider);
+    final EditClothingPhotoStateHolder state =
+        ref.watch(editClothingPhotoViewModelProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -86,30 +85,17 @@ class _EditClothingPageState extends ConsumerState<EditClothingPage> {
               Positioned(
                 right: 12,
                 bottom: 12,
-                child: Row(
-                  spacing: 12,
-                  children: [
-                    AppOutlinedButton(
-                      text: localizations.deleteClothing,
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: context.colorScheme.error,
-                        backgroundColor: context.colorScheme.onError,
-                        side: BorderSide(color: context.colorScheme.error),
-                      ),
-                      isLoading: state.isDeleteLoading,
-                      onClick: () async {
-                        await viewModel.deleteClothing(() =>
-                            context.pop(widget.clothing.withDeleteAction()));
-                      },
-                    ),
-                    AppButton(
-                        text: localizations.save,
-                        isLoading: state.isSaveLoading,
-                        onClick: () async {
-                          await viewModel.updateClothing((updatedClothing) =>
-                              context.pop(updatedClothing.withUpdateAction()));
-                        }),
-                  ],
+                child: PhotoModifyButtons(
+                  isDeleteLoading: state.isDeleteLoading,
+                  isSaveLoading: state.isSaveLoading,
+                  onDeleteClicked: () async {
+                    await viewModel.deleteClothing(
+                        () => context.pop(widget.clothing.withDeleteAction()));
+                  },
+                  onSaveClicked: () async {
+                    await viewModel.updateClothing((updatedClothing) =>
+                        context.pop(updatedClothing.withUpdateAction()));
+                  },
                 ),
               )
             ],

@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
-import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/input/search_text_field.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
+import 'package:style_me/features/wardrobe/presentation/components/empty_page.dart';
 import 'package:style_me/features/wardrobe/presentation/components/filtering_view.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_grid.dart';
-import 'package:style_me/features/wardrobe/presentation/state/wardrobe_state_holder.dart';
-import 'package:style_me/features/wardrobe/presentation/ui_models/clothing_with_action.dart';
+import 'package:style_me/features/wardrobe/presentation/state/states/wardrobe_state_holder.dart';
+import 'package:style_me/features/wardrobe/presentation/ui_models/photo_with_action.dart';
 
 class ClothesListPage extends StatelessWidget {
   final WardrobeStateHolder state;
   final Function() onFilterClosed;
   final Function(ClothingPositionEnum?, ClothingCategoryEnum) onFiltersChange;
   final Function(String) onTextChanged;
-  final Function(ClothingWithAction) onModifyResult;
+  final Function(PhotoWithAction) onModifyResult;
 
   const ClothesListPage(
       {required this.state,
@@ -68,7 +67,7 @@ class ClothesListPage extends StatelessWidget {
 
   Widget _buildClothesPage(BuildContext context) {
     if (!state.isLoading && state.clothes.isEmpty) {
-      return _buildEmptyPage();
+      return EmptyPage();
     }
     return Expanded(
       child: PhotoGrid(
@@ -78,32 +77,8 @@ class ClothesListPage extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyPage() {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.only(top: 42),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset("assets/no_clothes.svg"),
-          SizedBox(height: 24),
-          Text(
-            localizations.nothingFound,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-          ),
-          SizedBox(height: 6),
-          Text(
-            localizations.nothingFoundSubText,
-            style: TextStyle(fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-
   void onItemClicked(PhotoItem photoItem, BuildContext context) async {
-    final ClothingWithAction? clothingWithAction = await context
+    final PhotoWithAction? clothingWithAction = await context
         .push(AppPage.editClothingPage.path, extra: photoItem as Clothing);
     if (clothingWithAction != null) {
       onModifyResult(clothingWithAction);
