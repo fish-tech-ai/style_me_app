@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:style_me/core/network/utils/image_process/multiple_image_fetcher.dart';
+import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
@@ -15,7 +15,7 @@ import 'package:style_me/features/wardrobe/presentation/state/viewmodels/wardrob
 
 class MockGetClothesUseCase extends Mock implements GetClothesUseCase {}
 
-class MockMultipleImageFetcher extends Mock implements MultipleImageFetcher {}
+class MockMultipleImageFetcher extends Mock implements ImageFetcher {}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

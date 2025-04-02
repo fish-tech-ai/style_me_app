@@ -30,7 +30,7 @@ class PhotoGridItem extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: GlobalUiConst.borderRadiusExtraLarge,
                 child: EncryptedImage(
-                  imagePath: photo.image,
+                  imageSrc: photo.image,
                   fit: BoxFit.cover,
                   loadingBuilder: () {
                     return ImageLoadingWidget();

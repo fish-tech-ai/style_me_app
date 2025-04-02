@@ -19,11 +19,7 @@ class SendClothingPhotoUseCase {
     final compressedImage = await image.getCompressed();
     final encryptedFile = await _encryptor.encryptImage(compressedImage);
     return _networkUtil.makeRepositoryRequest(
-      () async {
-        final SendClothingPhotoResponse result =
-            await _repository.sendClothingPhoto(encryptedFile);
-        return result;
-      },
+      () => _repository.sendClothingPhoto(encryptedFile),
       onSuccess: (_) => _deleteFiles(
         image,
         compressedImage,

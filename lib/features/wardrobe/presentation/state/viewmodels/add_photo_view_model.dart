@@ -17,7 +17,7 @@ import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page
 part 'add_photo_view_model.g.dart';
 
 @riverpod
-class AddPhotoViewModel extends _$AddPhotoViewModel {
+class AddPhotoViewModel extends _$AddPhotoViewModel { //TODO adapt to user photos crud feature
   late final SendClothingPhotoUseCase _sendClothingPhotoUseCase;
   late final ConfirmClothingPhotoUseCase _confirmClothingPhotoUseCase;
   late final ClearClothingPhotoUseCase _deleteClothingPhotoUseCase;

@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/list_ext.dart';
-import 'package:style_me/core/network/utils/image_process/multiple_image_fetcher.dart';
+import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
@@ -20,11 +20,11 @@ part 'wardrobe_view_model.g.dart';
 @riverpod
 class WardrobeViewModel extends _$WardrobeViewModel {
   late final GetClothesUseCase _getClothesUseCase;
-  late final MultipleImageFetcher _multipleImageFetcher;
+  late final ImageFetcher _multipleImageFetcher;
 
   WardrobeViewModel() {
     _getClothesUseCase = getIt();
-    _multipleImageFetcher = getIt<MultipleImageFetcher>();
+    _multipleImageFetcher = getIt<ImageFetcher>();
   }
 
   Timer? _spamTimer;

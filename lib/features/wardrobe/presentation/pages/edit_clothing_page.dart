@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/buttons/app_back_button.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
@@ -73,10 +74,13 @@ class _EditClothingPageState extends ConsumerState<EditClothingPage> {
             children: [
               Positioned.fill(
                 child: EncryptedImage(
-                  imagePath: state.clothing.image,
+                  imageSrc: state.originalImagePath,
                   errorBuilder: (_) => ImageErrorWidget(),
                   loadingBuilder: () => ImageLoadingWidget(),
                   fit: BoxFit.cover,
+                ).or(
+                  ImageLoadingWidget(),
+                  state.isPageLoading,
                 ),
               ),
               Positioned(

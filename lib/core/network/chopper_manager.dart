@@ -16,8 +16,12 @@ import 'package:style_me/features/settings/data/models/delete_user_request.dart'
 import 'package:style_me/features/settings/data/models/report_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothes_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothing_confirmation_request.dart';
+import 'package:style_me/features/wardrobe/data/models/io/original_image_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/update_clothing_request.dart';
+import 'package:style_me/features/wardrobe/data/models/io/update_user_photo_request.dart';
+import 'package:style_me/features/wardrobe/data/models/io/user_photo_confirmation_request.dart';
+import 'package:style_me/features/wardrobe/data/models/io/user_photos_response.dart';
 
 class ChopperManager {
   static ChopperClient createClient(
@@ -43,6 +47,13 @@ class ChopperManager {
                 ClothingConfirmationRequest.fromJson(json),
             UpdateClothingRequest: (json) =>
                 UpdateClothingRequest.fromJson(json),
+            UserPhotosResponse: (json) => UserPhotosResponse.fromJson(json),
+            UserPhotoConfirmationRequest: (json) =>
+                UserPhotoConfirmationRequest.fromJson(json),
+            UpdateUserPhotoRequest: (json) =>
+                UpdateUserPhotoRequest.fromJson(json),
+            OriginalImageUrlResponse: (json) =>
+                OriginalImageUrlResponse.fromJson(json),
           },
         ),
         errorConverter:

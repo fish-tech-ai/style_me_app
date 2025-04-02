@@ -1,6 +1,7 @@
 import 'package:chopper/chopper.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothes_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothing_confirmation_request.dart';
+import 'package:style_me/features/wardrobe/data/models/io/original_image_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_clothing_photo_response.dart';
 import 'package:style_me/features/wardrobe/data/models/io/update_clothing_request.dart';
 
@@ -19,6 +20,10 @@ abstract class ClothesService extends ChopperService {
   @Multipart()
   Future<Response<SendClothingPhotoResponse>> sendClothingPhoto(
       @PartFile("image") String encryptedImage);
+
+  @Get(path: '/single')
+  Future<Response<OriginalImageUrlResponse>> getOriginalImageUrl(
+      @Query('id') String id);
 
   @Post(path: '/confirm')
   Future<Response> confirmClothingPhoto(

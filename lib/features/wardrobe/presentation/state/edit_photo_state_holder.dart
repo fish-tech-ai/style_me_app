@@ -9,6 +9,8 @@ class EditPhotoStateHolder with _$EditPhotoStateHolder {
   const factory EditPhotoStateHolder({
     @Default(false) bool isSaveLoading,
     @Default(false) bool isDeleteLoading,
+    @Default(true) bool isPageLoading,
+    @Default("") String originalImagePath,
     required Clothing clothing,
     @Default(false) bool isDefault,
   }) = _EditPhotoStateHolder;

@@ -19,11 +19,12 @@ import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/services/app_service.dart';
 import 'package:style_me/core/network/services/auth_service.dart';
 import 'package:style_me/core/network/services/clothes_service.dart';
+import 'package:style_me/core/network/services/user_photos_service.dart';
 import 'package:style_me/core/network/services/user_service.dart';
 import 'package:style_me/core/network/utils/aes_encryptor.dart';
 import 'package:style_me/core/network/utils/app_authenticator.dart';
 import 'package:style_me/core/network/utils/app_headers_interceptor.dart';
-import 'package:style_me/core/network/utils/image_process/multiple_image_fetcher.dart';
+import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/network_request_util.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
 import 'package:style_me/core/utils/deep_link_manager.dart';
@@ -49,6 +50,13 @@ import 'package:style_me/features/wardrobe/domain/clothing/delete_clothing_use_c
 import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/send_clothing_photo_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/update_clothing_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/get_original_image_url_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/clear_user_photo_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/confirm_user_photo_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/delete_user_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/get_user_photos_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/send_user_photo_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/update_user_photo_use_case.dart';
 
 final getIt = GetIt.instance;
 
@@ -68,6 +76,8 @@ class GetItManager {
         () => AppService.create(getIt<ChopperClient>()));
     getIt.registerFactory<ClothesService>(
         () => ClothesService.create(getIt<ChopperClient>()));
+    getIt.registerFactory<UserPhotosService>(
+            () => UserPhotosService.create(getIt<ChopperClient>()));
     getIt.registerLazySingleton(() => ThemeManager());
     final sharedPrefs = await SharedPreferences.getInstance();
     getIt.registerLazySingleton(() => sharedPrefs);
@@ -85,7 +95,7 @@ class GetItManager {
     getIt.registerLazySingleton(() => AppLinks());
     getIt.registerLazySingleton(() => DeepLinkManager(getIt()));
     getIt.registerLazySingleton(() => AESEncryptor());
-    getIt.registerFactory(() => MultipleImageFetcher(getIt()));
+    getIt.registerFactory(() => ImageFetcher(getIt()));
     getIt.registerLazySingleton(() => IsolatedDecryptCompressManager());
 
     ///Global auth
@@ -115,7 +125,11 @@ class GetItManager {
     getIt.registerFactory(() => AddReportUseCase(getIt(), getIt()));
 
     ///Wardrobe
-    getIt.registerFactory(() => WardrobeRepository(getIt()));
+    getIt.registerFactory(() => WardrobeRepository(getIt(), getIt()));
+    getIt.registerFactory(() => GetOriginalImageUrlUseCase(getIt(), getIt()));
+
+
+    ///Wardrobe clothes
     getIt.registerFactory(() => GetClothesUseCase(getIt(), getIt()));
     getIt.registerFactory(
         () => SendClothingPhotoUseCase(getIt(), getIt(), getIt()));
@@ -123,5 +137,14 @@ class GetItManager {
     getIt.registerFactory(() => ClearClothingPhotoUseCase(getIt(), getIt()));
     getIt.registerFactory(() => DeleteClothingUseCase(getIt(), getIt()));
     getIt.registerFactory(() => UpdateClothingUseCase(getIt(), getIt()));
+
+    ///Wardrobe user photos
+    getIt.registerFactory(() => GetUserPhotosUseCase(getIt(), getIt()));
+    getIt.registerFactory(
+        () => SendUserPhotoPhotoUseCase(getIt(), getIt(), getIt()));
+    getIt.registerFactory(() => ConfirmUserPhotoPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => ClearUserPhotoPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => DeleteUserPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => UpdateUserPhotoUseCase(getIt(), getIt()));
   }
 }
