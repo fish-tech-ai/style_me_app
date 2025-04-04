@@ -416,4 +416,10 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get yourPhotos => "yourPhotos";
+
+  @override
+  String get setAsDefault => "setAsDefault";
+
+  @override
+  String get userPhotoAddPageTitle => "userPhotoAddPageTitle";
 }

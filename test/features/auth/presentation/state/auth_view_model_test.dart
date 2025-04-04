@@ -39,7 +39,7 @@ void main() {
   late MockRegisterUseCase mockRegisterUseCase;
   late MockSendResetPasswordMailUseCase mockSendResetPasswordMailUseCase;
   late MockGoogleAuthService mockGoogleAuthService;
-  late MockAppGlobalViewModel mockAppGlobalViewModel;
+  late MockitoAppGlobalViewModel mockAppGlobalViewModel;
   late ProviderContainer container;
   late AuthViewModel authViewModel;
 
@@ -52,7 +52,7 @@ void main() {
     mockRegisterUseCase = MockRegisterUseCase();
     mockSendResetPasswordMailUseCase = MockSendResetPasswordMailUseCase();
     mockGoogleAuthService = MockGoogleAuthService();
-    mockAppGlobalViewModel = MockAppGlobalViewModel();
+    mockAppGlobalViewModel = MockitoAppGlobalViewModel();
 
     container = ProviderContainer(overrides: [
       authViewModelProvider.overrideWith(

@@ -30,16 +30,15 @@ class EditUserPhotoViewModel extends _$EditUserPhotoViewModel {
   @override
   EditUserPhotoStateHolder build() {
     return EditUserPhotoStateHolder(
-      userPhoto: UserPhoto(
-        "",
-        "",
-        "",
-      ),
-      isPageLoading: true
-    );
+        userPhoto: UserPhoto(
+          "",
+          "",
+          "",
+        ),
+        isPageLoading: true);
   }
 
-  void init(UserPhoto userPhoto) async {
+  Future init(UserPhoto userPhoto) async {
     state = state.copyWith(userPhoto: userPhoto, isPageLoading: true);
 
     final Result<OriginalImageUrlResponse> result =
@@ -93,4 +92,11 @@ class EditUserPhotoViewModel extends _$EditUserPhotoViewModel {
     state = state.copyWith(
         userPhoto: state.userPhoto.copyWith(isDefault: isChecked));
   }
+
+  EditUserPhotoViewModel.test(
+    this._deleteUserPhotoUseCase,
+    this._updateUserPhotoUseCase,
+    this._getOriginalUserImageUrlUseCase,
+    this._multipleImageFetcher,
+  );
 }

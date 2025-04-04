@@ -20,12 +20,12 @@ class AddUserPhotoPage extends ConsumerStatefulWidget {
 
 class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
     with WidgetsBindingObserver {
-  late final AddUserPhotoPhotoViewModel viewModel;
+  late final AddUserPhotoViewModel viewModel;
 
   @override
   void initState() {
     super.initState();
-    viewModel = ref.read(addUserPhotoPhotoViewModelProvider.notifier);
+    viewModel = ref.read(addUserPhotoViewModelProvider.notifier);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -45,7 +45,7 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
   @override
   Widget build(BuildContext context) {
     final AddUserPhotoStateHolder state =
-        ref.watch(addUserPhotoPhotoViewModelProvider);
+        ref.watch(addUserPhotoViewModelProvider);
     showDialogOnImageError(
       context,
       state.imageProcessingError,
@@ -73,7 +73,7 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
   }
 
   Widget _buildPageContentBasedOn(AddUserPhotoStateHolder state,
-      AddUserPhotoPhotoViewModel viewModel, BuildContext context) {
+      AddUserPhotoViewModel viewModel, BuildContext context) {
     switch (state.addPhotoPageMode) {
       case AddPhotoPageMode.pickPhoto:
         return PhotoFetcher(
@@ -109,7 +109,7 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
   void showDialogOnImageError(
     BuildContext context,
     ImageErrorTypeEnum? imageProcessingError,
-    AddUserPhotoPhotoViewModel viewModel,
+    AddUserPhotoViewModel viewModel,
   ) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (imageProcessingError != null) {

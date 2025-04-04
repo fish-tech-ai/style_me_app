@@ -17,15 +17,15 @@ import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page
 part 'add_user_photo_view_model.g.dart';
 
 @riverpod
-class AddUserPhotoPhotoViewModel extends _$AddUserPhotoPhotoViewModel {
-  late final SendUserPhotoUseCase _sendUserPhotoPhotoUseCase;
-  late final ConfirmUserPhotoUseCase _confirmUserPhotoPhotoUseCase;
-  late final ClearUserPhotoUseCase _deleteUserPhotoPhotoUseCase;
+class AddUserPhotoViewModel extends _$AddUserPhotoViewModel {
+  late final SendUserPhotoUseCase _sendUserPhotoUseCase;
+  late final ConfirmUserPhotoUseCase _confirmUserPhotoUseCase;
+  late final ClearUserPhotoUseCase _deleteUserPhotoUseCase;
 
-  AddUserPhotoPhotoViewModel() {
-    _sendUserPhotoPhotoUseCase = getIt();
-    _confirmUserPhotoPhotoUseCase = getIt();
-    _deleteUserPhotoPhotoUseCase = getIt();
+  AddUserPhotoViewModel() {
+    _sendUserPhotoUseCase = getIt();
+    _confirmUserPhotoUseCase = getIt();
+    _deleteUserPhotoUseCase = getIt();
   }
 
   String? _imageId;
@@ -47,13 +47,13 @@ class AddUserPhotoPhotoViewModel extends _$AddUserPhotoPhotoViewModel {
     if (state.addPhotoPageMode == AddPhotoPageMode.fillData) {
       sendConfirmationData(onConfirmSuccess);
     } else {
-      sendUserPhotoPhoto(state.image!);
+      sendUserPhoto(state.image!);
     }
   }
 
-  Future sendUserPhotoPhoto(File image) async {
+  Future sendUserPhoto(File image) async {
     final Result<SendUserPhotoResponse> result =
-        await _sendUserPhotoPhotoUseCase(image);
+        await _sendUserPhotoUseCase(image);
     result.collect((SendUserPhotoResponse response) {
       _imageId = response.id;
       state = state.copyWith(
@@ -73,7 +73,7 @@ class AddUserPhotoPhotoViewModel extends _$AddUserPhotoPhotoViewModel {
 
   Future sendConfirmationData(Function() onSuccess) async {
     state = state.copyWith(isImageAddLoading: true);
-    final result = await _confirmUserPhotoPhotoUseCase(
+    final result = await _confirmUserPhotoUseCase(
       _imageId ?? "",
       state.userPhotoForm.nameText,
       state.userPhotoForm.isDefault,
@@ -121,7 +121,7 @@ class AddUserPhotoPhotoViewModel extends _$AddUserPhotoPhotoViewModel {
 
   Future clearImageData() async {
     if (state.addPhotoPageMode == AddPhotoPageMode.fillData) {
-      final result = await _deleteUserPhotoPhotoUseCase(_imageId!);
+      final result = await _deleteUserPhotoUseCase(_imageId!);
       result.collect((_) {}, (failure) {
         debugMessagePrint(failure.toString());
       });
@@ -129,10 +129,10 @@ class AddUserPhotoPhotoViewModel extends _$AddUserPhotoPhotoViewModel {
   }
 
   @visibleForTesting
-  AddUserPhotoPhotoViewModel.test(
-    this._sendUserPhotoPhotoUseCase,
-    this._confirmUserPhotoPhotoUseCase,
-    this._deleteUserPhotoPhotoUseCase,
+  AddUserPhotoViewModel.test(
+    this._sendUserPhotoUseCase,
+    this._confirmUserPhotoUseCase,
+    this._deleteUserPhotoUseCase,
   );
 
   void onIsDefaultChanged(bool isChecked) {

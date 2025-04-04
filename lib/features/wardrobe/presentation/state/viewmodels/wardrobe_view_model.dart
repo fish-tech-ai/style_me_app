@@ -188,5 +188,9 @@ class WardrobeViewModel extends _$WardrobeViewModel {
   }
 
   @visibleForTesting
-  WardrobeViewModel.test(this._getClothesUseCase, this._multipleImageFetcher);
+  WardrobeViewModel.test(
+    this._getClothesUseCase,
+    this._multipleImageFetcher,
+    this._getUserPhotosUseCase,
+  );
 }

@@ -42,7 +42,7 @@ class EditClothingPhotoViewModel extends _$EditClothingPhotoViewModel {
     );
   }
 
-  void init(Clothing clothing) async {
+  Future init(Clothing clothing) async {
     state = state.copyWith(clothing: clothing, isPageLoading: true);
 
     final Result<OriginalImageUrlResponse> result =
@@ -96,4 +96,11 @@ class EditClothingPhotoViewModel extends _$EditClothingPhotoViewModel {
     state =
         state.copyWith(clothing: state.clothing.copyWith(category: category));
   }
+
+  EditClothingPhotoViewModel.test(
+    this._deleteClothingUseCase,
+    this._updateClothingUseCase,
+    this._getOriginalImageUrlUseCase,
+    this._multipleImageFetcher,
+  );
 }

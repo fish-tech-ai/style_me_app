@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:style_me/core/app/presentation/app_global_state_holder.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_type_enum.dart';
 import 'package:style_me/core/network/failures/image_process_failure.dart';
@@ -17,6 +16,8 @@ import 'package:style_me/features/wardrobe/domain/clothing/send_clothing_photo_u
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/clothing/add_clothing_photo_view_model.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page_mode.dart';
 
+import '../../../../../../helpers/shared_test_functions.dart';
+
 class MockSendClothingPhotoUseCase extends Mock
     implements SendClothingPhotoUseCase {}
 
@@ -25,10 +26,6 @@ class MockConfirmClothingPhotoUseCase extends Mock
 
 class MockDeleteClothingPhotoUseCase extends Mock
     implements ClearClothingPhotoUseCase {}
-
-class MockAppGlobalViewModel extends AutoDisposeNotifier<AppGlobalStateHolder>
-    with Mock
-    implements AppGlobalViewModel {}
 
 void main() {
   late MockSendClothingPhotoUseCase mockSend;
