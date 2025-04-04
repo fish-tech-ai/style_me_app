@@ -44,27 +44,30 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
 
   @override
   Widget build(BuildContext context) {
-    final AddUserPhotoStateHolder state = ref.watch(addUserPhotoPhotoViewModelProvider);
+    final AddUserPhotoStateHolder state =
+        ref.watch(addUserPhotoPhotoViewModelProvider);
     showDialogOnImageError(
       context,
       state.imageProcessingError,
       viewModel,
     );
     return PopScope(
-      canPop: false,
+      canPop: state.addPhotoPageMode == AddPhotoPageMode.pickPhoto,
       onPopInvokedWithResult: (_, __) {
-        viewModel.onBackAction(() => context.pop());
+        viewModel.onBackAction(() {});
       },
-      child: Column(
-        children: [
-          AppTopBar(
-            title: localizations.userPhotoAddPageTitle,
-            onBackButtonClicked: () {
-              viewModel.onBackAction(() => context.pop());
-            },
-          ),
-          _buildPageContentBasedOn(state, viewModel, context)
-        ],
+      child: SafeArea(
+        child: Column(
+          children: [
+            AppTopBar(
+              title: localizations.userPhotoAddPageTitle,
+              onBackButtonClicked: () {
+                viewModel.onBackAction(() => context.pop());
+              },
+            ),
+            _buildPageContentBasedOn(state, viewModel, context)
+          ],
+        ),
       ),
     );
   }

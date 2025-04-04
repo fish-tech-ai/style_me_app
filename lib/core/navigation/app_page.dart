@@ -7,15 +7,19 @@ enum AppPage {
   checkroom("/checkroom"),
   changePasswordPage("/changePassword"),
   privacyPolicy("/privacyPolicy"),
-  clothingAdd("/clothingAdd"),
+  clothingAdd("/clothingAdd", shouldShowBottomNavBar: false),
   termsAndConditions("/termsAndConditions"),
   editClothingPage("/editClothingPage"),
-  userPhotoAdd("/userPhotoAdd"),
+  userPhotoAdd("/userPhotoAdd", shouldShowBottomNavBar: false),
   editUserPhotoPage("/editUserPhotoPage");
-
 
   final String path;
   final bool shouldShowBottomNavBar;
 
   const AppPage(this.path, {this.shouldShowBottomNavBar = true});
+
+  factory AppPage.getFrom({required String path}) {
+    return AppPage.values
+        .firstWhere((appPage) => appPage.path.startsWith(path));
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:style_me/core/navigation/scoped_page.dart';
 
 extension WidgetExt on Widget {
   Widget orLoading(bool condition) =>
@@ -11,4 +12,6 @@ extension WidgetExt on Widget {
 
   Widget or(Widget otherWidget, bool ifConditionTrue) =>
       ifConditionTrue ? otherWidget : this;
+
+  Widget scopedPage() => ScopedPage(child: this);
 }

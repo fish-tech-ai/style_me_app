@@ -88,7 +88,7 @@ class PhotoGridItem extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: context.colorScheme.primary,
-          borderRadius: GlobalUiConst.borderRadiusNormal),
+          borderRadius: BorderRadius.circular(14)),
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: Text(localizations.defaultText),
     );

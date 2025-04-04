@@ -33,6 +33,7 @@ class UserPhotosListPage extends StatelessWidget {
     }
     return PhotoGrid(
       items: state.userPhotos,
+      clipBehavior: Clip.none,
       onItemClicked: (item) => onItemClicked(item, context),
     ).orLoading(state.isUserPhotosLoading);
   }

@@ -24,7 +24,7 @@ class _StyleMeAppState extends ConsumerState<StyleMeApp> {
   @override
   void initState() {
     super.initState();
-    router = getRouter(widget.isAuthenticated);
+    router = getRouter(widget.isAuthenticated, ref);
   }
 
   @override

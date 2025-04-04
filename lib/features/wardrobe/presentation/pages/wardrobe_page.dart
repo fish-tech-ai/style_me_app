@@ -6,6 +6,7 @@ import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/app_tab_bar.dart';
 import 'package:style_me/features/wardrobe/presentation/pages/clothes/clothes_list_page.dart';
 import 'package:style_me/features/wardrobe/presentation/pages/user_photos/user_photos_list_page.dart';
+import 'package:style_me/features/wardrobe/presentation/state/states/wardrobe_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/wardrobe_view_model.dart';
 
 class WardrobePage extends ConsumerStatefulWidget {
@@ -34,8 +35,8 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(wardrobeViewModelProvider);
-    final viewModel = ref.watch(wardrobeViewModelProvider.notifier);
+    final WardrobeStateHolder state = ref.watch(wardrobeViewModelProvider);
+    final WardrobeViewModel viewModel = ref.read(wardrobeViewModelProvider.notifier);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 12),
       child: Column(
