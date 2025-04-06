@@ -5,14 +5,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/list_ext.dart';
-import 'package:style_me/core/network/utils/image_process/multiple_image_fetcher.dart';
+import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_position_enum.dart';
-import 'package:style_me/features/wardrobe/domain/get_clothes_use_case.dart';
-import 'package:style_me/features/wardrobe/presentation/state/wardrobe_state_holder.dart';
-import 'package:style_me/features/wardrobe/presentation/ui_models/clothing_with_action.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/get_user_photos_use_case.dart';
+import 'package:style_me/features/wardrobe/presentation/state/states/wardrobe_state_holder.dart';
+import 'package:style_me/features/wardrobe/presentation/ui_models/photo_with_action.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/modification_action_enum.dart';
 
 part 'wardrobe_view_model.g.dart';
@@ -20,18 +22,20 @@ part 'wardrobe_view_model.g.dart';
 @riverpod
 class WardrobeViewModel extends _$WardrobeViewModel {
   late final GetClothesUseCase _getClothesUseCase;
-  late final MultipleImageFetcher _multipleImageFetcher;
+  late final GetUserPhotosUseCase _getUserPhotosUseCase;
+  late final ImageFetcher _multipleImageFetcher;
 
   WardrobeViewModel() {
     _getClothesUseCase = getIt();
-    _multipleImageFetcher = getIt<MultipleImageFetcher>();
+    _getUserPhotosUseCase = getIt();
+    _multipleImageFetcher = getIt<ImageFetcher>();
   }
 
   Timer? _spamTimer;
 
   @override
   WardrobeStateHolder build() {
-    Future.microtask(() => getClothes());
+    Future.microtask(() => getAllPhotos());
     return WardrobeStateHolder();
   }
 
@@ -57,27 +61,68 @@ class WardrobeViewModel extends _$WardrobeViewModel {
     getClothes();
   }
 
-  void onClothingModifyResult(ClothingWithAction clothingWithAction) {
+  void onClothingModifyResult(PhotoWithAction clothingWithAction) {
     switch (clothingWithAction.action) {
       case ModificationActionEnum.update:
         state = state.copyWith(
           clothes: state.clothes
-              .getUpdatedWith(clothingWithAction.clothing)
+              .getUpdatedWith(clothingWithAction.item)
               .asClothingList(),
         );
         break;
       case ModificationActionEnum.delete:
         state = state.copyWith(
           clothes: state.clothes
-              .getReducedWith(clothingWithAction.clothing)
+              .getReducedWith(clothingWithAction.item)
               .asClothingList(),
         );
         break;
     }
   }
 
+  void onUserPhotoModifyResult(PhotoWithAction userPhotoWithAction) {
+    final UserPhoto modifiedUserPhoto = userPhotoWithAction.item as UserPhoto;
+    switch (userPhotoWithAction.action) {
+      case ModificationActionEnum.update:
+        final updatedPhotos = state.userPhotos
+            .getUpdatedWith(modifiedUserPhoto)
+            .asUserPhotosList();
+        state = state.copyWith(
+            userPhotos: modifiedUserPhoto.isDefault
+                ? updatedPhotos.withDefaultOn(modifiedUserPhoto)
+                : updatedPhotos);
+        break;
+      case ModificationActionEnum.delete:
+        state = state.copyWith(
+          userPhotos: state.userPhotos
+              .getReducedWith(userPhotoWithAction.item)
+              .asUserPhotosList(),
+        );
+        break;
+    }
+  }
+
+  Future getAllPhotos() async {
+    getClothes();
+    getUserPhotos();
+  }
+
+  Future getUserPhotos() async {
+    state = state.copyWith(isUserPhotosLoading: true);
+    final Result<List<UserPhoto>> result = await _getUserPhotosUseCase();
+    result.collect(
+      (userPhotos) {
+        _convertUserImagesAndShow(userPhotos);
+      },
+      (failure) {
+        ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+        state = state.copyWith(isUserPhotosLoading: false);
+      },
+    );
+  }
+
   Future getClothes() async {
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isClothesLoading: true);
     _spamTimer?.cancel();
     _spamTimer = Timer(Duration(seconds: 1), () => _performGetClothes());
   }
@@ -90,16 +135,16 @@ class WardrobeViewModel extends _$WardrobeViewModel {
     );
     result.collect(
       (clothes) {
-        _convertImagesAndShow(clothes);
+        _convertClothingImagesAndShow(clothes);
       },
       (failure) {
         ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
-        state = state.copyWith(isLoading: false);
+        state = state.copyWith(isClothesLoading: false);
       },
     );
   }
 
-  void _convertImagesAndShow(List<Clothing> clothesWithUrls) async {
+  void _convertClothingImagesAndShow(List<Clothing> clothesWithUrls) async {
     final cacheDir = await getTemporaryDirectory();
     final List<Clothing> clothesWithPaths = clothesWithUrls.map(
       (clothing) {
@@ -113,7 +158,28 @@ class WardrobeViewModel extends _$WardrobeViewModel {
           .toList(),
     );
 
-    state = state.copyWith(clothes: clothesWithPaths, isLoading: false);
+    state = state.copyWith(clothes: clothesWithPaths, isClothesLoading: false);
+  }
+
+  void _convertUserImagesAndShow(List<UserPhoto> userPhotosWithUrls) async {
+    final cacheDir = await getTemporaryDirectory();
+    final List<UserPhoto> userPhotosWithPaths = userPhotosWithUrls.map(
+      (userPhoto) {
+        return userPhoto.copyWith(
+            image: '${cacheDir.path}/${userPhoto.id}.webp');
+      },
+    ).toList();
+    await _fetchAndDecryptImageFromIsolate(
+      userPhotosWithUrls
+          .map((userPhotoWithUrl) => userPhotoWithUrl.image)
+          .toList(),
+      userPhotosWithPaths
+          .map((userPhotoWithPath) => userPhotoWithPath.image)
+          .toList(),
+    );
+
+    state = state.copyWith(
+        userPhotos: userPhotosWithPaths, isUserPhotosLoading: false);
   }
 
   Future _fetchAndDecryptImageFromIsolate(
@@ -122,5 +188,9 @@ class WardrobeViewModel extends _$WardrobeViewModel {
   }
 
   @visibleForTesting
-  WardrobeViewModel.test(this._getClothesUseCase, this._multipleImageFetcher);
+  WardrobeViewModel.test(
+    this._getClothesUseCase,
+    this._multipleImageFetcher,
+    this._getUserPhotosUseCase,
+  );
 }

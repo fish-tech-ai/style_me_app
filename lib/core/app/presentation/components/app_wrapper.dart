@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/app/presentation/components/app_status.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/extensions/go_router_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/animators/animated_visibility.dart';
@@ -63,12 +64,15 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
 
   void _onRouteChange(AppGlobalViewModel viewModel) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final currentPath =
-          widget.router.routerDelegate.currentConfiguration.fullPath;
-      viewModel.setBottomNavBarVisibility(AppPage.values
-          .firstWhere((appPage) => appPage.path.startsWith(currentPath))
-          .shouldShowBottomNavBar);
+      final currentAppPage = widget.router.getCurrentNavTargetPage();
+      _runOtherRouterActions(widget.router);
+      viewModel.setBottomNavBarVisibility(
+      currentAppPage.shouldShowBottomNavBar);
     });
+  }
+
+  void _runOtherRouterActions(GoRouter router) {
+    router;
   }
 
   @override

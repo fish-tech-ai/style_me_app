@@ -4,7 +4,7 @@ import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/core/views/containers/outlined_container.dart';
 import 'package:style_me/core/views/input/dropdowns/app_dropdown_button.dart';
 import 'package:style_me/core/views/input/app_text_field.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 
 class ClothingPhotoAddForm extends StatelessWidget {
   final bool isVisible;

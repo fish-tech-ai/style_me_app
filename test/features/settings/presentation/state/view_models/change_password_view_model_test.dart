@@ -18,14 +18,14 @@ import 'change_password_view_model_test.mocks.dart';
 @GenerateNiceMocks([MockSpec<ChangePasswordUseCase>()])
 void main() {
   late MockChangePasswordUseCase mockChangePasswordUseCase;
-  late MockAppGlobalViewModel mockAppGlobalViewModel;
+  late MockitoAppGlobalViewModel mockAppGlobalViewModel;
   late ProviderContainer container;
   late ChangePasswordViewModel changePasswordViewModel;
 
   setUp(() {
     initializeAndGetLocalizations();
     mockChangePasswordUseCase = MockChangePasswordUseCase();
-    mockAppGlobalViewModel = MockAppGlobalViewModel();
+    mockAppGlobalViewModel = MockitoAppGlobalViewModel();
 
     container = ProviderContainer(overrides: [
       changePasswordViewModelProvider.overrideWith(

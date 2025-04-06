@@ -8,8 +8,8 @@ import 'package:style_me/core/views/input/dropdowns/app_dropdown_button.dart';
 import 'package:style_me/core/views/ui_models/app_button_icon_data.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_category_enum.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing_position_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
 
 class FilteringView extends StatefulWidget {
   final ClothingPositionEnum? selectedPosition;

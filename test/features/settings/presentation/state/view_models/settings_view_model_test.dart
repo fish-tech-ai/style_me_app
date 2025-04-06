@@ -35,13 +35,13 @@ void main() {
   late MockLogoutUserUseCase mockLogoutUserUseCase;
   late MockDeleteAccountUseCase mockDeleteAccountUseCase;
   late MockAddReportUseCase mockAddReportUseCase;
-  late MockAppGlobalViewModel mockAppGlobalViewModel;
+  late MockitoAppGlobalViewModel mockAppGlobalViewModel;
   late ProviderContainer container;
   late UserData userData;
 
   setUp(() {
     initializeAndGetLocalizations();
-    mockAppGlobalViewModel = MockAppGlobalViewModel();
+    mockAppGlobalViewModel = MockitoAppGlobalViewModel();
     mockGetUserUseCase = MockGetUserUseCase();
     mockGetCurrentThemeUseCase = MockGetCurrentThemeUseCase();
     mockGetCurrentLangUseCase = MockGetLanguageUseCase();

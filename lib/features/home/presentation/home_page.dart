@@ -15,7 +15,9 @@ class HomePage extends ConsumerWidget {
       addClothingClicked: () {
         context.push(AppPage.clothingAdd.path);
       },
-      addUserPhotoClicked: () {},
+      addUserPhotoClicked: () {
+        context.push(AppPage.userPhotoAdd.path);
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
