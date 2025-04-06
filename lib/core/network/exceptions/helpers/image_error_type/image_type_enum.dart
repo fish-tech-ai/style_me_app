@@ -5,6 +5,7 @@ import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/network/exceptions/helpers/image_error_type/error_dialog_data.dart';
 import 'package:style_me/core/views/dialogs/app_dialog.dart';
 
+// ignore_for_file: constant_identifier_names
 enum ImageErrorTypeEnum {
   IMAGE_IS_NSFW,
   NO_CLOTHING_DETECTED,

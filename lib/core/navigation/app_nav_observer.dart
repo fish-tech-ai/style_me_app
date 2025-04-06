@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/src/consumer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/wardrobe_view_model.dart';
 
