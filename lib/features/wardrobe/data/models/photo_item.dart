@@ -15,4 +15,10 @@ abstract class PhotoItem {
   PhotoWithAction withUpdateAction() {
     return PhotoWithAction.update(this);
   }
+
+  PhotoItem copyWith({
+    String? id,
+    String? name,
+    String? image,
+  });
 }

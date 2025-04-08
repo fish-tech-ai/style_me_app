@@ -52,7 +52,7 @@ class EditClothingPhotoViewModel extends _$EditClothingPhotoViewModel {
     result.collect((data) async {
       final String originalImagePath =
           '${cacheDir.path}/${clothing.id}_original.webp';
-      await _multipleImageFetcher.handleSingleImageLoadingAndCache(
+      await _multipleImageFetcher.downloadAndCacheImage(
           data.signedUrl, originalImagePath);
 
       state = state.copyWith(

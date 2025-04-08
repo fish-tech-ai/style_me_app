@@ -19,6 +19,7 @@ class Clothing extends PhotoItem {
 
   Map<String, dynamic> toJson() => _$ClothingToJson(this);
 
+  @override
   Clothing copyWith({
     String? id,
     String? name,

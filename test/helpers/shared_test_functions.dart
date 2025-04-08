@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/services.dart';
@@ -34,17 +35,29 @@ MockAppLocalizations initializeAndGetLocalizations() {
   return localizations;
 }
 
+/// this function should be ALWAYS awaited
 void mockGetTemporaryDirectory() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   const MethodChannel channel =
       MethodChannel('plugins.flutter.io/path_provider');
+  final dir = Directory("./mocked");
+  dir.createSync();
 
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
       .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
     if (methodCall.method == 'getTemporaryDirectory') {
-      return '/mocked/temp';
+      return dir.path;
     }
     return null;
   });
+  try {
+    addTearDown(() {
+      if (dir.existsSync()) {
+        dir.delete(recursive: true);
+      }
+    });
+  } on StateError {
+    throw StateError('mockGetTemporaryDirectory() may only be called within a test.');
+  }
 }

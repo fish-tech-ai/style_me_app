@@ -48,7 +48,7 @@ class EditUserPhotoViewModel extends _$EditUserPhotoViewModel {
     result.collect((data) async {
       final String originalImagePath =
           '${cacheDir.path}/${userPhoto.id}_original.webp';
-      await _multipleImageFetcher.handleSingleImageLoadingAndCache(
+      await _multipleImageFetcher.downloadAndCacheImage(
           data.signedUrl, originalImagePath);
 
       state = state.copyWith(

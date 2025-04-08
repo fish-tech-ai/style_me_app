@@ -36,7 +36,8 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
   @override
   Widget build(BuildContext context) {
     final WardrobeStateHolder state = ref.watch(wardrobeViewModelProvider);
-    final WardrobeViewModel viewModel = ref.read(wardrobeViewModelProvider.notifier);
+    final WardrobeViewModel viewModel =
+        ref.read(wardrobeViewModelProvider.notifier);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 12),
       child: Column(
@@ -67,13 +68,7 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
             child: TabBarView(
               controller: _tabController,
               children: [
-                ClothesListPage(
-                  state: state,
-                  onFilterClosed: viewModel.clearFilters,
-                  onFiltersChange: viewModel.onFilterChanged,
-                  onTextChanged: viewModel.onSearchTextChanged,
-                  onModifyResult: viewModel.onClothingModifyResult,
-                ),
+                ClothesListPage(),
                 UserPhotosListPage(
                   state: state,
                   onModifyResult: viewModel.onUserPhotoModifyResult,
