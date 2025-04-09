@@ -40,7 +40,7 @@ void main() {
     addTearDown(container.dispose);
   });
 
-  test('initial state is loading and then updates with clothes on success',
+  test('initial state is loading and then updates with user photos on success',
       () async {
     final List<UserPhoto> userPhotosList = [];
     when(() => mockGetUserPhotosUseCase.call())
