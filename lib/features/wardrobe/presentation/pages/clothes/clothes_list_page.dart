@@ -60,7 +60,7 @@ class _ClothesListPageState extends ConsumerState<ClothesListPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(viewModel, state),
-          _buildClothesPage(context, viewModel, state),
+          Expanded(child: _buildClothesPage(context, viewModel, state)),
         ],
       ),
     );
@@ -99,16 +99,13 @@ class _ClothesListPageState extends ConsumerState<ClothesListPage> {
     if (!state.isClothesLoading && state.clothes.isEmpty) {
       return EmptyPage();
     }
-    return Flexible(
-      fit: FlexFit.loose,
-      child: PhotoGrid(
-        items: state.clothes,
-        scrollController: widget.scrollController,
-        onItemClicked: (item) =>
-            widget.onItemClicked?.call(item) ??
-            defaultOnItemClicked(item, context, viewModel),
-      ).orLoading(state.isClothesLoading),
-    );
+    return PhotoGrid(
+      items: state.clothes,
+      scrollController: widget.scrollController,
+      onItemClicked: (item) =>
+          widget.onItemClicked?.call(item) ??
+          defaultOnItemClicked(item, context, viewModel),
+    ).orLoading(state.isClothesLoading);
   }
 
   void defaultOnItemClicked(

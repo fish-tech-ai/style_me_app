@@ -26,7 +26,6 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   Widget build(BuildContext context) {
     final CheckroomStateHolder state = ref.watch(checkroomViewModelProvider);
     return Stack(
-      clipBehavior: Clip.hardEdge,
       children: [
         Positioned.fill(child: buildOverlayIfNeeded(state)),
         ...buildContent(),
@@ -50,20 +49,12 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   List<Widget> buildContent() {
     return [
       Positioned.fill(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return AppPersistentBottomSheet(
-              builder: (scrollController, draggableController) =>
-                  SizedBox(
-                height: constraints.maxHeight - 24,
-                child: ClothesListPage(
-                  onItemClicked: (item) {},
-                  onClothesLoaded: viewModel.onClothesLoaded,
-                  scrollController: scrollController,
-                ),
-              ),
-            );
-          },
+        child: AppPersistentBottomSheet(
+          builder: (scrollController, draggableController) => ClothesListPage(
+            onItemClicked: (item) {},
+            onClothesLoaded: viewModel.onClothesLoaded,
+            scrollController: scrollController,
+          ),
         ),
       )
     ];
