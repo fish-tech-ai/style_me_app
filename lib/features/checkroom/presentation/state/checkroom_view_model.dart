@@ -8,95 +8,57 @@ import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
-import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
-import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
+import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/get_user_photos_use_case.dart';
 
 part 'checkroom_view_model.g.dart';
 
 @riverpod
 class CheckroomViewModel extends _$CheckroomViewModel {
-  late final GetClothesUseCase _getClothesUseCase;
+  late final GetUserPhotosUseCase _getUserPhotosUseCase;
   late final ImageFetcher _multipleImageFetcher;
 
   CheckroomViewModel() {
-    _getClothesUseCase = getIt();
+    _getUserPhotosUseCase = getIt();
     _multipleImageFetcher = getIt();
   }
 
-  Timer? _spamTimer;
-
   @override
   CheckroomStateHolder build() {
-    Future.microtask(() => getClothes());
+    Future.microtask(() { getUserPhotos(); });
     return CheckroomStateHolder();
   }
 
-  Future getClothes() async {
-    state = state.copyWith(
-      clothesListState: state.clothesListState.copyWith(isClothesLoading: true),
-    );
-    _spamTimer?.cancel();
-    _spamTimer = Timer(Duration(seconds: 1), () => _performGetClothes());
-  }
-
-  Future _performGetClothes() async {
-    final Result<List<Clothing>> result = await _getClothesUseCase(
-      state.clothesListState.searchText,
-      state.clothesListState.filterPosition,
-      state.clothesListState.filterCategory,
-    );
+  Future getUserPhotos() async {
+    state = state.copyWith(isUserPhotosLoading: true);
+    final Result<List<UserPhoto>> result = await _getUserPhotosUseCase();
     result.collect(
-          (clothes) {
-        _convertClothingImagesAndShow(clothes);
+          (userPhotos) {
+        _convertUserImagesAndShow(userPhotos);
       },
           (failure) {
         ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
-        state = state.copyWith(
-          clothesListState:
-          state.clothesListState.copyWith(isClothesLoading: false),
-        );
+        state = state.copyWith(isUserPhotosLoading: false);
       },
     );
   }
 
-  void _convertClothingImagesAndShow(List<Clothing> clothesWithUrls) async {
-    final clothesWithPaths =
-    await _multipleImageFetcher.downloadImagesToCachePaths(clothesWithUrls);
+  void _convertUserImagesAndShow(List<UserPhoto> userPhotosWithUrls) async {
+    final userPhotosWithPaths = await _multipleImageFetcher
+        .downloadImagesToCachePaths(userPhotosWithUrls);
+    final convertedUserPhotos = userPhotosWithPaths.asUserPhotosList();
 
     state = state.copyWith(
-      clothesListState: state.clothesListState.copyWith(
-        clothes: clothesWithPaths.asClothingList(),
-        isClothesLoading: false,
-      ),
+      userPhotos: convertedUserPhotos,
+      isUserPhotosEmpty: convertedUserPhotos.isEmpty,
+      isUserPhotosLoading: false,
     );
   }
 
-  void clearFilters() {
+  void onClothesLoaded(List<Clothing> clothes) {
     state = state.copyWith(
-      clothesListState: state.clothesListState.copyWith(
-        filterPosition: null,
-        filterCategory: ClothingCategoryEnum.ALL,
-      ),
+      isClothesLoading: false,
+      isClothesEmpty: clothes.isEmpty
     );
-    getClothes();
-  }
-
-  void onSearchTextChanged(String text) {
-    state = state.copyWith(
-      clothesListState: state.clothesListState.copyWith(searchText: text),
-    );
-    getClothes();
-  }
-
-  void onFilterChanged(ClothingPositionEnum? clothingPosition,
-      ClothingCategoryEnum clothingCategory) {
-    state = state.copyWith(
-      clothesListState: state.clothesListState.copyWith(
-        filterPosition: clothingPosition,
-        filterCategory: clothingCategory,
-      ),
-    );
-    getClothes();
   }
 }

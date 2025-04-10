@@ -9,6 +9,7 @@ import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
 import 'package:style_me/features/wardrobe/presentation/state/states/clothing/clothes_list_state.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/modification_action_enum.dart';
@@ -27,11 +28,16 @@ class ClothesListViewModel extends _$ClothesListViewModel {
   }
 
   Timer? _spamTimer;
+  Function(List<Clothing>)? _onLoaded;
 
   @override
   ClothesListState build() {
     Future.microtask(() => getClothes());
     return ClothesListState();
+  }
+
+  void setOnLoadedListener(Function(List<Clothing>)? onLoaded) {
+    _onLoaded = onLoaded;
   }
 
   Future getClothes() async {
@@ -58,13 +64,15 @@ class ClothesListViewModel extends _$ClothesListViewModel {
   }
 
   void _convertClothingImagesAndShow(List<Clothing> clothesWithUrls) async {
-    final clothesWithPaths =
+    final List<PhotoItem> clothesWithPaths =
         await _multipleImageFetcher.downloadImagesToCachePaths(clothesWithUrls);
 
+    final List<Clothing> convertedClothes = clothesWithPaths.asClothingList();
     state = state.copyWith(
-      clothes: clothesWithPaths.asClothingList(),
+      clothes: convertedClothes,
       isClothesLoading: false,
     );
+    _onLoaded?.call(convertedClothes);
   }
 
   void clearFilters() {

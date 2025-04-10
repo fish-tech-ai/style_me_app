@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/network/exceptions/helpers/image_error_type/error_dialog_data.dart';
-import 'package:style_me/core/views/dialogs/app_dialog.dart';
+import 'package:style_me/core/views/popups/app_dialog.dart';
 
 // ignore_for_file: constant_identifier_names
 enum ImageErrorTypeEnum {
