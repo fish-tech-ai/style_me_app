@@ -21,6 +21,7 @@ class AddUserPhotoPage extends ConsumerStatefulWidget {
 class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
     with WidgetsBindingObserver {
   late final AddUserPhotoViewModel viewModel;
+  EdgeInsets? padding;
 
   @override
   void initState() {
@@ -33,6 +34,12 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    padding ??= MediaQuery.paddingOf(context);
   }
 
   @override
@@ -56,7 +63,8 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
       onPopInvokedWithResult: (_, __) {
         viewModel.onBackAction(() {});
       },
-      child: SafeArea(
+      child: Padding(
+        padding: padding ?? EdgeInsets.zero,
         child: Column(
           children: [
             AppTopBar(
