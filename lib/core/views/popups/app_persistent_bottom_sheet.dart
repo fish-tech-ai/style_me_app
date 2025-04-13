@@ -22,46 +22,48 @@ class _AppPersistentBottomSheetState extends State<AppPersistentBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      controller: draggableController,
-      initialChildSize: minChildSize,
-      snap: true,
-      minChildSize: minChildSize,
-      maxChildSize: maxChildSize,
-      builder: (context, scrollController) {
-        return LayoutBuilder(builder: (context, constraints) {
-          return GestureDetector(
-            onVerticalDragUpdate: (details) {
-              final controller = draggableController;
-              controller.jumpTo(controller.size - (details.delta.dy / 800));
-            },
-            onVerticalDragEnd: (details) {
-              final controller = draggableController;
-              if (controller.isAttached) {
-                final velocity = details.velocity.pixelsPerSecond.dy;
+    return Positioned.fill(
+      child: DraggableScrollableSheet(
+        controller: draggableController,
+        initialChildSize: minChildSize,
+        snap: true,
+        minChildSize: minChildSize,
+        maxChildSize: maxChildSize,
+        builder: (context, scrollController) {
+          return LayoutBuilder(builder: (context, constraints) {
+            return GestureDetector(
+              onVerticalDragUpdate: (details) {
+                final controller = draggableController;
+                controller.jumpTo(controller.size - (details.delta.dy / 800));
+              },
+              onVerticalDragEnd: (details) {
+                final controller = draggableController;
+                if (controller.isAttached) {
+                  final velocity = details.velocity.pixelsPerSecond.dy;
 
-                final targetSize = velocity > 0 ? minChildSize : maxChildSize;
+                  final targetSize = velocity > 0 ? minChildSize : maxChildSize;
 
-                controller.animateTo(
-                  targetSize,
-                  duration: const Duration(milliseconds: 200),
-                  curve: Curves.easeOut,
-                );
-              }
-            },
-            child: BottomSheetContainer(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: SizedBox(
-                  height: constraints.maxHeight - 20,
-                  child: widget.builder(
-                      scrollController, draggableController),
+                  controller.animateTo(
+                    targetSize,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOut,
+                  );
+                }
+              },
+              child: BottomSheetContainer(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: SizedBox(
+                    height: constraints.maxHeight - 20,
+                    child: widget.builder(
+                        scrollController, draggableController),
+                  ),
                 ),
               ),
-            ),
-          );
-        });
-      },
+            );
+          });
+        },
+      ),
     );
   }
 }

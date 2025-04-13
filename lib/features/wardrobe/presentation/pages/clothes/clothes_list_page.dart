@@ -60,7 +60,9 @@ class _ClothesListPageState extends ConsumerState<ClothesListPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(viewModel, state),
-          Expanded(child: _buildClothesPage(context, viewModel, state)),
+          Flexible(
+              fit: FlexFit.loose,
+              child: _buildClothesPage(context, viewModel, state)),
         ],
       ),
     );
@@ -68,11 +70,11 @@ class _ClothesListPageState extends ConsumerState<ClothesListPage> {
 
   Widget _buildHeader(ClothesListViewModel viewModel, ClothesListState state) {
     return Column(
-        spacing: 6,
-        children: [
-          buildSearchTextField(viewModel, state),
-          buildFilterView(viewModel, state),
-        ],
+      spacing: 6,
+      children: [
+        buildSearchTextField(viewModel, state),
+        buildFilterView(viewModel, state),
+      ],
     );
   }
 

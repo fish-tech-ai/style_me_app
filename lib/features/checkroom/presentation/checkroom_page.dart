@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:style_me/core/views/default_loading_page.dart';
+import 'package:style_me/core/views/popups/app_draggable_horizontal_sheet.dart';
+import 'package:style_me/core/views/popups/app_draggable_vertical_sheet.dart';
 import 'package:style_me/core/views/popups/app_persistent_bottom_sheet.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_view_model.dart';
@@ -48,13 +50,16 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
 
   List<Widget> buildContent() {
     return [
-      Positioned.fill(
-        child: AppPersistentBottomSheet(
-          builder: (scrollController, draggableController) => ClothesListPage(
-            onItemClicked: (item) {},
-            onClothesLoaded: viewModel.onClothesLoaded,
-            scrollController: scrollController,
-          ),
+      AppDraggableHorizontalSheet(
+        child: Center(
+          child: Text("Hello custom sheet"),
+        ),
+      ),
+      AppPersistentBottomSheet(
+        builder: (scrollController, _) => ClothesListPage(
+          onItemClicked: (item) {},
+          onClothesLoaded: viewModel.onClothesLoaded,
+          scrollController: scrollController,
         ),
       )
     ];
