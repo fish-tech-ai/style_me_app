@@ -5,8 +5,17 @@ abstract class PhotoItem {
   final String image;
   final String name;
   final bool isDefault;
+  final bool isSelected;
+  final bool isDisabled;
 
-  PhotoItem(this.id, this.image, this.name, {this.isDefault = false});
+  PhotoItem(
+    this.id,
+    this.image,
+    this.name, {
+    this.isDefault = false,
+    this.isSelected = false,
+    this.isDisabled = false,
+  });
 
   PhotoWithAction withDeleteAction() {
     return PhotoWithAction.delete(this);

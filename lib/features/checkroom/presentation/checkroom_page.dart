@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/core/views/popups/app_draggable_horizontal_sheet.dart';
-import 'package:style_me/core/views/popups/app_draggable_vertical_sheet.dart';
 import 'package:style_me/core/views/popups/app_persistent_bottom_sheet.dart';
+import 'package:style_me/features/checkroom/presentation/components/checkroom_no_photos_info_page.dart';
+import 'package:style_me/features/checkroom/presentation/components/photos_pager.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_view_model.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/presentation/pages/clothes/clothes_list_page.dart';
 
 class CheckroomPage extends ConsumerStatefulWidget {
@@ -29,8 +32,8 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
     final CheckroomStateHolder state = ref.watch(checkroomViewModelProvider);
     return Stack(
       children: [
+        ...buildContent(state),
         Positioned.fill(child: buildOverlayIfNeeded(state)),
-        ...buildContent(),
       ],
     );
   }
@@ -39,25 +42,30 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
     if (state.isLoading) {
       return DefaultLoading();
     } else if (!state.canShowPageContent) {
-      return buildAddPhotosInfoPage();
+      return CheckroomNoPhotosInfoPage(
+        isClothesEmpty: state.isClothesEmpty,
+        isUserPhotosEmpty: state.isUserPhotosEmpty,
+      );
     }
     return SizedBox();
   }
 
-  Widget buildAddPhotosInfoPage() {
-    return Text("addPhotosInfoPage");
-  }
-
-  List<Widget> buildContent() {
+  List<Widget> buildContent(CheckroomStateHolder state) {
     return [
-      AppDraggableHorizontalSheet(
-        child: Center(
-          child: Text("Hello custom sheet"),
+      Positioned.fill(
+        child: PhotosPager(
+          photos: state.userPhotos,
+          onPageChange: viewModel.onUserPhotoChange,
         ),
+      ).orEmpty(state.userPhotos.isEmpty),
+      AppDraggableHorizontalSheet(
+        child: Placeholder(),
       ),
       AppPersistentBottomSheet(
-        builder: (scrollController, _) => ClothesListPage(
-          onItemClicked: (item) {},
+        builder: (scrollController) => ClothesListPage(
+          clothes: state.clothes,
+          onItemClicked: (item) =>
+              viewModel.onClothingSelected(item as Clothing),
           onClothesLoaded: viewModel.onClothesLoaded,
           scrollController: scrollController,
         ),

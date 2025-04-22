@@ -10,8 +10,15 @@ class Clothing extends PhotoItem {
   final ClothingCategoryEnum category;
   final ClothingPositionEnum position;
 
-  Clothing(String id, String name, String image, this.category, this.position)
-      : super(id, image, name);
+  Clothing(
+    String id,
+    String name,
+    String image,
+    this.category,
+    this.position, {
+    bool isSelected = false,
+    bool isDisabled = false,
+  }) : super(id, image, name);
 
   factory Clothing.fromJson(Map<String, dynamic> json) {
     return _$ClothingFromJson(json);
@@ -26,6 +33,8 @@ class Clothing extends PhotoItem {
     String? image,
     ClothingCategoryEnum? category,
     ClothingPositionEnum? position,
+    bool? isSelected,
+    bool? isDisabled,
   }) {
     return Clothing(
       id ?? this.id,
@@ -33,6 +42,8 @@ class Clothing extends PhotoItem {
       image ?? this.image,
       category ?? this.category,
       position ?? this.position,
+      isSelected: isSelected ?? this.isSelected,
+      isDisabled: isDisabled ?? this.isDisabled,
     );
   }
 }

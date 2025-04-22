@@ -4,7 +4,6 @@ import 'package:style_me/core/views/containers/bottom_sheet_container.dart';
 class AppPersistentBottomSheet extends StatefulWidget {
   final Function(
     ScrollController scrollController,
-    DraggableScrollableController draggableController,
   ) builder;
 
   const AppPersistentBottomSheet({super.key, required this.builder});
@@ -55,8 +54,7 @@ class _AppPersistentBottomSheetState extends State<AppPersistentBottomSheet> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: SizedBox(
                     height: constraints.maxHeight - 20,
-                    child: widget.builder(
-                        scrollController, draggableController),
+                    child: widget.builder(scrollController),
                   ),
                 ),
               ),

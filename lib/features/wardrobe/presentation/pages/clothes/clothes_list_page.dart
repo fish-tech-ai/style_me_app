@@ -15,6 +15,9 @@ import 'package:style_me/features/wardrobe/presentation/state/viewmodels/clothin
 import 'package:style_me/features/wardrobe/presentation/ui_models/photo_with_action.dart';
 
 class ClothesListPage extends ConsumerStatefulWidget {
+  /// if not null, will be used instead clothes that comes from [onClothesLoaded]
+  final List<Clothing>? clothes;
+
   /// by default navigates to [EditClothingPage] for the result ([PhotoWithAction]),
   /// then updates list or an item if it has been deleted or updated.
   final Function(PhotoItem)? onItemClicked;
@@ -26,6 +29,7 @@ class ClothesListPage extends ConsumerStatefulWidget {
 
   const ClothesListPage({
     super.key,
+    this.clothes,
     this.onItemClicked,
     this.onClothesLoaded,
     this.scrollController,
@@ -43,6 +47,12 @@ class _ClothesListPageState extends ConsumerState<ClothesListPage> {
     viewModel = ref.read(clothesListViewModelProvider.notifier)
       ..setOnLoadedListener(widget.onClothesLoaded);
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant ClothesListPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    viewModel.didUpdateWidget(widget.clothes, oldWidget.clothes);
   }
 
   @override

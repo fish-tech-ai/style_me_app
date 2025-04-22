@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:style_me/core/navigation/app_page.dart';
+import 'package:style_me/features/checkroom/presentation/state/checkroom_view_model.dart';
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/clothing/clothes_list_view_model.dart';
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/wardrobe_view_model.dart';
 
@@ -17,6 +18,7 @@ class AppNavObserver extends NavigatorObserver {
         popAppPageSource == AppPage.userPhotoAdd) {
       ref.invalidate(wardrobeViewModelProvider);
       ref.invalidate(clothesListViewModelProvider);
+      ref.invalidate(checkroomViewModelProvider);
     }
   }
 }

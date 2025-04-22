@@ -25,7 +25,9 @@ class CheckroomViewModel extends _$CheckroomViewModel {
 
   @override
   CheckroomStateHolder build() {
-    Future.microtask(() { getUserPhotos(); });
+    Future.microtask(() {
+      getUserPhotos();
+    });
     return CheckroomStateHolder();
   }
 
@@ -33,10 +35,10 @@ class CheckroomViewModel extends _$CheckroomViewModel {
     state = state.copyWith(isUserPhotosLoading: true);
     final Result<List<UserPhoto>> result = await _getUserPhotosUseCase();
     result.collect(
-          (userPhotos) {
+      (userPhotos) {
         _convertUserImagesAndShow(userPhotos);
       },
-          (failure) {
+      (failure) {
         ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
         state = state.copyWith(isUserPhotosLoading: false);
       },
@@ -50,15 +52,34 @@ class CheckroomViewModel extends _$CheckroomViewModel {
 
     state = state.copyWith(
       userPhotos: convertedUserPhotos,
+      selectedUserPhoto: convertedUserPhotos.firstOrNull,
       isUserPhotosEmpty: convertedUserPhotos.isEmpty,
       isUserPhotosLoading: false,
     );
   }
 
+  void onUserPhotoChange(UserPhoto userPhoto) {
+    state = state.copyWith(selectedUserPhoto: userPhoto);
+  }
+
   void onClothesLoaded(List<Clothing> clothes) {
     state = state.copyWith(
       isClothesLoading: false,
-      isClothesEmpty: clothes.isEmpty
+      isClothesEmpty: clothes.isEmpty,
+      clothes: clothes,
     );
+  }
+
+  void onClothingSelected(Clothing selectedClothing) {
+
+
+
+    //TODO we need to make function that will:
+    // unselect all selected from current category
+    // add selected to selectedClothes or replaces if already have particular category
+    // show try on button if process is ready to go (selectedClothes are not empty
+
+    state.selectedClothes.add(selectedClothing.copyWith());
+    state = state.copyWith(selectedClothes: state.selectedClothes);
   }
 }

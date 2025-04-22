@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:style_me/core/views/containers/bottom_sheet_container.dart';
-import 'package:style_me/core/views/containers/bottom_sheet_container_horizontal.dart';
 
 class AppDraggableVerticalSheet extends StatefulWidget {
   final Widget child;

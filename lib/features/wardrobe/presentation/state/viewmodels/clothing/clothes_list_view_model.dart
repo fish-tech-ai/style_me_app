@@ -124,4 +124,25 @@ class ClothesListViewModel extends _$ClothesListViewModel {
     this._getClothesUseCase,
     this._multipleImageFetcher,
   );
+
+  void didUpdateWidget(
+    List<Clothing>? newClothes,
+    List<Clothing>? oldClothes,
+  ) {
+    if (newClothes == null) {
+      return;
+    }
+    if (isClothingListChanged(newClothes, oldClothes)) {
+      state = state.copyWith(clothes: newClothes);
+    }
+  }
+
+  bool isClothingListChanged(
+    List<Clothing> newClothes,
+    List<Clothing>? oldClothes,
+  ) {
+    return newClothes.length != oldClothes?.length ||
+        !newClothes.everyIndexed(
+            (clothing, index) => oldClothes?[index].id == clothing.id);
+  }
 }
