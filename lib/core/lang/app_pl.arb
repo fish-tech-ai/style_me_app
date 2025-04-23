@@ -138,5 +138,8 @@
   "clothingName": "Nazwa ubrania",
   "photoName": "Nazwa zdjęcia",
   "userPhotoAddPageTitle": "Dodaj swoje zdjęcie",
-  "setAsDefault": "Ustaw jako domyślny"
+  "setAsDefault": "Ustaw jako domyślny",
+  "missingPostureAndClothing": "Wygląda na to, że nie masz zdjęć siebie oraz zdjęć swoich ubrań. Dodaj brakujące zdjęcia, aby uzyskać dostęp do tej strony:",
+  "missingPosture": "Wygląda na to, że nie masz zdjęć siebie. Dodaj brakujące zdjęcia, aby uzyskać dostęp do tej strony:",
+  "missingClothing": "Wygląda na to, że nie masz zdjęć ubrań. Dodaj brakujące zdjęcia, aby uzyskać dostęp do tej strony:"
 }

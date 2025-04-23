@@ -8,18 +8,20 @@ import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
+import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
-import 'package:style_me/features/wardrobe/domain/user_photo/get_user_photos_use_case.dart';
+
+import '../../domain/get_user_original_photos_use_case.dart';
 
 part 'checkroom_view_model.g.dart';
 
 @riverpod
 class CheckroomViewModel extends _$CheckroomViewModel {
-  late final GetUserPhotosUseCase _getUserPhotosUseCase;
+  late final GetUserOriginalPhotosUseCase _getUserOriginalPhotosUseCase;
   late final ImageFetcher _multipleImageFetcher;
 
   CheckroomViewModel() {
-    _getUserPhotosUseCase = getIt();
+    _getUserOriginalPhotosUseCase = getIt();
     _multipleImageFetcher = getIt();
   }
 
@@ -33,7 +35,7 @@ class CheckroomViewModel extends _$CheckroomViewModel {
 
   Future getUserPhotos() async {
     state = state.copyWith(isUserPhotosLoading: true);
-    final Result<List<UserPhoto>> result = await _getUserPhotosUseCase();
+    final Result<List<UserPhoto>> result = await _getUserOriginalPhotosUseCase();
     result.collect(
       (userPhotos) {
         _convertUserImagesAndShow(userPhotos);
@@ -58,8 +60,8 @@ class CheckroomViewModel extends _$CheckroomViewModel {
     );
   }
 
-  void onUserPhotoChange(UserPhoto userPhoto) {
-    state = state.copyWith(selectedUserPhoto: userPhoto);
+  void onUserPhotoChange(PhotoItem userPhoto) {
+    state = state.copyWith(selectedUserPhoto: userPhoto as UserPhoto);
   }
 
   void onClothesLoaded(List<Clothing> clothes) {
@@ -71,9 +73,6 @@ class CheckroomViewModel extends _$CheckroomViewModel {
   }
 
   void onClothingSelected(Clothing selectedClothing) {
-
-
-
     //TODO we need to make function that will:
     // unselect all selected from current category
     // add selected to selectedClothes or replaces if already have particular category

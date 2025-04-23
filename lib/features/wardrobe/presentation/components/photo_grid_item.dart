@@ -68,12 +68,12 @@ class PhotoGridItem extends StatelessWidget {
                 top: 16,
                 right: 16,
                 child: _buildSelectedIndicator(context),
-              ),
+              ).orEmpty(!photo.isSelected),
               Positioned(
                 top: 16,
                 right: 16,
                 child: _buildDisabledIndicator(context),
-              )
+              ).orEmpty(!photo.isDisabled)
             ],
           );
         }),

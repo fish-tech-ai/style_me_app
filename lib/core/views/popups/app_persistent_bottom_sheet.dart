@@ -14,10 +14,16 @@ class AppPersistentBottomSheet extends StatefulWidget {
 }
 
 class _AppPersistentBottomSheetState extends State<AppPersistentBottomSheet> {
-  final draggableController = DraggableScrollableController();
+  late final DraggableScrollableController draggableController;
   final double minChildSize = 0.11;
   final double maxChildSize = 1.0;
   double? initHeight;
+
+  @override
+  void initState() {
+    super.initState();
+    draggableController = DraggableScrollableController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +38,18 @@ class _AppPersistentBottomSheetState extends State<AppPersistentBottomSheet> {
           return LayoutBuilder(builder: (context, constraints) {
             return GestureDetector(
               onVerticalDragUpdate: (details) {
-                final controller = draggableController;
-                controller.jumpTo(controller.size - (details.delta.dy / 800));
+                if (draggableController.isAttached) {
+                  draggableController.jumpTo(
+                      draggableController.size - (details.delta.dy / 800));
+                }
               },
               onVerticalDragEnd: (details) {
-                final controller = draggableController;
-                if (controller.isAttached) {
+                if (draggableController.isAttached) {
                   final velocity = details.velocity.pixelsPerSecond.dy;
 
                   final targetSize = velocity > 0 ? minChildSize : maxChildSize;
 
-                  controller.animateTo(
+                  draggableController.animateTo(
                     targetSize,
                     duration: const Duration(milliseconds: 200),
                     curve: Curves.easeOut,

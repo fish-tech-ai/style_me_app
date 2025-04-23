@@ -12,12 +12,16 @@ Clothing _$ClothingFromJson(Map<String, dynamic> json) => Clothing(
       json['image'] as String,
       $enumDecode(_$ClothingCategoryEnumEnumMap, json['category']),
       $enumDecode(_$ClothingPositionEnumEnumMap, json['position']),
+      isSelected: json['isSelected'] as bool? ?? false,
+      isDisabled: json['isDisabled'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$ClothingToJson(Clothing instance) => <String, dynamic>{
       'id': instance.id,
       'image': instance.image,
       'name': instance.name,
+      'isSelected': instance.isSelected,
+      'isDisabled': instance.isDisabled,
       'category': _$ClothingCategoryEnumEnumMap[instance.category]!,
       'position': _$ClothingPositionEnumEnumMap[instance.position]!,
     };

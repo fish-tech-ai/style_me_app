@@ -52,7 +52,9 @@ class _ClothesListPageState extends ConsumerState<ClothesListPage> {
   @override
   void didUpdateWidget(covariant ClothesListPage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    viewModel.didUpdateWidget(widget.clothes, oldWidget.clothes);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      viewModel.didUpdateWidget(widget.clothes, oldWidget.clothes);
+    });
   }
 
   @override
