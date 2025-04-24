@@ -76,7 +76,7 @@ class _PhotosPagerState extends State<PhotosPager> {
                 count: widget.photos.length,
                 effect: ExpandingDotsEffect(
                   activeDotColor: context.colorScheme.primary,
-                  dotColor: context.colorScheme.onPrimary,
+                  dotColor: context.colorScheme.onSurface,
                   offset: 0,
                 ),
               ),

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/navigation/app_page.dart';
+import 'package:style_me/core/views/buttons/app_icon_button.dart';
 import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/core/views/popups/app_draggable_horizontal_sheet.dart';
 import 'package:style_me/core/views/popups/app_persistent_bottom_sheet.dart';
@@ -69,7 +74,23 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
           onClothesLoaded: viewModel.onClothesLoaded,
           scrollController: scrollController,
         ),
-      )
+      ),
+      Positioned(
+        top: 12,
+        left: 12,
+        child: AppIconButton(
+          icon: SvgPicture.asset(
+            "assets/bottom_nav_icons/wardrobe.svg",
+            colorFilter: ColorFilter.mode(
+              context.colorScheme.primary,
+              BlendMode.srcIn,
+            ),
+          ),
+          backgroundColor: context.colorScheme.secondary,
+          border: Border.all(color: context.colorScheme.primary),
+          onClick: () => context.push(AppPage.wardrobe.path),
+        ),
+      ),
     ];
   }
 }

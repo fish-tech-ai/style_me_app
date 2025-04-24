@@ -13,6 +13,7 @@ import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/app/presentation/ui_models/banner_message.dart';
 import 'package:style_me/core/app/presentation/ui_models/bottom_bar_state.dart';
 import 'package:style_me/core/local/database.dart';
+import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/failures/server_failure.dart';
 import 'package:style_me/core/network/utils/result.dart';
@@ -167,7 +168,7 @@ void main() {
 
   test('selectBottomNavItem updates selected index', () {
     appGlobalViewModel.initBottomNavItems();
-    appGlobalViewModel.selectBottomNavItem(1);
+    appGlobalViewModel.selectBottomNavItem(AppPage.checkroom);
 
     final selectedItem = container
         .read(appGlobalViewModelProvider)

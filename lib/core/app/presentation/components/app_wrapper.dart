@@ -64,15 +64,13 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
 
   void _onRouteChange(AppGlobalViewModel viewModel) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final currentAppPage = widget.router.getCurrentNavTargetPage();
-      _runOtherRouterActions(widget.router);
+      final AppPage currentAppPage = widget.router.getCurrentNavTargetPage();
+      if (currentAppPage.bottomNavIndex != null) {
+        viewModel.selectBottomNavItem(currentAppPage);
+      }
       viewModel.setBottomNavBarVisibility(
       currentAppPage.shouldShowBottomNavBar);
     });
-  }
-
-  void _runOtherRouterActions(GoRouter router) {
-    router;
   }
 
   @override

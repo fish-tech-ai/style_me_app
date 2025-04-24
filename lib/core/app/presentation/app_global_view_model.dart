@@ -12,6 +12,7 @@ import 'package:style_me/core/app/presentation/ui_models/banner_message.dart';
 import 'package:style_me/core/app/presentation/ui_models/bottom_bar_state.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/failures/failure.dart';
 import 'package:style_me/core/utils/deep_link_manager.dart';
@@ -94,13 +95,13 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
   void changeLanguage(Locale lang) {
     _setLanguageUseCase(lang);
     final selectedBottomNavItem =
-        state.bottomBarState.items.indexWhere((item) => item.isSelected);
+        state.bottomBarState.items.firstWhere((item) => item.isSelected);
     state = state.copyWith(
       lang: lang,
       bottomBarState: state.bottomBarState
           .copyWith(items: BottomBarState.getBottomNavItems()),
     );
-    selectBottomNavItem(selectedBottomNavItem);
+    selectBottomNavItem(selectedBottomNavItem.appPage);
   }
 
   Future initializeAndHandleDeepLinks({
@@ -122,11 +123,11 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
     });
   }
 
-  void selectBottomNavItem(int selectedIndex) {
+  void selectBottomNavItem(AppPage appPageWithNavIndex) {
     state = state.copyWith(
       bottomBarState: state.bottomBarState.copyWith(
         items: state.bottomBarState.items.mapIndexed((index, item) {
-          return item.copyWith(isSelected: selectedIndex == index);
+          return item.copyWith(isSelected: appPageWithNavIndex.bottomNavIndex == index);
         }).toList(),
       ),
     );

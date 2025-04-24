@@ -422,4 +422,13 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get userPhotoAddPageTitle => "userPhotoAddPageTitle";
+
+  @override
+  String get missingClothing => "missingClothing";
+
+  @override
+  String get missingPosture => "missingPosture";
+
+  @override
+  String get missingPostureAndClothing => "missingPostureAndClothing";
 }
