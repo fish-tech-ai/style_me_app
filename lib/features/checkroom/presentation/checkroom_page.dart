@@ -4,7 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
+import 'package:style_me/core/utils/constants.dart';
+import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_icon_button.dart';
 import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/core/views/popups/app_draggable_horizontal_sheet.dart';
@@ -63,9 +66,19 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
           onPageChange: viewModel.onUserPhotoChange,
         ),
       ).orEmpty(state.userPhotos.isEmpty),
+      Positioned(
+        right: 12,
+        bottom: 90,
+        child: _buildTryOnButton(),
+      ).orEmpty(state.selectedClothes.isEmpty),
+      Positioned(
+        top: 12,
+        left: 12,
+        child: _buildWardrobeButton(),
+      ),
       AppDraggableHorizontalSheet(
         child: Placeholder(),
-      ),
+      ).orEmpty(state.selectedClothes.isEmpty),
       AppPersistentBottomSheet(
         builder: (scrollController) => ClothesListPage(
           clothes: state.clothes,
@@ -75,22 +88,37 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
           scrollController: scrollController,
         ),
       ),
-      Positioned(
-        top: 12,
-        left: 12,
-        child: AppIconButton(
-          icon: SvgPicture.asset(
-            "assets/bottom_nav_icons/wardrobe.svg",
-            colorFilter: ColorFilter.mode(
-              context.colorScheme.primary,
-              BlendMode.srcIn,
-            ),
-          ),
-          backgroundColor: context.colorScheme.secondary,
-          border: Border.all(color: context.colorScheme.primary),
-          onClick: () => context.push(AppPage.wardrobe.path),
+    ];
+  }
+
+  Widget _buildWardrobeButton() {
+    return AppIconButton(
+      icon: SvgPicture.asset(
+        "assets/bottom_nav_icons/wardrobe.svg",
+        colorFilter: ColorFilter.mode(
+          context.colorScheme.primary,
+          BlendMode.srcIn,
         ),
       ),
-    ];
+      backgroundColor: context.colorScheme.secondary,
+      border: Border.all(color: context.colorScheme.primary),
+      onClick: () => context.push(AppPage.wardrobe.path),
+    );
+  }
+
+  Widget _buildTryOnButton() {
+    return AppButton(
+      text: localizations.tryOn,
+      style: ElevatedButton.styleFrom(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: GlobalUiConst.borderRadiusLarge,
+        ),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 24),
+      onClick: () {
+        //TODO request to backend
+      },
+    );
   }
 }

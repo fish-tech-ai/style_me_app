@@ -18,7 +18,13 @@ class Clothing extends PhotoItem {
     this.position, {
     bool isSelected = false,
     bool isDisabled = false,
-  }) : super(id, image, name);
+  }) : super(
+          id,
+          image,
+          name,
+          isSelected: isSelected,
+          isDisabled: isDisabled,
+        );
 
   factory Clothing.fromJson(Map<String, dynamic> json) {
     return _$ClothingFromJson(json);
@@ -44,6 +50,33 @@ class Clothing extends PhotoItem {
       position ?? this.position,
       isSelected: isSelected ?? this.isSelected,
       isDisabled: isDisabled ?? this.isDisabled,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Clothing &&
+        other.id == id &&
+        other.name == name &&
+        other.image == image &&
+        other.category == category &&
+        other.position == position &&
+        other.isSelected == isSelected &&
+        other.isDisabled == isDisabled;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      id,
+      name,
+      image,
+      category,
+      position,
+      isSelected,
+      isDisabled,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
@@ -35,7 +36,8 @@ class CheckroomViewModel extends _$CheckroomViewModel {
 
   Future getUserPhotos() async {
     state = state.copyWith(isUserPhotosLoading: true);
-    final Result<List<UserPhoto>> result = await _getUserOriginalPhotosUseCase();
+    final Result<List<UserPhoto>> result =
+        await _getUserOriginalPhotosUseCase();
     result.collect(
       (userPhotos) {
         _convertUserImagesAndShow(userPhotos);
@@ -68,17 +70,38 @@ class CheckroomViewModel extends _$CheckroomViewModel {
     state = state.copyWith(
       isClothesLoading: false,
       isClothesEmpty: clothes.isEmpty,
-      clothes: clothes,
     );
+    _setClothesWithSelection(clothes, state.selectedClothes);
   }
 
   void onClothingSelected(Clothing selectedClothing) {
-    //TODO we need to make function that will:
-    // unselect all selected from current category
-    // add selected to selectedClothes or replaces if already have particular category
-    // show try on button if process is ready to go (selectedClothes are not empty
+    List<Clothing> updatedSelectedClothes =
+        List<Clothing>.from(state.selectedClothes);
 
-    state.selectedClothes.add(selectedClothing.copyWith());
-    state = state.copyWith(selectedClothes: state.selectedClothes);
+    if (selectedClothing.isSelected) {
+      updatedSelectedClothes
+          .removeWhere((clothing) => clothing.id == selectedClothing.id);
+    } else {
+      updatedSelectedClothes
+        ..removeWhere(
+            (clothing) => clothing.position == selectedClothing.position)
+        ..add(selectedClothing);
+    }
+    _setClothesWithSelection(state.clothes, updatedSelectedClothes);
+  }
+
+  void _setClothesWithSelection(
+      List<Clothing> allClothes, List<Clothing> selectedClothes) {
+    final List<Clothing> newClothes = allClothes.map((photo) {
+      final Clothing? selectedClothing = selectedClothes
+          .firstWhereOrNull((clothing) => clothing.id == photo.id);
+      if (selectedClothing != null) {
+        return photo.copyWith(isSelected: true);
+      }
+      return photo.copyWith(isSelected: false);
+    }).toList();
+
+    state =
+        state.copyWith(clothes: newClothes, selectedClothes: selectedClothes);
   }
 }

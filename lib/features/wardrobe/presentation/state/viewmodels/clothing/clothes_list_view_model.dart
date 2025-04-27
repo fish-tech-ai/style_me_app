@@ -132,7 +132,7 @@ class ClothesListViewModel extends _$ClothesListViewModel {
     if (newClothes == null) {
       return;
     }
-    if (isClothingListChanged(newClothes, oldClothes)) {
+    if (isClothingListChanged(newClothes, state.clothes)) {
       state = state.copyWith(clothes: newClothes);
     }
   }
@@ -142,7 +142,7 @@ class ClothesListViewModel extends _$ClothesListViewModel {
     List<Clothing>? oldClothes,
   ) {
     return newClothes.length != oldClothes?.length ||
-        !newClothes.everyIndexed(
-            (clothing, index) => oldClothes?[index].id == clothing.id);
+        !newClothes
+            .everyIndexed((clothing, index) => oldClothes?[index] == clothing);
   }
 }

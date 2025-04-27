@@ -60,10 +60,6 @@ class _ClothesListPageState extends ConsumerState<ClothesListPage> {
   @override
   Widget build(BuildContext context) {
     final ClothesListState state = ref.watch(clothesListViewModelProvider);
-    if (state.isClothesLoading == false) {
-      WidgetsBinding.instance.addPostFrameCallback(
-          (_) => widget.onClothesLoaded?.call(state.clothes));
-    }
     return Padding(
       padding: EdgeInsets.only(top: 4, left: 12, right: 12),
       child: Column(
@@ -116,9 +112,13 @@ class _ClothesListPageState extends ConsumerState<ClothesListPage> {
     return PhotoGrid(
       items: state.clothes,
       scrollController: widget.scrollController,
-      onItemClicked: (item) =>
-          widget.onItemClicked?.call(item) ??
-          defaultOnItemClicked(item, context, viewModel),
+      onItemClicked: (item) {
+        if (widget.onItemClicked != null) {
+          widget.onItemClicked?.call(item);
+          return;
+        }
+          defaultOnItemClicked(item, context, viewModel);
+      },
     ).orLoading(state.isClothesLoading);
   }
 
