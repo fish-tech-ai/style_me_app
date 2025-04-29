@@ -7,22 +7,25 @@ import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/list_ext.dart';
 import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
+import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_case.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
-
-import '../../domain/get_user_original_photos_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
+import 'package:style_me/features/wardrobe/presentation/ui_models/clothing_list_search_parameters.dart';
 
 part 'checkroom_view_model.g.dart';
 
 @riverpod
 class CheckroomViewModel extends _$CheckroomViewModel {
   late final GetUserOriginalPhotosUseCase _getUserOriginalPhotosUseCase;
+  late final GetClothesUseCase _getClothesUseCase;
   late final ImageFetcher _multipleImageFetcher;
 
   CheckroomViewModel() {
     _getUserOriginalPhotosUseCase = getIt();
+    _getClothesUseCase = getIt();
     _multipleImageFetcher = getIt();
   }
 
@@ -30,6 +33,7 @@ class CheckroomViewModel extends _$CheckroomViewModel {
   CheckroomStateHolder build() {
     Future.microtask(() {
       getUserPhotos();
+      getClothes(ClothingListSearchParameters());
     });
     return CheckroomStateHolder();
   }
@@ -66,14 +70,6 @@ class CheckroomViewModel extends _$CheckroomViewModel {
     state = state.copyWith(selectedUserPhoto: userPhoto as UserPhoto);
   }
 
-  void onClothesLoaded(List<Clothing> clothes) {
-    state = state.copyWith(
-      isClothesLoading: false,
-      isClothesEmpty: clothes.isEmpty,
-    );
-    _setClothesWithSelection(clothes, state.selectedClothes);
-  }
-
   void onClothingSelected(Clothing selectedClothing) {
     List<Clothing> updatedSelectedClothes =
         List<Clothing>.from(state.selectedClothes);
@@ -104,4 +100,56 @@ class CheckroomViewModel extends _$CheckroomViewModel {
     state =
         state.copyWith(clothes: newClothes, selectedClothes: selectedClothes);
   }
+
+  /// clothing list handling
+  Timer? _spamTimer;
+
+  Future getClothes(ClothingListSearchParameters searchParameters) async {
+    state = state.copyWith(isClothesLoading: true);
+    _spamTimer?.cancel();
+    _spamTimer =
+        Timer(Duration(seconds: 1), () => _performGetClothes(searchParameters));
+  }
+
+  Future _performGetClothes(
+      ClothingListSearchParameters searchParameters) async {
+    final Result<List<Clothing>> result = await _getClothesUseCase(
+      searchParameters.searchText,
+      searchParameters.position,
+      searchParameters.category,
+    );
+    result.collect(
+      (clothes) {
+        _convertClothingImagesAndShow(clothes);
+      },
+      (failure) {
+        ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+        state = state.copyWith(isClothesLoading: false);
+      },
+    );
+  }
+
+  void _convertClothingImagesAndShow(List<Clothing> clothesWithUrls) async {
+    final List<PhotoItem> clothesWithPaths =
+        await _multipleImageFetcher.downloadImagesToCachePaths(clothesWithUrls);
+
+    final List<Clothing> convertedClothes = clothesWithPaths.asClothingList();
+    state = state.copyWith(
+      clothes: convertedClothes,
+      isClothesLoading: false,
+      isClothesEmpty: convertedClothes.isEmpty,
+    );
+    _setClothesWithSelection(convertedClothes, state.selectedClothes);
+  }
+
+  void onSearchParametersChanged(
+      ClothingListSearchParameters searchParameters) {
+    getClothes(searchParameters);
+  }
+
+  CheckroomViewModel.test(
+    this._getClothesUseCase,
+    this._getUserOriginalPhotosUseCase,
+    this._multipleImageFetcher,
+  );
 }

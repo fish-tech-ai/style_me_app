@@ -111,6 +111,7 @@ void main() {
 
   test('changeLanguage updates state', () {
     final locale = Locale('en');
+    appGlobalViewModel.initBottomNavItems();
     appGlobalViewModel.changeLanguage(locale);
 
     verify(mockSetLanguageUseCase(locale)).called(1);

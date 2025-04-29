@@ -431,4 +431,7 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get missingPostureAndClothing => "missingPostureAndClothing";
+
+  @override
+  String get tryOn => "tryOn";
 }

@@ -23,8 +23,6 @@ class CheckroomStateHolder with _$CheckroomStateHolder {
   }) = _CheckroomStateHolder;
 
   bool get canShowPageContent =>
-      !isUserPhotosLoading &&
-      !isClothesLoading &&
       !isClothesEmpty &&
       !isUserPhotosEmpty;
 
