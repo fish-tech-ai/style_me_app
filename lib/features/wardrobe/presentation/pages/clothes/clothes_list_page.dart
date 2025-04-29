@@ -14,6 +14,7 @@ class ClothesListPage extends StatefulWidget {
   final List<Clothing> clothes;
   final Function(PhotoItem) onItemClicked;
   final Function(ClothingListSearchParameters) onSearchParametersChanged;
+  final Function()? onSearchClicked;
   final bool isLoading;
   final ScrollController? scrollController;
 
@@ -24,6 +25,7 @@ class ClothesListPage extends StatefulWidget {
     required this.onSearchParametersChanged,
     this.scrollController,
     this.isLoading = false,
+    this.onSearchClicked,
   });
 
   @override
@@ -64,8 +66,8 @@ class _ClothesListPageState extends State<ClothesListPage> {
   Widget buildSearchTextField() {
     return SearchTextField(
         text: searchText,
-        onTextChanged: (text) => onParametersChange(searchText: text)
-        );
+        onSearchClicked: widget.onSearchClicked,
+        onTextChanged: (text) => onParametersChange(searchText: text),);
   }
 
   Widget buildFilterView() {
@@ -79,13 +81,12 @@ class _ClothesListPageState extends State<ClothesListPage> {
                 onParametersChange(
                   position: position,
                   category: category,
-                )
-        );
+                ));
   }
 
   Widget _buildClothesPage(BuildContext context) {
     if (!widget.isLoading && widget.clothes.isEmpty) {
-      return EmptyPage();
+      return _buildEmptyPage();
     }
     return PhotoGrid(
       items: widget.clothes,
@@ -94,6 +95,11 @@ class _ClothesListPageState extends State<ClothesListPage> {
         widget.onItemClicked.call(item);
       },
     ).orLoading(widget.isLoading);
+  }
+
+  Widget _buildEmptyPage() {
+    return SingleChildScrollView(
+        controller: widget.scrollController, child: EmptyPage());
   }
 
   void onParametersChange({

@@ -25,8 +25,10 @@ class AppWrapper extends ConsumerStatefulWidget {
   ConsumerState<AppWrapper> createState() => _AppWrapperState();
 }
 
-class _AppWrapperState extends ConsumerState<AppWrapper> {
+class _AppWrapperState extends ConsumerState<AppWrapper>
+    with WidgetsBindingObserver {
   EdgeInsets? appInsetsPadding;
+  EdgeInsets? currentPadding;
 
   @override
   void initState() {
@@ -41,7 +43,9 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
     final currentSysPadding = MediaQuery.of(context).padding;
     if (currentSysPadding.bottom > 0) {
       appInsetsPadding ??= currentSysPadding;
+      currentPadding = appInsetsPadding;
     }
+    WidgetsBinding.instance.addObserver(this);
   }
 
   Future initApp(Duration _) async {
@@ -68,8 +72,27 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
       if (currentAppPage.bottomNavIndex != null) {
         viewModel.selectBottomNavItem(currentAppPage);
       }
-      viewModel.setBottomNavBarVisibility(
-      currentAppPage.shouldShowBottomNavBar);
+      viewModel
+          .setBottomNavBarVisibility(currentAppPage.shouldShowBottomNavBar);
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final isKeyboardVisible = bottomInset > 0;
+    setState(() {
+      if (isKeyboardVisible) {
+        currentPadding = appInsetsPadding?.copyWith(bottom: 0);
+      } else {
+        currentPadding = appInsetsPadding;
+      }
     });
   }
 
@@ -80,7 +103,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
         appGlobalViewModelProvider.select((state) => state.bottomBarState));
     return Stack(children: [
       Container(
-        padding: bottomBarState.isVisible ? appInsetsPadding : null,
+        padding: bottomBarState.isVisible ? currentPadding : null,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Column(

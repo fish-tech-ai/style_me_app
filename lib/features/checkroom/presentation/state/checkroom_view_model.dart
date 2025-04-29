@@ -103,6 +103,7 @@ class CheckroomViewModel extends _$CheckroomViewModel {
 
   /// clothing list handling
   Timer? _spamTimer;
+  bool _isInitialLoading = true;
 
   Future getClothes(ClothingListSearchParameters searchParameters) async {
     state = state.copyWith(isClothesLoading: true);
@@ -137,8 +138,10 @@ class CheckroomViewModel extends _$CheckroomViewModel {
     state = state.copyWith(
       clothes: convertedClothes,
       isClothesLoading: false,
-      isClothesEmpty: convertedClothes.isEmpty,
+      isClothesEmpty:
+          _isInitialLoading ? convertedClothes.isEmpty : state.isClothesEmpty,
     );
+    _isInitialLoading = false;
     _setClothesWithSelection(convertedClothes, state.selectedClothes);
   }
 

@@ -11,6 +11,7 @@ import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_icon_button.dart';
 import 'package:style_me/core/views/popups/app_draggable_horizontal_sheet.dart';
 import 'package:style_me/core/views/popups/app_persistent_bottom_sheet.dart';
+import 'package:style_me/core/views/ui_models/limit.dart';
 import 'package:style_me/features/checkroom/presentation/components/checkroom_no_photos_info_page.dart';
 import 'package:style_me/features/checkroom/presentation/components/photos_pager.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
@@ -27,6 +28,7 @@ class CheckroomPage extends ConsumerStatefulWidget {
 
 class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   late final CheckroomViewModel viewModel;
+  final GlobalKey<AppPersistentBottomSheetState> clothesPersistentSheet = GlobalKey<AppPersistentBottomSheetState>();
 
   @override
   void initState() {
@@ -77,12 +79,19 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
         child: Placeholder(),
       ).orEmpty(state.selectedClothes.isEmpty),
       AppPersistentBottomSheet(
+        key: clothesPersistentSheet,
+        onCollapse: () {
+          FocusScope.of(context).unfocus();
+        },
         builder: (scrollController) => ClothesListPage(
           clothes: state.clothes,
           onItemClicked: (item) =>
               viewModel.onClothingSelected(item as Clothing),
           onSearchParametersChanged: (searchParameters) {
             viewModel.onSearchParametersChanged(searchParameters);
+          },
+          onSearchClicked: () {
+            clothesPersistentSheet.currentState?.animateTo(Limit.max);
           },
           isLoading: state.isClothesLoading,
           scrollController: scrollController,

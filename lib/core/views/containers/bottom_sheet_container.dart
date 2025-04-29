@@ -3,15 +3,22 @@ import 'package:style_me/core/extensions/context_ext.dart';
 
 class BottomSheetContainer extends StatelessWidget {
   final Widget child;
+  final bool shouldAlignBottom;
 
-  const BottomSheetContainer({super.key, required this.child});
+  const BottomSheetContainer({
+    super.key,
+    required this.child,
+    this.shouldAlignBottom = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom - 60;
     return Padding(
-      padding: EdgeInsets.only(
-          bottom: keyboardHeight.isNegative ? 0 : keyboardHeight),
+      padding: shouldAlignBottom
+          ? EdgeInsets.only(
+              bottom: keyboardHeight.isNegative ? 0 : keyboardHeight)
+          : EdgeInsets.zero,
       child: Container(
         decoration: BoxDecoration(
           color: context.theme.dialogBackgroundColor,
