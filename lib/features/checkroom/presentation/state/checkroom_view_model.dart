@@ -101,6 +101,12 @@ class CheckroomViewModel extends _$CheckroomViewModel {
         state.copyWith(clothes: newClothes, selectedClothes: selectedClothes);
   }
 
+  void unselectClothingBy(String id) {
+    final updatedSelectedClothes = List.of(state.selectedClothes)
+        ..removeWhere((clothing) => clothing.id == id );
+    _setClothesWithSelection(state.clothes, updatedSelectedClothes);
+  }
+
   /// clothing list handling
   Timer? _spamTimer;
   bool _isInitialLoading = true;

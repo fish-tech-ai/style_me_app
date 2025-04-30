@@ -14,6 +14,7 @@ import 'package:style_me/core/views/popups/app_persistent_bottom_sheet.dart';
 import 'package:style_me/core/views/ui_models/limit.dart';
 import 'package:style_me/features/checkroom/presentation/components/checkroom_no_photos_info_page.dart';
 import 'package:style_me/features/checkroom/presentation/components/photos_pager.dart';
+import 'package:style_me/features/checkroom/presentation/components/selected_clothes_list.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_view_model.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
@@ -28,7 +29,10 @@ class CheckroomPage extends ConsumerStatefulWidget {
 
 class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   late final CheckroomViewModel viewModel;
-  final GlobalKey<AppPersistentBottomSheetState> clothesPersistentSheet = GlobalKey<AppPersistentBottomSheetState>();
+  final GlobalKey<AppPersistentBottomSheetState> clothesPersistentSheet =
+      GlobalKey<AppPersistentBottomSheetState>();
+  final GlobalKey<AppDraggableHorizontalSheetState> selectedClothesPersistentHorizontalSheet =
+  GlobalKey<AppDraggableHorizontalSheetState>();
 
   @override
   void initState() {
@@ -76,7 +80,13 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
         child: _buildWardrobeButton(),
       ),
       AppDraggableHorizontalSheet(
-        child: Placeholder(),
+        key: selectedClothesPersistentHorizontalSheet,
+        child: SelectedClothesList(
+          selectedClothes: state.selectedClothes,
+          onDeleteClicked: (clothing) {
+            viewModel.unselectClothingBy(clothing.id);
+          },
+        ),
       ).orEmpty(state.selectedClothes.isEmpty),
       AppPersistentBottomSheet(
         key: clothesPersistentSheet,

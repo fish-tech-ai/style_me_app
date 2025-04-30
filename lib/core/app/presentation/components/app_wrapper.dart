@@ -14,7 +14,7 @@ import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enu
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 
 ///Initialization point for all operations that need to use localizations, MediaQuery etc.
-///This is also a wrapper for whole navigation (the child is the actual page)
+///This is also a wrapper for whole navigation (the child is the current page)
 class AppWrapper extends ConsumerStatefulWidget {
   final Widget? child;
   final GoRouter router;
@@ -28,7 +28,6 @@ class AppWrapper extends ConsumerStatefulWidget {
 class _AppWrapperState extends ConsumerState<AppWrapper>
     with WidgetsBindingObserver {
   EdgeInsets? appInsetsPadding;
-  EdgeInsets? currentPadding;
 
   @override
   void initState() {
@@ -43,7 +42,6 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
     final currentSysPadding = MediaQuery.of(context).padding;
     if (currentSysPadding.bottom > 0) {
       appInsetsPadding ??= currentSysPadding;
-      currentPadding = appInsetsPadding;
     }
     WidgetsBinding.instance.addObserver(this);
   }
@@ -84,26 +82,13 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
   }
 
   @override
-  void didChangeMetrics() {
-    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
-    final isKeyboardVisible = bottomInset > 0;
-    setState(() {
-      if (isKeyboardVisible) {
-        currentPadding = appInsetsPadding?.copyWith(bottom: 0);
-      } else {
-        currentPadding = appInsetsPadding;
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final state = ref.watch(appGlobalViewModelProvider);
     final bottomBarState = ref.watch(
         appGlobalViewModelProvider.select((state) => state.bottomBarState));
     return Stack(children: [
       Container(
-        padding: bottomBarState.isVisible ? currentPadding : null,
+        padding: bottomBarState.isVisible ? appInsetsPadding : null,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Column(

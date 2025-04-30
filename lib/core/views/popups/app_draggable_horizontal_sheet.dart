@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:style_me/core/views/containers/bottom_sheet_container_horizontal.dart';
-//TODO should replace app_persistent_bottom_sheet
+import 'package:style_me/core/views/ui_models/limit.dart';
+
 class AppDraggableHorizontalSheet extends StatefulWidget {
   final Widget child;
   final double minWidth;
@@ -9,25 +10,37 @@ class AppDraggableHorizontalSheet extends StatefulWidget {
   const AppDraggableHorizontalSheet({
     super.key,
     required this.child,
-    this.minWidth = 50.0,
+    this.minWidth = 30.0,
     this.maxWidth = 200.0,
   });
 
   @override
   State<AppDraggableHorizontalSheet> createState() =>
-      _AppDraggableHorizontalSheetState();
+      AppDraggableHorizontalSheetState();
 }
 
-class _AppDraggableHorizontalSheetState
+class AppDraggableHorizontalSheetState
     extends State<AppDraggableHorizontalSheet> {
-  double sheetWidth = 50.0;
+  late double sheetWidth;
+
+  @override
+  void initState() {
+    super.initState();
+    sheetWidth = widget.minWidth;
+  }
+
+  void animateTo(Limit limit) {
+    setState(() {
+      sheetWidth = limit == Limit.min ? widget.minWidth : widget.maxWidth;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
+      left: 0,
       top: 0,
       bottom: 0,
-      left: 0,
       child: GestureDetector(
         onHorizontalDragUpdate: (details) {
           setState(() {
