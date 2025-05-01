@@ -7,9 +7,11 @@ import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/list_ext.dart';
 import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
+import 'package:style_me/features/checkroom/domain/get_updated_selected_clothes_use_case.dart';
 import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_case.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
@@ -20,11 +22,13 @@ part 'checkroom_view_model.g.dart';
 @riverpod
 class CheckroomViewModel extends _$CheckroomViewModel {
   late final GetUserOriginalPhotosUseCase _getUserOriginalPhotosUseCase;
+  late final GetUpdatedSelectedClothesUseCase _getUpdatedSelectedClothesUseCase;
   late final GetClothesUseCase _getClothesUseCase;
   late final ImageFetcher _multipleImageFetcher;
 
   CheckroomViewModel() {
     _getUserOriginalPhotosUseCase = getIt();
+    _getUpdatedSelectedClothesUseCase = getIt();
     _getClothesUseCase = getIt();
     _multipleImageFetcher = getIt();
   }
@@ -71,18 +75,11 @@ class CheckroomViewModel extends _$CheckroomViewModel {
   }
 
   void onClothingSelected(Clothing selectedClothing) {
-    List<Clothing> updatedSelectedClothes =
-        List<Clothing>.from(state.selectedClothes);
+    final updatedSelectedClothes = _getUpdatedSelectedClothesUseCase(
+      state.selectedClothes,
+      selectedClothing,
+    );
 
-    if (selectedClothing.isSelected) {
-      updatedSelectedClothes
-          .removeWhere((clothing) => clothing.id == selectedClothing.id);
-    } else {
-      updatedSelectedClothes
-        ..removeWhere(
-            (clothing) => clothing.position == selectedClothing.position)
-        ..add(selectedClothing);
-    }
     _setClothesWithSelection(state.clothes, updatedSelectedClothes);
   }
 
@@ -103,7 +100,7 @@ class CheckroomViewModel extends _$CheckroomViewModel {
 
   void unselectClothingBy(String id) {
     final updatedSelectedClothes = List.of(state.selectedClothes)
-        ..removeWhere((clothing) => clothing.id == id );
+      ..removeWhere((clothing) => clothing.id == id);
     _setClothesWithSelection(state.clothes, updatedSelectedClothes);
   }
 
@@ -161,4 +158,14 @@ class CheckroomViewModel extends _$CheckroomViewModel {
     this._getUserOriginalPhotosUseCase,
     this._multipleImageFetcher,
   );
+
+  bool isClothesFullyChosen() {
+    final clothesPositions =
+        state.selectedClothes.map((clothing) => clothing.position).toList();
+    return (clothesPositions.length == 1 &&
+            clothesPositions.firstOrNull == ClothingPositionEnum.FULL_BODY) ||
+        (clothesPositions.length == 2 &&
+            clothesPositions.none(
+                (position) => position == ClothingPositionEnum.FULL_BODY));
+  }
 }

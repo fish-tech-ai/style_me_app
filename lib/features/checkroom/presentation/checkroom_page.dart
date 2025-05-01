@@ -31,8 +31,9 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   late final CheckroomViewModel viewModel;
   final GlobalKey<AppPersistentBottomSheetState> clothesPersistentSheet =
       GlobalKey<AppPersistentBottomSheetState>();
-  final GlobalKey<AppDraggableHorizontalSheetState> selectedClothesPersistentHorizontalSheet =
-  GlobalKey<AppDraggableHorizontalSheetState>();
+  final GlobalKey<AppDraggableHorizontalSheetState>
+      selectedClothesPersistentHorizontalSheet =
+      GlobalKey<AppDraggableHorizontalSheetState>();
 
   @override
   void initState() {
@@ -95,8 +96,14 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
         },
         builder: (scrollController) => ClothesListPage(
           clothes: state.clothes,
-          onItemClicked: (item) =>
-              viewModel.onClothingSelected(item as Clothing),
+          onItemClicked: (item) {
+            viewModel.onClothingSelected(item as Clothing);
+            if (viewModel.isClothesFullyChosen()) {
+              clothesPersistentSheet.currentState?.animateTo(Limit.min);
+              selectedClothesPersistentHorizontalSheet.currentState
+                  ?.animateTo(Limit.max);
+            }
+          },
           onSearchParametersChanged: (searchParameters) {
             viewModel.onSearchParametersChanged(searchParameters);
           },
