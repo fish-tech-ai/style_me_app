@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/app/presentation/components/app_status.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/extensions/go_router_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/animators/animated_visibility.dart';
@@ -13,7 +14,7 @@ import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enu
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 
 ///Initialization point for all operations that need to use localizations, MediaQuery etc.
-///This is also a wrapper for whole navigation (the child is the actual page)
+///This is also a wrapper for whole navigation (the child is the current page)
 class AppWrapper extends ConsumerStatefulWidget {
   final Widget? child;
   final GoRouter router;
@@ -24,7 +25,8 @@ class AppWrapper extends ConsumerStatefulWidget {
   ConsumerState<AppWrapper> createState() => _AppWrapperState();
 }
 
-class _AppWrapperState extends ConsumerState<AppWrapper> {
+class _AppWrapperState extends ConsumerState<AppWrapper>
+    with WidgetsBindingObserver {
   EdgeInsets? appInsetsPadding;
 
   @override
@@ -41,6 +43,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
     if (currentSysPadding.bottom > 0) {
       appInsetsPadding ??= currentSysPadding;
     }
+    WidgetsBinding.instance.addObserver(this);
   }
 
   Future initApp(Duration _) async {
@@ -63,12 +66,19 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
 
   void _onRouteChange(AppGlobalViewModel viewModel) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final currentPath =
-          widget.router.routerDelegate.currentConfiguration.fullPath;
-      viewModel.setBottomNavBarVisibility(AppPage.values
-          .firstWhere((appPage) => appPage.path.startsWith(currentPath))
-          .shouldShowBottomNavBar);
+      final AppPage currentAppPage = widget.router.getCurrentNavTargetPage();
+      if (currentAppPage.bottomNavIndex != null) {
+        viewModel.selectBottomNavItem(currentAppPage);
+      }
+      viewModel
+          .setBottomNavBarVisibility(currentAppPage.shouldShowBottomNavBar);
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override

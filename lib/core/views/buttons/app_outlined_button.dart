@@ -12,6 +12,7 @@ class AppOutlinedButton extends StatelessWidget {
   final double? spacing;
   final double? height;
   final double? width;
+  final Color? loadingIndicatorColor;
   final bool isLoading;
   final EdgeInsets padding;
 
@@ -27,6 +28,7 @@ class AppOutlinedButton extends StatelessWidget {
     this.width,
     this.padding = const EdgeInsets.symmetric(horizontal: 12),
     this.isLoading = false,
+    this.loadingIndicatorColor,
   });
 
   @override
@@ -48,9 +50,7 @@ class AppOutlinedButton extends StatelessWidget {
             ],
           ).or(
               DefaultLoading(
-                color: style?.foregroundColor
-                        ?.resolve(WidgetState.values.toSet()) ??
-                    context.colorScheme.primary,
+                color: loadingIndicatorColor ?? context.colorScheme.primary,
                 size: Size.square(24),
               ),
               isLoading)),

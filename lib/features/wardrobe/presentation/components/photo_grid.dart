@@ -5,15 +5,23 @@ import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 class PhotoGrid extends StatelessWidget {
   final List<PhotoItem> items;
   final Function(PhotoItem photoItem) onItemClicked;
+  final Clip clipBehavior;
+  final ScrollController? scrollController;
 
-  const PhotoGrid(
-      {super.key, required this.items, required this.onItemClicked});
+  const PhotoGrid({
+    super.key,
+    required this.items,
+    required this.onItemClicked,
+    this.clipBehavior = Clip.hardEdge,
+    this.scrollController,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      clipBehavior: clipBehavior,
+      controller: scrollController,
       padding: EdgeInsets.zero,
-      shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 12,

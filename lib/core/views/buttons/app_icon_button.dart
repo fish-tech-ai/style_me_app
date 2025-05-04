@@ -7,6 +7,7 @@ class AppIconButton extends StatelessWidget {
   final Function() onClick;
   final Color? backgroundColor;
   final double elevation;
+  final bool disableVisualFeedback;
   final EdgeInsets padding;
   final BoxBorder? border;
   final BorderRadius? borderRadius;
@@ -20,6 +21,7 @@ class AppIconButton extends StatelessWidget {
     this.padding = const EdgeInsets.all(16),
     this.border,
     this.borderRadius,
+    this.disableVisualFeedback = false,
   });
 
   @override
@@ -29,6 +31,9 @@ class AppIconButton extends StatelessWidget {
     return IntrinsicWidth(
       child: InkWell(
         onTap: onClick,
+        splashColor: disableVisualFeedback ? Colors.transparent : null,
+        highlightColor: disableVisualFeedback ? Colors.transparent : null,
+        hoverColor: disableVisualFeedback ? Colors.transparent : null,
         borderRadius: GlobalUiConst.borderRadiusLarge,
         child: Material(
           elevation: elevation,

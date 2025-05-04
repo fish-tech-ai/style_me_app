@@ -5,10 +5,15 @@ import 'package:style_me/core/utils/constants.dart';
 
 class SearchTextField extends StatefulWidget {
   final String text;
+  final Function()? onSearchClicked;
   final Function(String) onTextChanged;
 
-  const SearchTextField(
-      {super.key, required this.text, required this.onTextChanged});
+  const SearchTextField({
+    super.key,
+    required this.text,
+    this.onSearchClicked,
+    required this.onTextChanged,
+  });
 
   @override
   State<SearchTextField> createState() => _SearchTextFieldState();
@@ -41,6 +46,9 @@ class _SearchTextFieldState extends State<SearchTextField> {
         controller: controller,
         textInputAction: TextInputAction.done,
         onChanged: widget.onTextChanged,
+        onTap: () {
+          widget.onSearchClicked?.call();
+        },
         focusNode: focusNode,
         decoration: InputDecoration(
             suffixIcon: buildIconButton(),

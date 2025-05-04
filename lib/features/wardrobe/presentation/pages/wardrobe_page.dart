@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/app_tab_bar.dart';
-import 'package:style_me/features/wardrobe/presentation/pages/clothes_list_page.dart';
-import 'package:style_me/features/wardrobe/presentation/pages/user_photos_list_page.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
+import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
+import 'package:style_me/features/wardrobe/presentation/pages/clothes/clothes_list_page.dart';
+import 'package:style_me/features/wardrobe/presentation/pages/user_photos/user_photos_list_page.dart';
+import 'package:style_me/features/wardrobe/presentation/state/states/wardrobe_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/wardrobe_view_model.dart';
+import 'package:style_me/features/wardrobe/presentation/ui_models/photo_with_action.dart';
 
 class WardrobePage extends ConsumerStatefulWidget {
   const WardrobePage({super.key});
@@ -34,10 +40,11 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(wardrobeViewModelProvider);
-    final viewModel = ref.watch(wardrobeViewModelProvider.notifier);
+    final WardrobeStateHolder state = ref.watch(wardrobeViewModelProvider);
+    final WardrobeViewModel viewModel =
+        ref.read(wardrobeViewModelProvider.notifier);
     return Padding(
-      padding: EdgeInsets.all(12),
+      padding: EdgeInsets.symmetric(vertical: 12),
       child: Column(
         spacing: 12,
         children: [
@@ -67,13 +74,17 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
               controller: _tabController,
               children: [
                 ClothesListPage(
-                  state: state,
-                  onFilterClosed: viewModel.clearFilters,
-                  onFiltersChange: viewModel.onFilterChanged,
-                  onTextChanged: viewModel.onSearchTextChanged,
-                  onModifyResult: viewModel.onClothingModifyResult,
+                  clothes: state.clothes,
+                  isLoading: state.isClothesLoading,
+                  onItemClicked: (photoItem) => onItemClicked(photoItem, context, viewModel),
+                  onSearchParametersChanged: (searchParameters) {
+                    viewModel.onSearchParametersChanged(searchParameters);
+                  },
                 ),
-                UserPhotosListPage()
+                UserPhotosListPage(
+                  state: state,
+                  onModifyResult: viewModel.onUserPhotoModifyResult,
+                )
               ],
             ),
           )
@@ -93,5 +104,17 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
         ),
       ],
     );
+  }
+  
+  void onItemClicked(
+      PhotoItem photoItem,
+      BuildContext context,
+      WardrobeViewModel viewModel
+      ) async {
+    final PhotoWithAction? clothingWithAction = await context
+        .push(AppPage.editClothingPage.path, extra: photoItem as Clothing);
+    if (clothingWithAction != null) {
+      viewModel.onClothingModifyResult(clothingWithAction);
+    }
   }
 }

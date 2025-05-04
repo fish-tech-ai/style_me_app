@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/network/failures/server_failure.dart';
@@ -18,14 +18,14 @@ import 'change_password_view_model_test.mocks.dart';
 @GenerateNiceMocks([MockSpec<ChangePasswordUseCase>()])
 void main() {
   late MockChangePasswordUseCase mockChangePasswordUseCase;
-  late MockAppGlobalViewModel mockAppGlobalViewModel;
+  late MockitoAppGlobalViewModel mockAppGlobalViewModel;
   late ProviderContainer container;
   late ChangePasswordViewModel changePasswordViewModel;
 
   setUp(() {
     initializeAndGetLocalizations();
     mockChangePasswordUseCase = MockChangePasswordUseCase();
-    mockAppGlobalViewModel = MockAppGlobalViewModel();
+    mockAppGlobalViewModel = MockitoAppGlobalViewModel();
 
     container = ProviderContainer(overrides: [
       changePasswordViewModelProvider.overrideWith(

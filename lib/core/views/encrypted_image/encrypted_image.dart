@@ -6,14 +6,14 @@ import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/views/encrypted_image/isolated_decrypt_manager.dart';
 
 class EncryptedImage extends StatefulWidget {
-  final String imagePath;
+  final String imageSrc;
   final Widget Function(StackTrace?) errorBuilder;
   final Widget Function() loadingBuilder;
   final BoxFit? fit;
 
   const EncryptedImage({
     super.key,
-    required this.imagePath,
+    required this.imageSrc,
     required this.errorBuilder,
     required this.loadingBuilder,
     this.fit,
@@ -30,14 +30,14 @@ class _EncryptedImageState extends State<EncryptedImage> {
   @override
   void initState() {
     super.initState();
-    _imageFilePath = widget.imagePath;
+    _imageFilePath = widget.imageSrc;
     image = _fetchAndDecryptImage();
   }
 
   @override
   void didUpdateWidget(EncryptedImage oldWidget) {
-    if (widget.imagePath != oldWidget.imagePath) {
-      _imageFilePath = widget.imagePath;
+    if (widget.imageSrc != oldWidget.imageSrc) {
+      _imageFilePath = widget.imageSrc;
       image = _fetchAndDecryptImage();
     }
     super.didUpdateWidget(oldWidget);

@@ -16,6 +16,7 @@ class AppBackButton extends StatelessWidget {
       backgroundColor: context.colorScheme.primaryContainer,
       border: border,
       padding: EdgeInsets.all(GlobalUiConst.paddingNormal),
+      disableVisualFeedback: true,
       onClick: () {
         onTap != null ? onTap!() : context.pop();
       },

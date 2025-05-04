@@ -39,6 +39,15 @@ class BottomBarState with _$BottomBarState {
         label: localizations.settings,
         appPage: AppPage.settings,
       ),
-    ];
+    ]..sort((a, b) {
+      final aIndex = a.appPage.bottomNavIndex;
+      final bIndex = b.appPage.bottomNavIndex;
+
+      if (aIndex == null && bIndex == null) return 0;
+      if (aIndex == null) return 1;
+      if (bIndex == null) return -1;
+
+      return aIndex.compareTo(bIndex);
+    });
   }
 }

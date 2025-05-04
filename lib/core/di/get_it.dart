@@ -19,11 +19,12 @@ import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/services/app_service.dart';
 import 'package:style_me/core/network/services/auth_service.dart';
 import 'package:style_me/core/network/services/clothes_service.dart';
+import 'package:style_me/core/network/services/user_photos_service.dart';
 import 'package:style_me/core/network/services/user_service.dart';
 import 'package:style_me/core/network/utils/aes_encryptor.dart';
 import 'package:style_me/core/network/utils/app_authenticator.dart';
 import 'package:style_me/core/network/utils/app_headers_interceptor.dart';
-import 'package:style_me/core/network/utils/image_process/multiple_image_fetcher.dart';
+import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/network_request_util.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
 import 'package:style_me/core/utils/deep_link_manager.dart';
@@ -31,6 +32,8 @@ import 'package:style_me/core/utils/google_auth_service.dart';
 import 'package:style_me/core/utils/token_authenticator.dart';
 import 'package:style_me/core/views/encrypted_image/isolated_decrypt_manager.dart';
 import 'package:style_me/features/auth/data/auth_repository.dart';
+import 'package:style_me/features/checkroom/domain/get_updated_selected_clothes_use_case.dart';
+import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_case.dart';
 import 'package:style_me/features/settings/data/settings_repository.dart';
 import 'package:style_me/features/settings/domain/add_report_use_case.dart';
 import 'package:style_me/features/settings/domain/change_password_use_case.dart';
@@ -43,12 +46,20 @@ import 'package:style_me/features/auth/domain/resend_confirmation_use_case.dart'
 import 'package:style_me/features/auth/domain/send_reset_password_mail_use_case.dart';
 import 'package:style_me/features/settings/domain/delete_account_use_case.dart';
 import 'package:style_me/features/wardrobe/data/wardrobe_repository.dart';
-import 'package:style_me/features/wardrobe/domain/confirm_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/delete_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/delete_clothing_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/get_clothes_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/send_clothing_photo_use_case.dart';
-import 'package:style_me/features/wardrobe/domain/update_clothing_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/clear_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/confirm_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/delete_clothing_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/send_clothing_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/update_clothing_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/clothing/get_original_clothing_image_url_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/clear_user_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/confirm_user_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/delete_user_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/get_original_user_image_url_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/get_user_photos_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/send_user_photo_use_case.dart';
+import 'package:style_me/features/wardrobe/domain/user_photo/update_user_photo_use_case.dart';
 
 final getIt = GetIt.instance;
 
@@ -68,6 +79,8 @@ class GetItManager {
         () => AppService.create(getIt<ChopperClient>()));
     getIt.registerFactory<ClothesService>(
         () => ClothesService.create(getIt<ChopperClient>()));
+    getIt.registerFactory<UserPhotosService>(
+        () => UserPhotosService.create(getIt<ChopperClient>()));
     getIt.registerLazySingleton(() => ThemeManager());
     final sharedPrefs = await SharedPreferences.getInstance();
     getIt.registerLazySingleton(() => sharedPrefs);
@@ -85,7 +98,7 @@ class GetItManager {
     getIt.registerLazySingleton(() => AppLinks());
     getIt.registerLazySingleton(() => DeepLinkManager(getIt()));
     getIt.registerLazySingleton(() => AESEncryptor());
-    getIt.registerFactory(() => MultipleImageFetcher(getIt()));
+    getIt.registerFactory(() => ImageFetcher(getIt()));
     getIt.registerLazySingleton(() => IsolatedDecryptCompressManager());
 
     ///Global auth
@@ -115,13 +128,32 @@ class GetItManager {
     getIt.registerFactory(() => AddReportUseCase(getIt(), getIt()));
 
     ///Wardrobe
-    getIt.registerFactory(() => WardrobeRepository(getIt()));
+    getIt.registerFactory(() => WardrobeRepository(getIt(), getIt()));
+
+    ///Wardrobe clothes
     getIt.registerFactory(() => GetClothesUseCase(getIt(), getIt()));
     getIt.registerFactory(
         () => SendClothingPhotoUseCase(getIt(), getIt(), getIt()));
     getIt.registerFactory(() => ConfirmClothingPhotoUseCase(getIt(), getIt()));
-    getIt.registerFactory(() => DeleteClothingPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => ClearClothingPhotoUseCase(getIt(), getIt()));
     getIt.registerFactory(() => DeleteClothingUseCase(getIt(), getIt()));
     getIt.registerFactory(() => UpdateClothingUseCase(getIt(), getIt()));
+    getIt.registerFactory(
+        () => GetOriginalClothingImageUrlUseCase(getIt(), getIt()));
+
+    ///Wardrobe user photos
+    getIt.registerFactory(() => GetUserPhotosUseCase(getIt(), getIt()));
+    getIt
+        .registerFactory(() => SendUserPhotoUseCase(getIt(), getIt(), getIt()));
+    getIt.registerFactory(() => ConfirmUserPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => ClearUserPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => DeleteUserPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => UpdateUserPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(
+        () => GetOriginalUserImageUrlUseCase(getIt(), getIt()));
+
+    ///checkroom
+    getIt.registerFactory(() => GetUserOriginalPhotosUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => GetUpdatedSelectedClothesUseCase());
   }
 }

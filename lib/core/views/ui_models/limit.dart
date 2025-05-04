@@ -1,0 +1,4 @@
+enum Limit {
+  min,
+  max;
+}
