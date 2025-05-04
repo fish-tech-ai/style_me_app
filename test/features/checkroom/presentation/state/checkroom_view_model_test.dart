@@ -5,6 +5,7 @@ import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/network/failures/server_failure.dart';
 import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
+import 'package:style_me/features/checkroom/domain/get_updated_selected_clothes_use_case.dart';
 import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_case.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_view_model.dart';
@@ -17,9 +18,13 @@ import 'package:style_me/features/wardrobe/presentation/ui_models/clothing_list_
 
 import '../../../../helpers/shared_test_functions.dart';
 
-class MockGetUserPhotosUseCase extends Mock implements GetUserOriginalPhotosUseCase {}
+class MockGetUserPhotosUseCase extends Mock
+    implements GetUserOriginalPhotosUseCase {}
 
 class MockGetClothesUseCase extends Mock implements GetClothesUseCase {}
+
+class MockGetUpdatedSelectedClothesUseCase extends Mock
+    implements GetUpdatedSelectedClothesUseCase {}
 
 class MockMultipleImageFetcher extends Mock implements ImageFetcher {}
 
@@ -27,6 +32,8 @@ void main() {
   late ProviderContainer container;
   late MockGetUserPhotosUseCase mockGetUserPhotosUseCase;
   late MockGetClothesUseCase mockGetClothesUseCase;
+  late MockGetUpdatedSelectedClothesUseCase
+      mockGetUpdatedSelectedClothesUseCase;
   late MockMultipleImageFetcher mockMultipleImageFetcher;
   late MockAppGlobalViewModel mockGlobal;
 
@@ -34,6 +41,8 @@ void main() {
     mockGetTemporaryDirectory();
     mockGetUserPhotosUseCase = MockGetUserPhotosUseCase();
     mockGetClothesUseCase = MockGetClothesUseCase();
+    mockGetUpdatedSelectedClothesUseCase =
+        MockGetUpdatedSelectedClothesUseCase();
     mockMultipleImageFetcher = MockMultipleImageFetcher();
     mockGlobal = MockAppGlobalViewModel();
     container = ProviderContainer(
@@ -42,6 +51,7 @@ void main() {
           () => CheckroomViewModel.test(
             mockGetClothesUseCase,
             mockGetUserPhotosUseCase,
+            mockGetUpdatedSelectedClothesUseCase,
             mockMultipleImageFetcher,
           ),
         ),
@@ -49,6 +59,9 @@ void main() {
       ],
     );
     registerFallbackValue(ClothingCategoryEnum.BLAZER);
+    registerFallbackValue(Clothing('1', 'Test', 'url', ClothingCategoryEnum.ALL,
+        ClothingPositionEnum.UPPER));
+    registerFallbackValue(UserPhoto('1', 'Test', 'url'));
     addTearDown(container.dispose);
 
     when(() => mockGetUserPhotosUseCase.call())
@@ -69,7 +82,8 @@ void main() {
 
     await Future.delayed(Duration.zero);
 
-    final CheckroomStateHolder state = container.read(checkroomViewModelProvider);
+    final CheckroomStateHolder state =
+        container.read(checkroomViewModelProvider);
 
     await Future.delayed(Duration.zero);
     expect(state.isUserPhotosLoading, true);
@@ -152,5 +166,144 @@ void main() {
         .called(1);
 
     stateListener.close();
+  });
+
+  test('onUserPhotoChange updates selectedUserPhoto', () async {
+    final notifier = container.read(checkroomViewModelProvider.notifier);
+    final dummyPhoto = UserPhoto('1', 'path/to/photo.jpg', "");
+
+    notifier.onUserPhotoChange(dummyPhoto);
+
+    final state = container.read(checkroomViewModelProvider);
+    expect(state.selectedUserPhoto, dummyPhoto);
+  });
+
+  test('onClothingSelected updates selectedClothes', () async {
+    final clothing = Clothing('1', 'Test', 'url', ClothingCategoryEnum.ALL,
+        ClothingPositionEnum.UPPER);
+
+    when(() => mockGetUpdatedSelectedClothesUseCase.call(any(), any()))
+        .thenReturn([clothing]);
+
+    final notifier = container.read(checkroomViewModelProvider.notifier);
+    notifier.onClothingSelected(clothing);
+
+    final state = container.read(checkroomViewModelProvider);
+    expect(state.selectedClothes, contains(clothing));
+  });
+
+  test(
+      'unselectClothingBy removes clothing from selectedClothes and updates isSelected',
+      () async {
+    final clothing = Clothing(
+      '1',
+      'Test',
+      'url',
+      ClothingCategoryEnum.ALL,
+      ClothingPositionEnum.UPPER,
+      isSelected: true,
+    );
+
+    when(() => mockGetUpdatedSelectedClothesUseCase.call(any(), any()))
+        .thenReturn([clothing]);
+
+    final notifier = container.read(checkroomViewModelProvider.notifier);
+
+    notifier.onClothingSelected(clothing);
+    expect(container.read(checkroomViewModelProvider).selectedClothes,
+        contains(clothing));
+
+    notifier.unselectClothingBy(clothing.id);
+    final state = container.read(checkroomViewModelProvider);
+    expect(state.selectedClothes, isNot(contains(clothing)));
+  });
+
+  test('onSearchParametersChanged triggers clothes search', () async {
+    final clothing = Clothing(
+      '1',
+      'Test',
+      'url',
+      ClothingCategoryEnum.ALL,
+      ClothingPositionEnum.UPPER,
+    );
+    final clothingItems = [clothing];
+
+    final notifier = container.read(checkroomViewModelProvider.notifier);
+
+    when(() => mockGetClothesUseCase.call(any(), any(), any()))
+        .thenAnswer((_) async => Result.success(clothingItems));
+
+    when(() => mockMultipleImageFetcher.downloadImagesToCachePaths(any()))
+        .thenAnswer((_) async => []);
+
+    final searchParams = ClothingListSearchParameters(searchText: 'Test');
+
+    notifier.onSearchParametersChanged(searchParams);
+    await Future.delayed(Duration(milliseconds: 1100));
+
+    verify(() => mockGetClothesUseCase.call(any(), any(), any())).called(1);
+  });
+
+  test('isClothesFullyChosen returns true when full-body clothing selected',
+      () {
+    final fullBodyClothing = Clothing(
+      '1',
+      'Full Body',
+      'url',
+      ClothingCategoryEnum.ALL,
+      ClothingPositionEnum.FULL_BODY,
+    );
+
+    when(() => mockGetUpdatedSelectedClothesUseCase.call(any(), any()))
+        .thenReturn([fullBodyClothing]);
+
+    final notifier = container.read(checkroomViewModelProvider.notifier);
+    notifier.onClothingSelected(fullBodyClothing);
+
+    expect(notifier.isClothesFullyChosen(), true);
+  });
+
+  test('isClothesFullyChosen returns true when top and bottom selected', () {
+    final top = Clothing(
+      '1',
+      'Top',
+      'url',
+      ClothingCategoryEnum.ALL,
+      ClothingPositionEnum.UPPER,
+    );
+    final bottom = Clothing(
+      '2',
+      'Bottom',
+      'url',
+      ClothingCategoryEnum.ALL,
+      ClothingPositionEnum.BOTTOM,
+    );
+
+    when(() => mockGetUpdatedSelectedClothesUseCase.call(any(), any()))
+        .thenReturn([top, bottom]);
+
+    final notifier = container.read(checkroomViewModelProvider.notifier);
+    notifier.onClothingSelected(top);
+    notifier.onClothingSelected(bottom);
+
+    expect(notifier.isClothesFullyChosen(), true);
+  });
+
+  test('isClothesFullyChosen returns false with only one top clothing', () {
+    final top = Clothing(
+      '1',
+      'Top',
+      'url',
+      ClothingCategoryEnum.ALL,
+      ClothingPositionEnum.UPPER,
+    );
+
+    when(() => mockGetUpdatedSelectedClothesUseCase.call(any(), any()))
+        .thenReturn([top]);
+
+    final notifier = container.read(checkroomViewModelProvider.notifier);
+    notifier.onClothingSelected(top);
+
+    expect(notifier.isClothesFullyChosen(), false);
   });
 }

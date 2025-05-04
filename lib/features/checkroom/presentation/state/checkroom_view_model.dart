@@ -75,10 +75,15 @@ class CheckroomViewModel extends _$CheckroomViewModel {
   }
 
   void onClothingSelected(Clothing selectedClothing) {
-    final updatedSelectedClothes = _getUpdatedSelectedClothesUseCase(
+    List<Clothing> updatedSelectedClothes = _getUpdatedSelectedClothesUseCase(
       state.selectedClothes,
       selectedClothing,
     );
+
+    if (updatedSelectedClothes.length == 2 &&
+        updatedSelectedClothes.first.position == ClothingPositionEnum.BOTTOM) {
+      updatedSelectedClothes = updatedSelectedClothes.reversed.toList();
+    }
 
     _setClothesWithSelection(state.clothes, updatedSelectedClothes);
   }
@@ -156,6 +161,7 @@ class CheckroomViewModel extends _$CheckroomViewModel {
   CheckroomViewModel.test(
     this._getClothesUseCase,
     this._getUserOriginalPhotosUseCase,
+    this._getUpdatedSelectedClothesUseCase,
     this._multipleImageFetcher,
   );
 

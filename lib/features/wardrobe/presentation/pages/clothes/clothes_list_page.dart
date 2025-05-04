@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/core/views/input/search_text_field.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
@@ -65,9 +65,10 @@ class _ClothesListPageState extends State<ClothesListPage> {
 
   Widget buildSearchTextField() {
     return SearchTextField(
-        text: searchText,
-        onSearchClicked: widget.onSearchClicked,
-        onTextChanged: (text) => onParametersChange(searchText: text),);
+      text: searchText,
+      onSearchClicked: widget.onSearchClicked,
+      onTextChanged: (text) => onParametersChange(searchText: text),
+    );
   }
 
   Widget buildFilterView() {
@@ -88,13 +89,21 @@ class _ClothesListPageState extends State<ClothesListPage> {
     if (!widget.isLoading && widget.clothes.isEmpty) {
       return _buildEmptyPage();
     }
-    return PhotoGrid(
-      items: widget.clothes,
-      scrollController: widget.scrollController,
-      onItemClicked: (item) {
-        widget.onItemClicked.call(item);
-      },
-    ).orLoading(widget.isLoading);
+    return widget.isLoading
+        ? SingleChildScrollView(
+            controller: widget.scrollController,
+            child: SizedBox(
+              height: 200,
+              child: DefaultLoading(),
+            ),
+          )
+        : PhotoGrid(
+            items: widget.clothes,
+            scrollController: widget.scrollController,
+            onItemClicked: (item) {
+              widget.onItemClicked.call(item);
+            },
+          );
   }
 
   Widget _buildEmptyPage() {
