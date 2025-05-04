@@ -34,8 +34,8 @@ void main() {
   group('CryptographySafe', () {
     test('getHashed should return SHA-256 hash for non-null strings', () {
       
-      final String? input = 'hello';
-      final expectedHash = sha256.convert(utf8.encode(input!)).toString();
+      final String input = 'hello';
+      final expectedHash = sha256.convert(utf8.encode(input)).toString();
 
       
       final result = input.getHashed();

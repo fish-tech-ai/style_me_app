@@ -7,6 +7,7 @@ part 'user_photo.g.dart';
 class UserPhoto extends PhotoItem {
   UserPhoto(super.id, super.image, super.name, {super.isDefault});
 
+  @override
   UserPhoto copyWith({
     String? id,
     String? name,

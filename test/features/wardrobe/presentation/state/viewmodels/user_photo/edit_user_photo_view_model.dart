@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/network/failures/server_failure.dart';
 import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
@@ -28,8 +28,6 @@ class MockImageFetcher extends Mock implements ImageFetcher {}
 class FakeUserPhoto extends Fake implements UserPhoto {}
 
 void main() {
-  mockGetTemporaryDirectory();
-
   late MockDeleteUserPhotoUseCase mockDelete;
   late MockUpdateUserPhotoUseCase mockUpdate;
   late MockGetOriginalUserImageUrlUseCase mockGetUrl;
@@ -40,6 +38,7 @@ void main() {
   final userPhoto = UserPhoto("id123", "Profile", "url", isDefault: false);
 
   setUpAll(() {
+    mockGetTemporaryDirectory();
     registerFallbackValue(ServerFailure("fail", 500));
     registerFallbackValue(userPhoto);
   });
@@ -70,13 +69,13 @@ void main() {
     final response = OriginalImageUrlResponse(signedUrl);
     when(() => mockGetUrl.call(userPhoto.id))
         .thenAnswer((_) async => Result.success(response));
-    when(() => mockFetcher.handleSingleImageLoadingAndCache(any(), any()))
+    when(() => mockFetcher.downloadAndCacheImage(any(), any()))
         .thenAnswer((_) async {});
 
     final notifier = container.read(editUserPhotoViewModelProvider.notifier);
     await notifier.init(userPhoto);
 
-    await untilCalled(() => mockFetcher.handleSingleImageLoadingAndCache(any(), any()));
+    await untilCalled(() => mockFetcher.downloadAndCacheImage(any(), any()));
 
     final state = container.read(editUserPhotoViewModelProvider);
     expect(state.isPageLoading, false);

@@ -84,6 +84,7 @@ class _EditUserPhotoPageState extends ConsumerState<EditUserPhotoPage> {
                 right: 12,
                 bottom: 12,
                 child: PhotoModifyButtons(
+                  deleteButtonText: localizations.deletePhoto,
                   isDeleteLoading: state.isDeleteLoading,
                   isSaveLoading: state.isSaveLoading,
                   onDeleteClicked: () async {

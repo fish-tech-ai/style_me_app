@@ -1,44 +1,66 @@
-
 import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/utils/constants.dart';
+import 'package:style_me/core/views/buttons/app_icon_button.dart';
 import 'package:style_me/core/views/encrypted_image/encrypted_image.dart';
+import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/presentation/components/image_error_widget.dart';
 import 'package:style_me/features/wardrobe/presentation/components/image_loading_widget.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 
 class PhotoGridItem extends StatelessWidget {
   final PhotoItem photo;
+  final double labelMaxWidth;
   final Function(PhotoItem photo) onItemClicked;
 
-  const PhotoGridItem(
-      {super.key, required this.photo, required this.onItemClicked});
+  /// when null delete button will not appear
+  final Function(PhotoItem photo)? onDeleteClicked;
+
+  const PhotoGridItem({
+    super.key,
+    required this.photo,
+    required this.onItemClicked,
+    this.labelMaxWidth = 180,
+    this.onDeleteClicked,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => onItemClicked(photo),
-      borderRadius: GlobalUiConst.borderRadiusExtraLarge,
-      child: LayoutBuilder(builder: (context, constraints) {
-        return Stack(
+    return ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        Colors.grey,
+        photo.isDisabled ? BlendMode.saturation : BlendMode.dst,
+      ),
+      child: InkWell(
+        onTap: () => onItemClicked(photo),
+        borderRadius: GlobalUiConst.borderRadiusExtraLarge,
+        child: Stack(
           fit: StackFit.loose,
           clipBehavior: Clip.none,
           children: [
             Positioned.fill(
-              child: ClipRRect(
-                borderRadius: GlobalUiConst.borderRadiusExtraLarge,
-                child: EncryptedImage(
-                  imageSrc: photo.image,
-                  fit: BoxFit.cover,
-                  loadingBuilder: () {
-                    return ImageLoadingWidget();
-                  },
-                  errorBuilder: (stackTrace) {
-                    debugPrintStack(stackTrace: stackTrace);
-                    return ImageErrorWidget();
-                  },
+              child: Container(
+                decoration: BoxDecoration(
+                  border: photo.isSelected
+                      ? Border.all(color: context.colorScheme.primary, width: 4)
+                      : null,
+                  borderRadius: BorderRadius.circular(35),
+                ),
+                child: ClipRRect(
+                  borderRadius: GlobalUiConst.borderRadiusExtraLarge,
+                  child: EncryptedImage(
+                    imageSrc: photo.image,
+                    fit: BoxFit.cover,
+                    loadingBuilder: () {
+                      return ImageLoadingWidget();
+                    },
+                    errorBuilder: (stackTrace) {
+                      debugPrintStack(stackTrace: stackTrace);
+                      return ImageErrorWidget();
+                    },
+                  ),
                 ),
               ),
             ),
@@ -50,21 +72,37 @@ class PhotoGridItem extends StatelessWidget {
             Positioned(
               bottom: 28,
               left: 0,
-              child: _buildNameLabel(context, constraints),
+              child: _buildNameLabel(context),
             ),
+            Positioned(
+              top: 16,
+              right: 16,
+              child: _buildSelectedIndicator(context),
+            ).orEmpty(!photo.isSelected),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: _buildDeleteButton(context),
+            ).orEmpty(onDeleteClicked == null),
+            Positioned(
+              top: 16,
+              right: 16,
+              child: _buildDisabledIndicator(context),
+            ).orEmpty(!photo.isDisabled)
           ],
-        );
-      }),
+        ),
+      ),
     );
   }
 
-  Widget _buildNameLabel(BuildContext context, BoxConstraints constraints) {
+  Widget _buildNameLabel(BuildContext context) {
     final radius = Radius.circular(12);
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxWidth: constraints.maxWidth,
-      ),
+    return Align(
+      alignment: Alignment.centerLeft,
       child: Container(
+        constraints: BoxConstraints(
+          maxWidth: labelMaxWidth,
+        ),
         decoration: BoxDecoration(
           color: context.customColors.accentA80,
           borderRadius: BorderRadius.only(
@@ -91,6 +129,63 @@ class PhotoGridItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(14)),
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: Text(localizations.defaultText),
+    );
+  }
+
+  Widget _buildSelectedIndicator(BuildContext context) {
+    String? categoryText;
+    if (photo is Clothing) {
+      categoryText = (photo as Clothing).position.text;
+    }
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 1),
+      decoration: BoxDecoration(
+        color: context.colorScheme.primary,
+        borderRadius: GlobalUiConst.borderRadiusExtraLarge,
+      ),
+      child: categoryText != null
+          ? Text(
+              categoryText,
+              style: TextStyle(color: context.colorScheme.onPrimary),
+            )
+          : Icon(
+              Icons.check_rounded,
+              color: context.colorScheme.onPrimary,
+            ),
+    );
+  }
+
+  Widget _buildDeleteButton(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        onDeleteClicked?.call(photo);
+      },
+      child: Padding(
+        padding: EdgeInsets.all(12),
+        child: IgnorePointer(
+          child: AppIconButton(
+            icon: Icon(Icons.close_rounded, color: context.colorScheme.onSurface),
+            borderRadius: BorderRadius.circular(100),
+            padding: EdgeInsets.all(6),
+            backgroundColor: context.colorScheme.error,
+            onClick: () {},
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDisabledIndicator(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      decoration:
+          BoxDecoration(shape: BoxShape.circle, color: context.theme.hintColor),
+      child: Icon(
+        Icons.not_interested_rounded,
+        color: context.theme.disabledColor,
+      ),
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/src/consumer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/navigation/app_nav_observer.dart';

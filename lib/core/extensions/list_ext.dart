@@ -21,6 +21,17 @@ extension FirstWhereExt<T> on List<T> {
     }
     return result;
   }
+
+  bool everyIndexed(bool Function(T element, int index) test) {
+    bool isSatisfied;
+    for (int i = 0; i < length; i++)  {
+      isSatisfied = test(this[i], i);
+      if (!isSatisfied) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
 
 extension PhotoListExt on List<PhotoItem> {

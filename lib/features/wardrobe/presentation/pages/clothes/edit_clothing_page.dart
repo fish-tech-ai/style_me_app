@@ -86,6 +86,7 @@ class _EditClothingPageState extends ConsumerState<EditClothingPage> {
                 right: 12,
                 bottom: 12,
                 child: PhotoModifyButtons(
+                  deleteButtonText: localizations.deleteClothing,
                   isDeleteLoading: state.isDeleteLoading,
                   isSaveLoading: state.isSaveLoading,
                   onDeleteClicked: () async {

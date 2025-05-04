@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/network/failures/server_failure.dart';
 import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
@@ -30,8 +30,6 @@ class MockImageFetcher extends Mock implements ImageFetcher {}
 class FakeClothingPhoto extends Fake implements Clothing {}
 
 void main() {
-  mockGetTemporaryDirectory();
-
   late MockDeleteClothingPhotoUseCase mockDelete;
   late MockUpdateClothingPhotoUseCase mockUpdate;
   late MockGetOriginalClothingImageUrlUseCase mockGetUrl;
@@ -48,6 +46,7 @@ void main() {
   );
 
   setUpAll(() {
+    mockGetTemporaryDirectory();
     registerFallbackValue(ServerFailure("fail", 500));
     registerFallbackValue(ClothingCategoryEnum.ALL);
     registerFallbackValue(clothingPhoto);
@@ -79,7 +78,7 @@ void main() {
     final response = OriginalImageUrlResponse(signedUrl);
     when(() => mockGetUrl.call(clothingPhoto.id))
         .thenAnswer((_) async => Result.success(response));
-    when(() => mockFetcher.handleSingleImageLoadingAndCache(any(), any()))
+    when(() => mockFetcher.downloadAndCacheImage(any(), any()))
         .thenAnswer((_) async {});
 
     final notifier =
@@ -87,7 +86,7 @@ void main() {
     await notifier.init(clothingPhoto);
 
     await untilCalled(
-        () => mockFetcher.handleSingleImageLoadingAndCache(any(), any()));
+        () => mockFetcher.downloadAndCacheImage(any(), any()));
 
     final state = container.read(editClothingPhotoViewModelProvider);
     expect(state.isPageLoading, false);

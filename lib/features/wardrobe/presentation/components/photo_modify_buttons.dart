@@ -7,6 +7,7 @@ import 'package:style_me/core/views/buttons/app_outlined_button.dart';
 class PhotoModifyButtons extends StatelessWidget {
   final bool isDeleteLoading;
   final bool isSaveLoading;
+  final String deleteButtonText;
   final Function() onDeleteClicked;
   final Function() onSaveClicked;
 
@@ -16,6 +17,7 @@ class PhotoModifyButtons extends StatelessWidget {
     required this.isSaveLoading,
     required this.onDeleteClicked,
     required this.onSaveClicked,
+    required this.deleteButtonText,
   });
 
   @override
@@ -24,7 +26,7 @@ class PhotoModifyButtons extends StatelessWidget {
       spacing: 12,
       children: [
         AppOutlinedButton(
-          text: localizations.deleteClothing,
+          text: deleteButtonText,
           width: 130,
           style: OutlinedButton.styleFrom(
             foregroundColor: context.colorScheme.error,

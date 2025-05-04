@@ -48,7 +48,7 @@ class AppBottomNavBar extends ConsumerWidget {
           onTap: () {
             ref
                 .read(appGlobalViewModelProvider.notifier)
-                .selectBottomNavItem(index);
+                .selectBottomNavItem(item.appPage);
             router.push(item.appPage.path);
           },
           child: Container(

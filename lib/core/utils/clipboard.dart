@@ -19,7 +19,6 @@ class Clipboard {
   }
 
   Future<bool> containsImage(ClipboardReader reader) async {
-    ;
     return supportedFormats.any(
       (supportedFormat) => reader.canProvide(supportedFormat),
     );

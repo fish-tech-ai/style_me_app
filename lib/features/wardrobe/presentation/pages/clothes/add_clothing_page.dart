@@ -21,12 +21,19 @@ class AddClothingPage extends ConsumerStatefulWidget {
 class _AddClothingPageState extends ConsumerState<AddClothingPage>
     with WidgetsBindingObserver {
   late final AddClothingPhotoViewModel viewModel;
+  EdgeInsets? padding;
 
   @override
   void initState() {
     super.initState();
     viewModel = ref.read(addClothingPhotoViewModelProvider.notifier);
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    padding ??= MediaQuery.paddingOf(context);
   }
 
   @override
@@ -56,7 +63,8 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage>
       onPopInvokedWithResult: (_, __) {
         viewModel.onBackAction(() {});
       },
-      child: SafeArea(
+      child: Padding(
+        padding: padding ?? EdgeInsets.zero,
         child: Column(
           children: [
             AppTopBar(

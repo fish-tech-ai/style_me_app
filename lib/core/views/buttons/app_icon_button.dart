@@ -20,7 +20,8 @@ class AppIconButton extends StatelessWidget {
     this.elevation = 0,
     this.padding = const EdgeInsets.all(16),
     this.border,
-    this.borderRadius, this.disableVisualFeedback = false,
+    this.borderRadius,
+    this.disableVisualFeedback = false,
   });
 
   @override

@@ -1,5 +1,6 @@
 import 'package:style_me/core/lang/localizations_helper.dart';
 
+// ignore_for_file: constant_identifier_names
 enum ClothingPositionEnum {
   UPPER,
   BOTTOM,

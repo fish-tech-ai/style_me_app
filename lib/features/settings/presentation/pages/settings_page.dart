@@ -125,7 +125,9 @@ class SettingsPage extends ConsumerWidget {
   }
 
   void onUserLogout(WidgetRef ref) {
-    ref.read(appGlobalViewModelProvider.notifier).selectBottomNavItem(0);
+    ref
+        .read(appGlobalViewModelProvider.notifier)
+        .selectBottomNavItem(AppPage.homePage);
     ref.context.go(AppPage.authPage.path);
   }
 

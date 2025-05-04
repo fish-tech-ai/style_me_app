@@ -5,8 +5,17 @@ abstract class PhotoItem {
   final String image;
   final String name;
   final bool isDefault;
+  final bool isSelected;
+  final bool isDisabled;
 
-  PhotoItem(this.id, this.image, this.name, {this.isDefault = false});
+  PhotoItem(
+    this.id,
+    this.image,
+    this.name, {
+    this.isDefault = false,
+    this.isSelected = false,
+    this.isDisabled = false,
+  });
 
   PhotoWithAction withDeleteAction() {
     return PhotoWithAction.delete(this);
@@ -15,4 +24,10 @@ abstract class PhotoItem {
   PhotoWithAction withUpdateAction() {
     return PhotoWithAction.update(this);
   }
+
+  PhotoItem copyWith({
+    String? id,
+    String? name,
+    String? image,
+  });
 }

@@ -32,6 +32,8 @@ import 'package:style_me/core/utils/google_auth_service.dart';
 import 'package:style_me/core/utils/token_authenticator.dart';
 import 'package:style_me/core/views/encrypted_image/isolated_decrypt_manager.dart';
 import 'package:style_me/features/auth/data/auth_repository.dart';
+import 'package:style_me/features/checkroom/domain/get_updated_selected_clothes_use_case.dart';
+import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_case.dart';
 import 'package:style_me/features/settings/data/settings_repository.dart';
 import 'package:style_me/features/settings/domain/add_report_use_case.dart';
 import 'package:style_me/features/settings/domain/change_password_use_case.dart';
@@ -149,5 +151,9 @@ class GetItManager {
     getIt.registerFactory(() => UpdateUserPhotoUseCase(getIt(), getIt()));
     getIt.registerFactory(
         () => GetOriginalUserImageUrlUseCase(getIt(), getIt()));
+
+    ///checkroom
+    getIt.registerFactory(() => GetUserOriginalPhotosUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => GetUpdatedSelectedClothesUseCase());
   }
 }

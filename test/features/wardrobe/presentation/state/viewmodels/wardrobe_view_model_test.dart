@@ -1,10 +1,8 @@
-import 'dart:async';
-import 'dart:typed_data';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:style_me/core/app/presentation/app_global_view_model.dart';
+import 'package:style_me/core/network/failures/server_failure.dart';
 import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
@@ -13,126 +11,182 @@ import 'package:style_me/features/wardrobe/data/models/clothing/clothing_positio
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/user_photo/get_user_photos_use_case.dart';
+import 'package:style_me/features/wardrobe/presentation/state/states/wardrobe_state_holder.dart';
 import 'package:style_me/features/wardrobe/presentation/state/viewmodels/wardrobe_view_model.dart';
+import 'package:style_me/features/wardrobe/presentation/ui_models/clothing_list_search_parameters.dart';
 
 import '../../../../../helpers/shared_test_functions.dart';
 
-class MockGetClothesUseCase extends Mock implements GetClothesUseCase {}
-
 class MockGetUserPhotosUseCase extends Mock implements GetUserPhotosUseCase {}
+
+class MockGetClothesUseCase extends Mock implements GetClothesUseCase {}
 
 class MockMultipleImageFetcher extends Mock implements ImageFetcher {}
 
 void main() {
-  mockGetTemporaryDirectory();
-
   late ProviderContainer container;
-  late MockGetClothesUseCase mockGetClothesUseCase;
   late MockGetUserPhotosUseCase mockGetUserPhotosUseCase;
+  late MockGetClothesUseCase mockGetClothesUseCase;
   late MockMultipleImageFetcher mockMultipleImageFetcher;
+  late MockAppGlobalViewModel mockGlobal;
 
   setUp(() {
-    mockGetClothesUseCase = MockGetClothesUseCase();
+    mockGetTemporaryDirectory();
     mockGetUserPhotosUseCase = MockGetUserPhotosUseCase();
+    mockGetClothesUseCase = MockGetClothesUseCase();
     mockMultipleImageFetcher = MockMultipleImageFetcher();
+    mockGlobal = MockAppGlobalViewModel();
     container = ProviderContainer(
       overrides: [
         wardrobeViewModelProvider.overrideWith(
           () => WardrobeViewModel.test(
-            mockGetClothesUseCase,
             mockMultipleImageFetcher,
             mockGetUserPhotosUseCase,
+            mockGetClothesUseCase,
           ),
         ),
+        appGlobalViewModelProvider.overrideWith(() => mockGlobal)
       ],
     );
     registerFallbackValue(ClothingCategoryEnum.BLAZER);
-
     addTearDown(container.dispose);
+
+    when(() => mockGetUserPhotosUseCase.call())
+        .thenAnswer((_) async => Result.success([]));
+    when(() => mockGetClothesUseCase.call(any(), any(), any()))
+        .thenAnswer((_) async => Result.success([]));
+    when(() => mockMultipleImageFetcher.downloadImagesToCachePaths([]))
+        .thenAnswer((_) async => []);
   });
 
-  test('initial state is loading and then updates with clothes on success',
+  test('initial state is loading and then updates with user photos on success',
       () async {
-    final List<Clothing> clothingList = [];
     final List<UserPhoto> userPhotosList = [];
-    when(() => mockGetClothesUseCase.call(any(), any(), any()))
-        .thenAnswer((_) async => Result.success(clothingList));
     when(() => mockGetUserPhotosUseCase.call())
         .thenAnswer((_) async => Result.success(userPhotosList));
-    when(() =>
-            mockMultipleImageFetcher.handleImagesLoadingAndCache(any(), any()))
-        .thenAnswer((_) async => [
-              Uint8List.fromList([1, 2, 3])
-            ]);
 
     container.read(wardrobeViewModelProvider.notifier);
 
-    final state = container.read(wardrobeViewModelProvider);
-    expect(state.isClothesLoading, true);
-    expect(state.clothes, clothingList);
+    await Future.delayed(Duration.zero);
+
+    final WardrobeStateHolder state = container.read(wardrobeViewModelProvider);
+
+    await Future.delayed(Duration.zero);
+    expect(state.isUserPhotosLoading, true);
+    expect(state.userPhotos, []);
   });
 
-  test('onSearchTextChanged updates state and triggers fetch', () async {
-    when(() => mockGetClothesUseCase.call(any(), any(), any()))
-        .thenAnswer((_) async => Result.success([]));
-    when(() => mockGetUserPhotosUseCase.call())
-        .thenAnswer((_) async => Result.success([]));
-    when(() =>
-            mockMultipleImageFetcher.handleImagesLoadingAndCache(any(), any()))
-        .thenAnswer((_) async => [
-              Uint8List.fromList([1, 2, 3])
-            ]);
-
+  test('onClothingModifyResult - update action updates the item', () {
     final notifier = container.read(wardrobeViewModelProvider.notifier);
-    notifier.onSearchTextChanged("jacket");
 
-    expect(container.read(wardrobeViewModelProvider).searchText, "jacket");
+    final oldClothing = Clothing('1', 'name', "old_path",
+        ClothingCategoryEnum.ALL, ClothingPositionEnum.BOTTOM);
+    final updatedClothing = Clothing('1', 'name', "new_path",
+        ClothingCategoryEnum.ALL, ClothingPositionEnum.BOTTOM);
 
-    await Future.delayed(Duration(milliseconds: 1100));
-    verify(() => mockGetClothesUseCase.call("jacket", any(), any())).called(1);
+    notifier.state = notifier.state.copyWith(clothes: [oldClothing]);
+    final action = updatedClothing.withUpdateAction();
+    notifier.onClothingModifyResult(action);
+
+    final updatedState = container.read(wardrobeViewModelProvider);
+    expect(updatedState.clothes.length, 1);
+    expect(updatedState.clothes.first.image, 'new_path');
   });
 
-  test('onFilterChanged updates filters and triggers fetch', () async {
-    when(() => mockGetClothesUseCase.call(any(), any(), any()))
-        .thenAnswer((_) async => Result.success([]));
-    when(() => mockGetUserPhotosUseCase.call())
-        .thenAnswer((_) async => Result.success([]));
-    when(() =>
-            mockMultipleImageFetcher.handleImagesLoadingAndCache(any(), any()))
-        .thenAnswer((_) async => [
-              Uint8List.fromList([1, 2, 3])
-            ]);
-
+  test('onClothingModifyResult - delete action removes the item', () {
     final notifier = container.read(wardrobeViewModelProvider.notifier);
-    notifier.onFilterChanged(
-      ClothingPositionEnum.BOTTOM,
-      ClothingCategoryEnum.TOP,
+
+    final clothing1 = Clothing('1', 'name', "path1", ClothingCategoryEnum.ALL,
+        ClothingPositionEnum.BOTTOM);
+    final clothing2 = Clothing('2', 'name', "path2", ClothingCategoryEnum.ALL,
+        ClothingPositionEnum.BOTTOM);
+
+    notifier.state = notifier.state.copyWith(clothes: [clothing1, clothing2]);
+
+    final action = clothing1.withDeleteAction();
+
+    notifier.onClothingModifyResult(action);
+
+    final updatedState = container.read(wardrobeViewModelProvider);
+    expect(updatedState.clothes.length, 1);
+    expect(updatedState.clothes.first.id, '2');
+  });
+
+  test('getClothes fetches and sets clothes with image paths', () async {
+    final clothing1 = Clothing('1', 'name', "https://www.example.com",
+        ClothingCategoryEnum.ALL, ClothingPositionEnum.BOTTOM);
+    final clothing2 = Clothing('2', 'name', "https://www.example2.com",
+        ClothingCategoryEnum.ALL, ClothingPositionEnum.BOTTOM);
+    final clothingItems = [clothing1, clothing2];
+
+    final states = <WardrobeStateHolder>[];
+    final stateListener = container.listen<WardrobeStateHolder>(
+      wardrobeViewModelProvider,
+      (prev, next) => states.add(next),
+      fireImmediately: true,
     );
 
-    final state = container.read(wardrobeViewModelProvider);
-    expect(state.filterPosition, ClothingPositionEnum.BOTTOM);
-    expect(state.filterCategory, ClothingCategoryEnum.TOP);
+    when(() => mockGetClothesUseCase.call(any(), any(), any()))
+        .thenAnswer((_) async => Result.success(clothingItems));
 
-    await Future.delayed(Duration(milliseconds: 1100));
-    verify(() => mockGetClothesUseCase.call(
-            any(), ClothingPositionEnum.BOTTOM, ClothingCategoryEnum.TOP))
-        .called(1);
-  });
-
-  test('clearFilters resets filters to default values', () {
-    when(() => mockGetUserPhotosUseCase.call())
-        .thenAnswer((_) async => Result.success([]));
-    final notifier = container.read(wardrobeViewModelProvider.notifier);
     when(() =>
-            mockMultipleImageFetcher.handleImagesLoadingAndCache(any(), any()))
+            mockMultipleImageFetcher.downloadImagesToCachePaths(clothingItems))
         .thenAnswer((_) async => [
-              Uint8List.fromList([1, 2, 3])
+              clothing1.copyWith(image: "path1"),
+              clothing2.copyWith(image: "path2")
             ]);
 
-    notifier.clearFilters();
-    final state = container.read(wardrobeViewModelProvider);
+    final notifier = container.read(wardrobeViewModelProvider.notifier);
 
-    expect(state.filterPosition, null);
-    expect(state.filterCategory, ClothingCategoryEnum.ALL);
+    await notifier.getClothes(ClothingListSearchParameters());
+
+    await Future.delayed(Duration(milliseconds: 1100));
+
+    final state = states.last;
+    expect(state.isClothesLoading, false);
+    expect(state.clothes.length, 2);
+    expect(state.clothes.first.image, contains('path1'));
+    verify(() => mockGetClothesUseCase.call('', null, ClothingCategoryEnum.ALL))
+        .called(1);
+
+    /// gonna be called once on initial and second later
+    verify(() => mockMultipleImageFetcher.downloadImagesToCachePaths(any()))
+        .called(2);
+    stateListener.close();
+  });
+
+  test('getClothes handles failure result and sets loading to false', () async {
+    final states = <WardrobeStateHolder>[];
+    final stateListener = container.listen<WardrobeStateHolder>(
+      wardrobeViewModelProvider,
+      (prev, next) => states.add(next),
+      fireImmediately: true,
+    );
+
+    final fakeFailure = ServerFailure('Network error', 404);
+
+    when(() => mockGetClothesUseCase.call(any(), any(), any()))
+        .thenAnswer((_) async => Result.fail(fakeFailure));
+
+    when(() => mockMultipleImageFetcher.downloadImagesToCachePaths(any()))
+        .thenAnswer((_) async => []);
+
+    final notifier = container.read(wardrobeViewModelProvider.notifier);
+    await notifier.getClothes(ClothingListSearchParameters());
+
+    await Future.delayed(Duration(milliseconds: 1100));
+
+    final finalState = states.last;
+
+    expect(finalState.isClothesLoading, false);
+    expect(finalState.clothes, isEmpty);
+    verify(() => mockGetClothesUseCase.call('', null, ClothingCategoryEnum.ALL))
+        .called(1);
+
+    /// gonna be called once on initial
+    verify(() => mockMultipleImageFetcher.downloadImagesToCachePaths(any()))
+        .called(1);
+
+    stateListener.close();
   });
 }

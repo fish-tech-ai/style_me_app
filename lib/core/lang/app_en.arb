@@ -138,5 +138,9 @@
   "clothingName": "Clothing name",
   "photoName": "Photo name",
   "userPhotoAddPageTitle": "Add photo of you",
-  "setAsDefault": "Set as default"
+  "setAsDefault": "Set as default",
+  "missingPostureAndClothing": "It looks like you don't have photos of yourself and photos of your clothes. Add missing photos to access this page:",
+  "missingPosture": "Looks like you don't have photos of yourself. Add missing photos to access this page:",
+  "missingClothing": "Looks like you don't have photos of your clothes. Add missing photos to access this page:",
+  "tryOn": "Try it on!"
 }

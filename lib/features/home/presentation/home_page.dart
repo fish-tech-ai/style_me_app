@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
-import 'package:style_me/core/views/buttons/floating/floating_add_button.dart';
+import 'package:style_me/core/views/buttons/floating/page_with_floating_add_button.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
