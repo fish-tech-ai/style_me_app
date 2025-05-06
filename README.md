@@ -1,6 +1,6 @@
 # style_me
 
-A new Flutter project.
+Style me app.
 
 ## Getting Started
 
