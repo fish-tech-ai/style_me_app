@@ -8,7 +8,7 @@ enum AppPage {
   changePasswordPage("/changePassword"),
   privacyPolicy("/privacyPolicy"),
   clothingAdd("/clothingAdd", shouldShowBottomNavBar: false),
-  termsAndConditions("/termsAndConditions"),
+  termsAndConditions("/termsAndConditions", shouldShowBottomNavBar: false),
   editClothingPage("/editClothingPage"),
   userPhotoAdd("/userPhotoAdd", shouldShowBottomNavBar: false),
   editUserPhotoPage("/editUserPhotoPage");

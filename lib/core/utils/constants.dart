@@ -47,3 +47,8 @@ abstract class ImageTransformationsOptions {
   static const int compressedQuality = 90;
 }
 
+abstract class CacheFileNames {
+  static const String privacyPolicy = "privacy_policy.md";
+  static const String termsOfUse = "terms_of_use.md";
+}
+

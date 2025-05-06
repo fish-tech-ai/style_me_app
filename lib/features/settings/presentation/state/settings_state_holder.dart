@@ -49,9 +49,10 @@ class SettingsStateHolder with _$SettingsStateHolder {
         action: SettingAction.openLanguageBottomSheet,
       ),
       Setting(
-          label: localizations.privacyPolicy,
-          actionText: localizations.seeMore,
-          path: AppPage.privacyPolicy.path),
+        label: localizations.privacyPolicy,
+        actionText: localizations.seeMore,
+        path: AppPage.privacyPolicy.path,
+      ),
       Setting(
         label: localizations.termsAndConditions,
         actionText: localizations.seeMore,

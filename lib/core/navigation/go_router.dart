@@ -46,12 +46,21 @@ GoRouter getRouter(bool isAuthenticated, WidgetRef ref) => GoRouter(
         ),
         GoRoute(
           path: AppPage.privacyPolicy.path,
-          builder: (context, state) => const PrivacyPolicyPage().scopedPage(),
+          builder: (context, state) {
+            final bool? shouldShowBottomNavBar = state.extra as bool?;
+            return PrivacyPolicyPage(
+                    shouldShowBottomNavBar: shouldShowBottomNavBar ?? true)
+                .scopedPage();
+          },
         ),
         GoRoute(
           path: AppPage.termsAndConditions.path,
-          builder: (context, state) =>
-              const TermsAndConditionsPage().scopedPage(),
+          builder: (context, state) {
+            final bool? shouldShowBottomNavBar = state.extra as bool?;
+            return TermsAndConditionsPage(
+                    shouldShowBottomNavBar: shouldShowBottomNavBar ?? true)
+                .scopedPage();
+          },
         ),
         GoRoute(
           path: AppPage.changePasswordPage.path,
