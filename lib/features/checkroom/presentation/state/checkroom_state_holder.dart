@@ -14,6 +14,11 @@ class CheckroomStateHolder with _$CheckroomStateHolder {
     @Default([]) List<Clothing> selectedClothes,
     UserPhoto? selectedUserPhoto,
 
+    ///generate outfit state
+    String? generatedOutfitPath,
+    @Default("") String generatedOutfitId,
+    @Default(false) bool isGenerateLoading,
+    @Default(false) bool isLiked,
 
     ///Initial loading flags
     @Default(true) bool isUserPhotosLoading,

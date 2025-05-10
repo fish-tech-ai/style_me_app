@@ -20,6 +20,7 @@ import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/services/app_service.dart';
 import 'package:style_me/core/network/services/auth_service.dart';
 import 'package:style_me/core/network/services/clothes_service.dart';
+import 'package:style_me/core/network/services/outfit_service.dart';
 import 'package:style_me/core/network/services/user_photos_service.dart';
 import 'package:style_me/core/network/services/user_service.dart';
 import 'package:style_me/core/network/utils/aes_encryptor.dart';
@@ -33,6 +34,8 @@ import 'package:style_me/core/utils/google_auth_service.dart';
 import 'package:style_me/core/utils/token_authenticator.dart';
 import 'package:style_me/core/views/encrypted_image/isolated_decrypt_manager.dart';
 import 'package:style_me/features/auth/data/auth_repository.dart';
+import 'package:style_me/features/checkroom/data/checkroom_repository.dart';
+import 'package:style_me/features/checkroom/domain/generate_outfit_use_case.dart';
 import 'package:style_me/features/checkroom/domain/get_updated_selected_clothes_use_case.dart';
 import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_case.dart';
 import 'package:style_me/features/settings/data/settings_repository.dart';
@@ -82,6 +85,8 @@ class GetItManager {
         () => ClothesService.create(getIt<ChopperClient>()));
     getIt.registerFactory<UserPhotosService>(
         () => UserPhotosService.create(getIt<ChopperClient>()));
+    getIt.registerFactory<OutfitService>(
+        () => OutfitService.create(getIt<ChopperClient>()));
     getIt.registerLazySingleton(() => ThemeManager());
     final sharedPrefs = await SharedPreferences.getInstance();
     getIt.registerLazySingleton(() => sharedPrefs);
@@ -155,7 +160,9 @@ class GetItManager {
         () => GetOriginalUserImageUrlUseCase(getIt(), getIt()));
 
     ///checkroom
+    getIt.registerFactory(() => CheckroomRepository(getIt()));
     getIt.registerFactory(() => GetUserOriginalPhotosUseCase(getIt(), getIt()));
     getIt.registerFactory(() => GetUpdatedSelectedClothesUseCase());
+    getIt.registerFactory(() => GenerateOutfitUseCase(getIt(), getIt()));
   }
 }

@@ -9,6 +9,7 @@ import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/utils/constants.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_icon_button.dart';
+import 'package:style_me/core/views/encrypted_image/encrypted_image.dart';
 import 'package:style_me/core/views/popups/app_draggable_horizontal_sheet.dart';
 import 'package:style_me/core/views/popups/app_persistent_bottom_sheet.dart';
 import 'package:style_me/core/views/ui_models/limit.dart';
@@ -18,6 +19,8 @@ import 'package:style_me/features/checkroom/presentation/components/selected_clo
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_view_model.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
+import 'package:style_me/features/wardrobe/presentation/components/image_error_widget.dart';
+import 'package:style_me/features/wardrobe/presentation/components/image_loading_widget.dart';
 import 'package:style_me/features/wardrobe/presentation/pages/clothes/clothes_list_page.dart';
 
 class CheckroomPage extends ConsumerStatefulWidget {
@@ -46,7 +49,10 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
     final CheckroomStateHolder state = ref.watch(checkroomViewModelProvider);
     return Stack(
       children: [
-        ...buildContent(state),
+        if (state.generatedOutfitPath != null)
+          ...buildGeneratedImage(state.generatedOutfitPath!, state.isLiked)
+        else
+          ...buildContent(state),
         Positioned.fill(child: buildOverlayIfNeeded(state)),
       ],
     );
@@ -73,12 +79,12 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
       Positioned(
         right: 12,
         bottom: 90,
-        child: _buildTryOnButton(),
+        child: buildTryOnButton(state.isGenerateLoading),
       ).orEmpty(state.selectedClothes.isEmpty),
       Positioned(
         top: 12,
         left: 12,
-        child: _buildWardrobeButton(),
+        child: buildWardrobeButton(),
       ),
       AppDraggableHorizontalSheet(
         key: selectedClothesPersistentHorizontalSheet,
@@ -117,7 +123,42 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
     ];
   }
 
-  Widget _buildWardrobeButton() {
+  List<Widget> buildGeneratedImage(String generatedOutfitPath, bool isLiked) {
+    return [
+      Positioned.fill(
+        child: EncryptedImage(
+          imageSrc: generatedOutfitPath,
+          errorBuilder: (stackTrace) {
+            debugPrintStack(stackTrace: stackTrace);
+            return ImageErrorWidget();
+          },
+          loadingBuilder: () => ImageLoadingWidget(),
+        ),
+      ),
+      Positioned(
+        top: 12,
+        right: 12,
+        child: buildLikeButton(isLiked),
+      )
+    ];
+  }
+
+  Widget buildLikeButton(bool isLiked) {
+    return AppIconButton(
+      icon: Icon(
+        isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+        color: isLiked
+            ? context.colorScheme.onPrimary
+            : context.colorScheme.primary,
+      ),
+      backgroundColor:
+          isLiked ? context.colorScheme.primary : context.colorScheme.secondary,
+      border: Border.all(color: context.colorScheme.primary),
+      onClick: () => viewModel.toggleLikeOutfit(),
+    );
+  }
+
+  Widget buildWardrobeButton() {
     return AppIconButton(
       icon: SvgPicture.asset(
         "assets/bottom_nav_icons/wardrobe.svg",
@@ -132,9 +173,10 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
     );
   }
 
-  Widget _buildTryOnButton() {
+  Widget buildTryOnButton(bool isGenerateLoading) {
     return AppButton(
       text: localizations.tryOn,
+      isLoading: isGenerateLoading,
       style: ElevatedButton.styleFrom(
         elevation: 10,
         shape: RoundedRectangleBorder(
@@ -143,7 +185,7 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
       ),
       padding: EdgeInsets.symmetric(horizontal: 24),
       onClick: () {
-        //TODO request to backend
+        viewModel.generateOutfit();
       },
     );
   }
