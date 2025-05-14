@@ -4,10 +4,10 @@ part 'generated_outfit_response.g.dart';
 
 @JsonSerializable()
 class GeneratedOutfitResponse {
-  final String outfitId;
-  final String imageUrl;
+  final String id;
+  final String image;
 
-  GeneratedOutfitResponse(this.outfitId, this.imageUrl);
+  GeneratedOutfitResponse(this.id, this.image);
 
   factory GeneratedOutfitResponse.fromJson(Map<String, dynamic> json) {
     return _$GeneratedOutfitResponseFromJson(json);

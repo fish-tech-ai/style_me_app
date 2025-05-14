@@ -14,6 +14,8 @@ import 'package:style_me/features/auth/data/models/login_response.dart';
 import 'package:style_me/features/auth/data/models/reset_password_request.dart';
 import 'package:style_me/features/checkroom/data/models/generate_outfit_body.dart';
 import 'package:style_me/features/checkroom/data/models/generated_outfit_response.dart';
+import 'package:style_me/features/home/data/models/outfit_original_photo_response.dart';
+import 'package:style_me/features/home/data/models/outfits_response.dart';
 import 'package:style_me/features/settings/data/models/delete_user_request.dart';
 import 'package:style_me/features/settings/data/models/report_request.dart';
 import 'package:style_me/features/wardrobe/data/models/io/clothes_response.dart';
@@ -62,6 +64,9 @@ class ChopperManager {
             GenerateOutfitBody: (json) => GenerateOutfitBody.fromJson(json),
             GeneratedOutfitResponse: (json) =>
                 GeneratedOutfitResponse.fromJson(json),
+            OutfitsResponse: (json) => OutfitsResponse.fromJson(json),
+            OutfitOriginalPhotoResponse: (json) =>
+                OutfitOriginalPhotoResponse.fromJson(json),
           },
         ),
         errorConverter:

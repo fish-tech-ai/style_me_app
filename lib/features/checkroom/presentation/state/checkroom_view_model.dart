@@ -13,6 +13,7 @@ import 'package:style_me/features/checkroom/domain/generate_outfit_use_case.dart
 import 'package:style_me/features/checkroom/domain/get_updated_selected_clothes_use_case.dart';
 import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_case.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
+import 'package:style_me/features/home/domain/set_is_outfit_favorite_use_case.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
@@ -28,12 +29,14 @@ class CheckroomViewModel extends _$CheckroomViewModel {
   late final GetUpdatedSelectedClothesUseCase _getUpdatedSelectedClothesUseCase;
   late final GetClothesUseCase _getClothesUseCase;
   late final GenerateOutfitUseCase _generateOutfitUseCase;
+  late final SetIsOutfitFavoriteUseCase _setIsOutfitFavoriteUseCase;
   late final ImageFetcher _multipleImageFetcher;
 
   CheckroomViewModel() {
     _getUserOriginalPhotosUseCase = getIt();
     _getUpdatedSelectedClothesUseCase = getIt();
     _getClothesUseCase = getIt();
+    _setIsOutfitFavoriteUseCase = getIt();
     _generateOutfitUseCase = getIt();
     _multipleImageFetcher = getIt();
   }
@@ -124,20 +127,50 @@ class CheckroomViewModel extends _$CheckroomViewModel {
 
     result.collect((response) async {
       final String generatedImagePath =
-          '${cacheDir.path}/${response.outfitId}_outfit.webp';
-      final generatedPhotoPath = await _multipleImageFetcher
-          .downloadAndCacheImage(response.imageUrl, generatedImagePath);
+          '${cacheDir.path}/${response.id}_outfit.webp';
+      await _multipleImageFetcher.downloadAndCacheImage(
+          response.image, generatedImagePath);
       state = state.copyWith(
-          generatedOutfitPath: generatedPhotoPath, isGenerateLoading: false);
+        generatedOutfitPath: generatedImagePath,
+        isGenerateLoading: false,
+        generatedOutfitId: response.id,
+      );
     }, (failure) {
       ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
-      state = state.copyWith(isGenerateLoading: true);
+      state = state.copyWith(
+        isGenerateLoading: false,
+        generatedOutfitId: "",
+      );
     });
   }
 
+  Timer? _spamLikeTimer;
+
   void toggleLikeOutfit() {
     state = state.copyWith(isLiked: !state.isLiked);
-    //TODO notify backend (/update)
+    _spamLikeTimer?.cancel();
+    _spamLikeTimer =
+        Timer(Duration(seconds: 1), () => _performToggleLikeOutfit());
+  }
+
+  void _performToggleLikeOutfit() async {
+    final result = await _setIsOutfitFavoriteUseCase(
+        state.generatedOutfitId, state.isLiked);
+
+    result.collect((_) {
+      ///Do nothing
+    }, (failure) {
+      ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+    });
+  }
+
+  void backToTryOnStep() {
+    state = state.copyWith(generatedOutfitPath: null);
+  }
+
+  void backToTryOnStepWithClearedSelected() {
+    state = state.copyWith(generatedOutfitPath: null, selectedClothes: []);
+    _setClothesWithSelection(state.clothes, []);
   }
 
   /// clothing list handling

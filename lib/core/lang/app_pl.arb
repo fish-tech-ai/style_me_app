@@ -142,5 +142,7 @@
   "missingPostureAndClothing": "Wygląda na to, że nie masz zdjęć siebie oraz zdjęć swoich ubrań. Dodaj brakujące zdjęcia, aby uzyskać dostęp do tej strony:",
   "missingPosture": "Wygląda na to, że nie masz zdjęć siebie. Dodaj brakujące zdjęcia, aby uzyskać dostęp do tej strony:",
   "missingClothing": "Wygląda na to, że nie masz zdjęć ubrań. Dodaj brakujące zdjęcia, aby uzyskać dostęp do tej strony:",
-  "tryOn": "Przymierz!"
+  "tryOn": "Przymierz!",
+  "makeAnother": "Zrób kolejne",
+  "checkroomPostGeneratedNote": "Wszystkie przymierzone przez Ciebie stroje możesz zobaczyć na stronie głównej."
 }

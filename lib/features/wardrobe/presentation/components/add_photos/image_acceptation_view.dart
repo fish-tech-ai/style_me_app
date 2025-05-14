@@ -40,7 +40,7 @@ class ImageAcceptationView extends StatelessWidget {
             bottom: 12,
             child: AppOutlinedButton(
               text: localizations.tryAgain,
-              width: 120,
+              width: 142,
               style: OutlinedButton.styleFrom(
                   backgroundColor: context.colorScheme.secondary),
               onClick: onTryAgainClicked,
@@ -51,7 +51,7 @@ class ImageAcceptationView extends StatelessWidget {
             bottom: 12,
             child: AppButton(
               text: actionButtonText,
-              width: 120,
+              width: 142,
               isLoading: isImageAddLoading,
               onClick: onAcceptClicked,
             ),
