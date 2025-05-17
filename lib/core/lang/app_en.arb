@@ -144,5 +144,20 @@
   "missingClothing": "Looks like you don't have photos of your clothes. Add missing photos to access this page:",
   "tryOn": "Try it on!",
   "makeAnother": "Make another",
-  "checkroomPostGeneratedNote": "You can see all your tried-on outfits on the home page."
+  "checkroomPostGeneratedNote": "You can see all your tried-on outfits on the home page.",
+  "homeHeaderGreetings": "Hello {name}.",
+  "@hello": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeHeaderSubTitle": "Your mirror just got smarter.",
+  "homeHeaderSeeHowItWorks": "See how it works",
+  "homeEmptyPageTitle": "Nothing here.",
+  "homeEmptyPageSubTitle": "Create your first outfits to fill this screen.",
+  "homeSectionRecentOutfits": "Recent outfits:",
+  "homeSectionFavorites": "Favorites:",
+  "homeSectionSeeMore": "See more"
 }

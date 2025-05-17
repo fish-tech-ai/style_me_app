@@ -144,5 +144,20 @@
   "missingClothing": "Wygląda na to, że nie masz zdjęć ubrań. Dodaj brakujące zdjęcia, aby uzyskać dostęp do tej strony:",
   "tryOn": "Przymierz!",
   "makeAnother": "Zrób kolejne",
-  "checkroomPostGeneratedNote": "Wszystkie przymierzone przez Ciebie stroje możesz zobaczyć na stronie głównej."
+  "checkroomPostGeneratedNote": "Wszystkie przymierzone przez Ciebie stroje możesz zobaczyć na stronie głównej.",
+  "homeHeaderGreetings": "Cześć {name}.",
+  "@hello": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeHeaderSubTitle": "Twoje lustro właśnie stało się mądrzejsze.",
+  "homeHeaderSeeHowItWorks": "Zobacz, jak to działa",
+  "homeEmptyPageTitle": "Nic tutaj nie ma.",
+  "homeEmptyPageSubTitle": "Stwórz swój pierwszy strój, aby zapełnić ten ekran.",
+  "homeSectionRecentOutfits": "Ostatnie stroje:",
+  "homeSectionFavorites": "Ulubione:",
+  "homeSectionSeeMore": "Zobacz więcej"
 }

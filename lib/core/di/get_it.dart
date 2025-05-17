@@ -40,6 +40,7 @@ import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_
 import 'package:style_me/features/home/data/outfit_repository.dart';
 import 'package:style_me/features/home/domain/get_favorite_outfits_use_case.dart';
 import 'package:style_me/features/home/domain/get_original_outfit_photo_use_case.dart';
+import 'package:style_me/features/home/domain/get_recent_and_favorite_outfit_use_case.dart';
 import 'package:style_me/features/home/domain/get_recent_outfits_use_case.dart';
 import 'package:style_me/features/home/domain/set_is_outfit_favorite_use_case.dart';
 import 'package:style_me/features/settings/data/settings_repository.dart';
@@ -175,5 +176,7 @@ class GetItManager {
         .registerFactory(() => GetOriginalOutfitPhotoUseCase(getIt(), getIt()));
     getIt.registerFactory(() => GetRecentOutfitsUseCase(getIt(), getIt()));
     getIt.registerFactory(() => SetIsOutfitFavoriteUseCase(getIt(), getIt()));
+    getIt.registerFactory(
+        () => GetRecentAndFavoriteOutfitUseCase(getIt(), getIt()));
   }
 }

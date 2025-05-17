@@ -5,16 +5,12 @@ part 'outfit.g.dart';
 
 @JsonSerializable()
 class Outfit extends PhotoItem {
-
-  @override
-  @JsonKey(name: 'outfitId')
-  String get id => super.id;
-
-  @override
-  @JsonKey(name: 'imageUrl')
-  String get image => super.image;
-
-  Outfit(super.id, super.image, super.name);
+  Outfit(
+    super.id,
+    super.image,
+    super.name, {
+    super.isFavorite,
+  });
 
   factory Outfit.fromJson(Map<String, dynamic> json) {
     return _$OutfitFromJson(json);
@@ -23,7 +19,17 @@ class Outfit extends PhotoItem {
   Map<String, dynamic> toJson() => _$OutfitToJson(this);
 
   @override
-  Outfit copyWith({String? id, String? name, String? image}) {
-    return Outfit(id ?? this.id, name ?? this.name, image ?? this.image);
+  Outfit copyWith({
+    String? id,
+    String? name,
+    String? image,
+    bool? isFavorite,
+  }) {
+    return Outfit(
+      id ?? this.id,
+      image ?? this.image,
+      name ?? this.name,
+      isFavorite: isFavorite ?? this.isFavorite,
+    );
   }
 }

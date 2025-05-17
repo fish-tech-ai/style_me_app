@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
@@ -29,7 +30,10 @@ class UserPhotosListPage extends StatelessWidget {
 
   Widget _buildUserPhotosPage(BuildContext context) {
     if (!state.isUserPhotosLoading && state.userPhotos.isEmpty) {
-      return EmptyPage();
+      return EmptyPage(
+        title: localizations.nothingFound,
+        subTitle: localizations.nothingFoundSubText,
+      );
     }
     return PhotoGrid(
       items: state.userPhotos,

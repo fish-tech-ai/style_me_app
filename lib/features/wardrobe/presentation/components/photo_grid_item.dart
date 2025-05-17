@@ -16,6 +16,9 @@ class PhotoGridItem extends StatelessWidget {
   final Function(PhotoItem photo) onItemClicked;
 
   /// when null delete button will not appear
+  final Function(PhotoItem photo)? onFavoriteClicked;
+
+  /// when null delete button will not appear
   final Function(PhotoItem photo)? onDeleteClicked;
 
   const PhotoGridItem({
@@ -24,6 +27,7 @@ class PhotoGridItem extends StatelessWidget {
     required this.onItemClicked,
     this.labelMaxWidth = 180,
     this.onDeleteClicked,
+    this.onFavoriteClicked,
   });
 
   @override
@@ -84,6 +88,11 @@ class PhotoGridItem extends StatelessWidget {
               right: 0,
               child: _buildDeleteButton(context),
             ).orEmpty(onDeleteClicked == null),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: _buildFavoriteButton(context),
+            ).orEmpty(onFavoriteClicked == null),
             Positioned(
               top: 16,
               right: 16,
@@ -166,7 +175,8 @@ class PhotoGridItem extends StatelessWidget {
         padding: EdgeInsets.all(12),
         child: IgnorePointer(
           child: AppIconButton(
-            icon: Icon(Icons.close_rounded, color: context.colorScheme.onSurface),
+            icon:
+                Icon(Icons.close_rounded, color: context.colorScheme.onSurface),
             borderRadius: BorderRadius.circular(100),
             padding: EdgeInsets.all(6),
             backgroundColor: context.colorScheme.error,
@@ -185,6 +195,36 @@ class PhotoGridItem extends StatelessWidget {
       child: Icon(
         Icons.not_interested_rounded,
         color: context.theme.disabledColor,
+      ),
+    );
+  }
+
+  Widget _buildFavoriteButton(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        onFavoriteClicked?.call(photo);
+      },
+      child: Padding(
+        padding: EdgeInsets.all(12),
+        child: IgnorePointer(
+          child: AppIconButton(
+            icon: Icon(
+              photo.isFavorite
+                  ? Icons.favorite_rounded
+                  : Icons.favorite_border_rounded,
+              color: photo.isFavorite
+                  ? context.colorScheme.onPrimary
+                  : context.colorScheme.primary,
+            ),
+            backgroundColor: photo.isFavorite
+                ? context.colorScheme.primary
+                : context.colorScheme.secondary,
+            borderRadius: BorderRadius.circular(100),
+            padding: EdgeInsets.all(6),
+            onClick: () {},
+          ),
+        ),
       ),
     );
   }

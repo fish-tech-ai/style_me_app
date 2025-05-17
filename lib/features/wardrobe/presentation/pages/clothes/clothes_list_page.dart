@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/core/views/input/search_text_field.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
@@ -108,7 +109,12 @@ class _ClothesListPageState extends State<ClothesListPage> {
 
   Widget _buildEmptyPage() {
     return SingleChildScrollView(
-        controller: widget.scrollController, child: EmptyPage());
+      controller: widget.scrollController,
+      child: EmptyPage(
+        title: localizations.nothingFound,
+        subTitle: localizations.nothingFoundSubText,
+      ),
+    );
   }
 
   void onParametersChange({

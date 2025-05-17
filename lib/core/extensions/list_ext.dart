@@ -1,3 +1,4 @@
+import 'package:style_me/features/home/data/models/outfit.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
@@ -47,6 +48,10 @@ extension PhotoListExt on List<PhotoItem> {
 
   List<Clothing> asClothingList() {
     return map((item) => item as Clothing).toList();
+  }
+
+  List<Outfit> asOutfitList() {
+    return map((item) => item as Outfit).toList();
   }
 
   List<UserPhoto> asUserPhotosList() {

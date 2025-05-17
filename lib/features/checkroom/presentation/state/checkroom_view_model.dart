@@ -14,6 +14,7 @@ import 'package:style_me/features/checkroom/domain/get_updated_selected_clothes_
 import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_case.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
 import 'package:style_me/features/home/domain/set_is_outfit_favorite_use_case.dart';
+import 'package:style_me/features/home/presentation/state/home_view_model.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
@@ -130,6 +131,7 @@ class CheckroomViewModel extends _$CheckroomViewModel {
           '${cacheDir.path}/${response.id}_outfit.webp';
       await _multipleImageFetcher.downloadAndCacheImage(
           response.image, generatedImagePath);
+      ref.invalidate(homeViewModelProvider);
       state = state.copyWith(
         generatedOutfitPath: generatedImagePath,
         isGenerateLoading: false,
@@ -165,11 +167,11 @@ class CheckroomViewModel extends _$CheckroomViewModel {
   }
 
   void backToTryOnStep() {
-    state = state.copyWith(generatedOutfitPath: null);
+    state = state.copyWith(generatedOutfitPath: null, isLiked: false);
   }
 
   void backToTryOnStepWithClearedSelected() {
-    state = state.copyWith(generatedOutfitPath: null, selectedClothes: []);
+    state = state.copyWith(generatedOutfitPath: null, selectedClothes: [], isLiked: false);
     _setClothesWithSelection(state.clothes, []);
   }
 
