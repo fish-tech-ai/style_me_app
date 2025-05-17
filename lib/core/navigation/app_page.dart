@@ -11,7 +11,9 @@ enum AppPage {
   termsAndConditions("/termsAndConditions", shouldShowBottomNavBar: false),
   editClothingPage("/editClothingPage"),
   userPhotoAdd("/userPhotoAdd", shouldShowBottomNavBar: false),
-  editUserPhotoPage("/editUserPhotoPage");
+  editUserPhotoPage("/editUserPhotoPage"),
+  homeGridList("/homeGridList"),
+  homeOutfitDetails("/homeItemDetails");
 
   final String path;
   final bool shouldShowBottomNavBar;

@@ -25,13 +25,24 @@ extension FirstWhereExt<T> on List<T> {
 
   bool everyIndexed(bool Function(T element, int index) test) {
     bool isSatisfied;
-    for (int i = 0; i < length; i++)  {
+    for (int i = 0; i < length; i++) {
       isSatisfied = test(this[i], i);
       if (!isSatisfied) {
         return false;
       }
     }
     return true;
+  }
+}
+
+extension OutfitListExt on List<Outfit> {
+  List<Outfit> getWithToggledFavorite(PhotoItem toggledItem) {
+    return map((item) {
+      if (item.id == toggledItem.id) {
+        return item.copyWith(isFavorite: !toggledItem.isFavorite);
+      }
+      return item;
+    }).toList();
   }
 }
 

@@ -5,7 +5,11 @@ import 'package:style_me/core/navigation/app_nav_observer.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/features/auth/presentation/pages/auth_page.dart';
 import 'package:style_me/features/checkroom/presentation/checkroom_page.dart';
-import 'package:style_me/features/home/presentation/home_page.dart';
+import 'package:style_me/features/home/data/models/outfit.dart';
+import 'package:style_me/features/home/presentation/pages/home_grid_list_page.dart';
+import 'package:style_me/features/home/presentation/pages/home_page.dart';
+import 'package:style_me/features/home/presentation/pages/outfit_details_page.dart';
+import 'package:style_me/features/home/presentation/ui_models/home_grid_type.dart';
 import 'package:style_me/features/settings/presentation/pages/change_password_page.dart';
 import 'package:style_me/features/settings/presentation/pages/privacy_policy_page.dart';
 import 'package:style_me/features/settings/presentation/pages/settings_page.dart';
@@ -90,6 +94,19 @@ GoRouter getRouter(bool isAuthenticated, WidgetRef ref) => GoRouter(
           builder: (context, state) {
             final UserPhoto userPhoto = state.extra as UserPhoto;
             return EditUserPhotoPage(userPhoto: userPhoto).scopedPage();
+          },
+        ),
+        GoRoute(
+          path: AppPage.homeGridList.path,
+          builder: (context, state) {
+            return HomeGridListPage(type: state.extra as HomeGridType)
+                .scopedPage();
+          },
+        ),
+        GoRoute(
+          path: AppPage.homeOutfitDetails.path,
+          builder: (context, state) {
+            return OutfitDetailsPage(outfit: state.extra as Outfit).scopedPage();
           },
         ),
       ],

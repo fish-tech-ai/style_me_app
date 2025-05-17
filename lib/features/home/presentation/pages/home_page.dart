@@ -11,6 +11,7 @@ import 'package:style_me/features/home/presentation/components/home_header_banne
 import 'package:style_me/features/home/presentation/components/home_section.dart';
 import 'package:style_me/features/home/presentation/state/home_state_holder.dart';
 import 'package:style_me/features/home/presentation/state/home_view_model.dart';
+import 'package:style_me/features/home/presentation/ui_models/home_grid_type.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/presentation/components/empty_page.dart';
 
@@ -31,6 +32,7 @@ class HomePage extends ConsumerWidget {
         data: (state) {
           return buildContent(
             state,
+            context,
             onFavoriteClicked:
                 ref.read(homeViewModelProvider.notifier).toggleFavoriteFor,
           );
@@ -42,13 +44,13 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget buildContent(HomeStateHolder state,
+  Widget buildContent(HomeStateHolder state, BuildContext context,
       {required Function(PhotoItem outfit) onFavoriteClicked}) {
     return SingleChildScrollView(
       child: Column(
         children: [
           HomeHeaderBanner(userName: state.userName),
-          buildCarousels(state, onFavoriteClicked)
+          buildCarousels(state, context, onFavoriteClicked)
               .or(buildEmptyPage(), state.noOutfitsAvailable()),
         ],
       ),
@@ -63,15 +65,16 @@ class HomePage extends ConsumerWidget {
         ),
       );
 
-  Widget buildCarousels(
-      HomeStateHolder state, Function(PhotoItem outfit) onFavoriteClicked) {
+  Widget buildCarousels(HomeStateHolder state, BuildContext context,
+      Function(PhotoItem outfit) onFavoriteClicked) {
     return Padding(
       padding: EdgeInsets.only(bottom: 96),
       child: Column(
         children: [
           HomeSection(
             title: localizations.homeSectionRecentOutfits,
-            onSeeMoreClicked: () {},
+            onSeeMoreClicked: () => context.push(AppPage.homeGridList.path,
+                extra: HomeGridType.recentOutfits),
             child: PhotosCarousel(
               items: state.recentPhotos,
               onItemClicked: (outfit) {},
@@ -80,7 +83,8 @@ class HomePage extends ConsumerWidget {
           ).orEmpty(state.recentPhotos.isEmpty),
           HomeSection(
             title: localizations.homeSectionFavorites,
-            onSeeMoreClicked: () {},
+            onSeeMoreClicked: () => context.push(AppPage.homeGridList.path,
+                extra: HomeGridType.favorites),
             child: PhotosCarousel(
               items: state.favorites,
               onItemClicked: (outfit) {},

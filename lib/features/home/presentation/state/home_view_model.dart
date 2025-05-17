@@ -93,27 +93,22 @@ class HomeViewModel extends _$HomeViewModel {
 
   void toggleFavoriteFor(PhotoItem outfit) {
     List<Outfit> recentOutfits = List.of(state.value!.recentPhotos);
-    Outfit? updatedOutfit;
 
+    final List<Outfit> updatedRecentOutfits =
+        recentOutfits.getWithToggledFavorite(outfit);
 
-    final updatedRecentOutfits = recentOutfits.map((item) {
-      if (item.id == outfit.id) {
-        updatedOutfit = item.copyWith(isFavorite: !outfit.isFavorite);
-        return updatedOutfit!;
-      }
-      return item;
-    }).toList();
-
-    final updatedFavorites = updatedRecentOutfits.where((item) {
+    final List<Outfit> updatedFavorites = updatedRecentOutfits.where((item) {
       return item.isFavorite;
     }).toList();
 
     state = AsyncValue.data(state.value!.copyWith(
         recentPhotos: updatedRecentOutfits, favorites: updatedFavorites));
 
+    Outfit updatedOutfit =
+        (outfit as Outfit).copyWith(isFavorite: !outfit.isFavorite);
     _spamTimer?.cancel();
     _spamTimer = Timer(
-        Duration(seconds: 1), () => _performToggleLikeOutfit(updatedOutfit!));
+        Duration(milliseconds: 200), () => _performToggleLikeOutfit(updatedOutfit));
   }
 
   void _performToggleLikeOutfit(Outfit outfit) async {
