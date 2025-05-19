@@ -434,4 +434,39 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get tryOn => "tryOn";
+
+  @override
+  String get checkroomPostGeneratedNote => "checkroomPostGeneratedNote";
+
+  @override
+  String get download => "download";
+
+  @override
+  String get homeEmptyPageSubTitle => "homeEmptyPageSubTitle";
+
+  @override
+  String get homeEmptyPageTitle => "homeEmptyPageTitle";
+
+  @override
+  String homeHeaderGreetings(Object name) {
+    return "homeHeaderGreetings $name";
+  }
+
+  @override
+  String get homeHeaderSeeHowItWorks => "homeHeaderSeeHowItWorks";
+
+  @override
+  String get homeHeaderSubTitle => "homeHeaderSubTitle";
+
+  @override
+  String get homeSectionFavorites => "homeSectionFavorites";
+
+  @override
+  String get homeSectionRecentOutfits => "homeSectionRecentOutfits";
+
+  @override
+  String get homeSectionSeeMore => "homeSectionSeeMore";
+
+  @override
+  String get makeAnother => "makeAnother";
 }

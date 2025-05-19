@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
 import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/features/home/presentation/state/home_grid_list/home_grid_list_state_holder.dart';
@@ -32,7 +34,8 @@ class HomeGridListPage extends ConsumerWidget {
         Expanded(
             child: PhotoGrid(
           items: state.outfits,
-          onItemClicked: (photo) {},
+          onItemClicked: (photo) =>
+              ref.context.push(AppPage.homeOutfitDetails.path, extra: photo),
           onFavoriteClicked: type == HomeGridType.recentOutfits
               ? getViewModel(ref).toggleFavoriteFor
               : null,

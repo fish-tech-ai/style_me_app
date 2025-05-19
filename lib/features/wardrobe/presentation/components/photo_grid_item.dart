@@ -140,7 +140,7 @@ class PhotoGridItem extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         margin: EdgeInsets.only(right: 12),
         child: Text(
-          photo.name,
+          photo is Clothing ? (photo as Clothing).category.text + photo.name : photo.name,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(fontWeight: FontWeight.w500),

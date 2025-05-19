@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
+import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
 import 'package:style_me/features/wardrobe/presentation/components/empty_page.dart';
@@ -34,12 +34,21 @@ class UserPhotosListPage extends StatelessWidget {
         title: localizations.nothingFound,
         subTitle: localizations.nothingFoundSubText,
       );
+    } else if (state.isUserPhotosLoading) {
+      return Align(
+        alignment: Alignment.topCenter,
+        child: SizedBox(
+          height: 200,
+          child: DefaultLoading(),
+        ),
+      );
     }
+
     return PhotoGrid(
       items: state.userPhotos,
       clipBehavior: Clip.none,
       onItemClicked: (item) => onItemClicked(item, context),
-    ).orLoading(state.isUserPhotosLoading);
+    );
   }
 
   void onItemClicked(PhotoItem photoItem, BuildContext context) async {

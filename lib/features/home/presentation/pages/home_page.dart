@@ -77,7 +77,8 @@ class HomePage extends ConsumerWidget {
                 extra: HomeGridType.recentOutfits),
             child: PhotosCarousel(
               items: state.recentPhotos,
-              onItemClicked: (outfit) {},
+              onItemClicked: (outfit) =>
+                  context.push(AppPage.homeOutfitDetails.path, extra: outfit),
               onItemFavoriteClicked: onFavoriteClicked,
             ),
           ).orEmpty(state.recentPhotos.isEmpty),
@@ -87,7 +88,8 @@ class HomePage extends ConsumerWidget {
                 extra: HomeGridType.favorites),
             child: PhotosCarousel(
               items: state.favorites,
-              onItemClicked: (outfit) {},
+              onItemClicked: (outfit) =>
+                  context.push(AppPage.homeOutfitDetails.path, extra: outfit),
               onItemDeleteClicked: onFavoriteClicked,
             ),
           ).orEmpty(state.favorites.isEmpty)
