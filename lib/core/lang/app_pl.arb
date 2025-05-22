@@ -160,5 +160,12 @@
   "homeSectionRecentOutfits": "Ostatnie stroje:",
   "homeSectionFavorites": "Ulubione:",
   "homeSectionSeeMore": "Zobacz więcej",
-  "download": "Pobierz"
+  "download": "Pobierz",
+  "galTypeAccessDenied": "Nie masz uprawnień do dostępu do galerii.",
+  "galTypeNotEnoughSpace": "Brakuje dostępnego miejsca na dysku.",
+  "galTypeNotSupportedFormat": "Wybrany format pliku nie jest obsługiwany.",
+  "galTypeUnexpected": "Coś poszło nie tak. Spróbuj ponownie później.",
+  "downloadImageSuccess": "Zdjęcie zostało pobrane pomyślnie.",
+  "downloadingInProgress": "Pobieranie...",
+  "downloadNoPermissionsButtonText": "Zarządzaj uprawnieniami"
 }

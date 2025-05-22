@@ -8,5 +8,7 @@ part 'home_grid_list_state_holder.freezed.dart';
 class HomeGridListStateHolder with _$HomeGridListStateHolder {
   const factory HomeGridListStateHolder({
     @Default([]) List<Outfit> outfits,
+    @Default(false) bool isNoPermissionSnackBarVisible,
+    @Default(false) bool isDownloading,
   }) = _HomeGridListStateHolder;
 }

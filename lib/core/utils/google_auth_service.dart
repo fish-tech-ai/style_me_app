@@ -34,9 +34,17 @@ class GoogleAuthService {
     return null;
   }
 
+  Future<bool> reAuthenticate() async {
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) return false;
+    return true;
+  }
+
   Future<void> signOut() async {
-    await _googleSignIn.disconnect();
-    await _googleSignIn.signOut();
+    if (await _googleSignIn.isSignedIn()) {
+      await _googleSignIn.disconnect();
+      await _googleSignIn.signOut();
+    }
     await _auth.signOut();
   }
 }

@@ -105,11 +105,12 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
       Positioned(
         left: 0,
         right: 0,
-        bottom: MediaQuery.of(context).padding.bottom,
+        bottom: MediaQuery.of(context).padding.bottom +
+            (state.bottomBarState.isVisible ? 60 : 0),
         child: AnimatedVisibility(
           isVisible: !state.isConnected || state.bannerMessage.isVisible,
           animDirection: AnimDirectionEnum.bottomToTop,
-          child: AppStatus(
+          child: AppStatus.simple(
             text: !state.isConnected
                 ? localizations.connectionError
                 : state.bannerMessage.message.isNotEmpty

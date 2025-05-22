@@ -8,7 +8,8 @@ class OutfitDetailsStateHolder with _$OutfitDetailsStateHolder {
   const factory OutfitDetailsStateHolder({
     required Outfit outfit,
     @Default(false) bool isFavorite,
-    @Default(false) bool isDownloadLoading,
+    @Default(false) bool isDownloading,
+    @Default(false) bool isNoPermissionSnackBarVisible,
   }) = _OutfitDetailsStateHolder;
 
 }

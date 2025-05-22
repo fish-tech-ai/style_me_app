@@ -61,7 +61,7 @@ class OutfitDetailsPage extends ConsumerWidget {
                     IconPosition.leading,
                   ),
                   width: 130,
-                  isLoading: state.isDownloadLoading,
+                  isLoading: state.isDownloading,
                   onClick: () {
                     ref
                         .read(outfitDetailsViewModelProvider(outfit).notifier)

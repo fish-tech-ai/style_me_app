@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_outlined_button.dart';
@@ -10,10 +11,14 @@ import 'package:style_me/features/settings/presentation/state/delete_dialog_stat
 import 'package:style_me/features/settings/presentation/state/view_models/settings_view_model.dart';
 
 class SettingsDeleteAccountDialogContent extends ConsumerWidget {
+  final bool shouldNotExpectPassword;
   final Function() onDeleteClicked;
 
-  const SettingsDeleteAccountDialogContent(
-      {super.key, required this.onDeleteClicked});
+  const SettingsDeleteAccountDialogContent({
+    super.key,
+    required this.shouldNotExpectPassword,
+    required this.onDeleteClicked,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,7 +51,7 @@ class SettingsDeleteAccountDialogContent extends ConsumerWidget {
                 .read(settingsViewModelProvider.notifier)
                 .changeDeleteDialogPassText(text)
           },
-        ),
+        ).orEmpty(shouldNotExpectPassword),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -61,7 +66,7 @@ class SettingsDeleteAccountDialogContent extends ConsumerWidget {
               backgroundColor: context.colorScheme.error,
               height: 46,
               width: 128,
-              onClick: isValidated
+              onClick: isValidated || shouldNotExpectPassword
                   ? () {
                       onDeleteClicked();
                     }

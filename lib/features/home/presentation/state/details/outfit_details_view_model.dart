@@ -4,10 +4,15 @@ import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/network/failures/failure.dart';
+import 'package:style_me/core/network/failures/gal_failure.dart';
+import 'package:style_me/core/network/failures/permission_failure.dart';
 import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/home/data/models/outfit.dart';
 import 'package:style_me/features/home/data/models/outfit_original_photo_response.dart';
+import 'package:style_me/features/home/domain/download_to_gallery_with_permissions_use_case.dart';
 import 'package:style_me/features/home/domain/get_original_outfit_photo_use_case.dart';
 import 'package:style_me/features/home/domain/set_is_outfit_favorite_use_case.dart';
 import 'package:style_me/features/home/presentation/state/details/outfit_details_state_holder.dart';
@@ -20,11 +25,14 @@ class OutfitDetailsViewModel extends _$OutfitDetailsViewModel {
   late final GetOriginalOutfitPhotoUseCase _getOriginalOutfitPhotoUseCase;
   late final ImageFetcher _imageFetcher;
   late final SetIsOutfitFavoriteUseCase _setIsOutfitFavoriteUseCase;
+  late final DownloadToGalleryWithPermissionsUseCase
+      _downloadToGalleryWithPermissionsUseCase;
 
   OutfitDetailsViewModel() {
     _getOriginalOutfitPhotoUseCase = getIt();
     _imageFetcher = getIt();
     _setIsOutfitFavoriteUseCase = getIt();
+    _downloadToGalleryWithPermissionsUseCase = getIt();
   }
 
   @override
@@ -85,12 +93,44 @@ class OutfitDetailsViewModel extends _$OutfitDetailsViewModel {
   }
 
   Future downloadOutfit() async {
-    state = AsyncData(state.value!.copyWith(isDownloadLoading: true));
+    state = AsyncData(state.value!.copyWith(isDownloading: true));
+    final result = await _downloadToGalleryWithPermissionsUseCase(
+        state.requireValue.outfit.image, state.requireValue.outfit.name);
+    result.collect((_) {
+      ref
+          .read(appGlobalViewModelProvider.notifier)
+          .showSuccessInfo(localizations.downloadImageSuccess);
+    }, (failure) {
+      handleDownloadFailure(failure);
+    });
+
+    state = AsyncData(state.value!.copyWith(isDownloading: false));
+  }
+
+  void handleDownloadFailure(Failure failure) {
+    final AppGlobalViewModel globalViewModel =
+    ref.read(appGlobalViewModelProvider.notifier);
+    if (failure is PermissionFailure) {
+      showNoPermissionsSnackBar();
+    } else if (failure is GalFailure) {
+      globalViewModel.showErrorMessage(failure.getTranslatedText());
+    } else {
+      globalViewModel.showFailure(failure);
+    }
+  }
+
+  void showNoPermissionsSnackBar() async {
+    state = AsyncData(
+        state.requireValue.copyWith(isNoPermissionSnackBarVisible: true));
+    await Future.delayed(Duration(seconds: 5));
+    state = AsyncData(
+        state.requireValue.copyWith(isNoPermissionSnackBarVisible: false));
   }
 
   OutfitDetailsViewModel.test(
     this._getOriginalOutfitPhotoUseCase,
     this._imageFetcher,
     this._setIsOutfitFavoriteUseCase,
+    this._downloadToGalleryWithPermissionsUseCase,
   );
 }

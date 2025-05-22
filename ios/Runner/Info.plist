@@ -54,6 +54,8 @@
 		<key>CFBundleURLTypes</key>
 		<key>NSCameraUsageDescription</key>
         <string>We need access to your camera to take photos of your clothes and yourself</string>
+        <key>NSPhotoLibraryAddUsageDescription</key>
+        <string>We need access to save photo</string>
         <key>NSPhotoLibraryUsageDescription</key>
         <string>We need access to your photo library to pick images of your clothes and yourself.</string>
 		<array>

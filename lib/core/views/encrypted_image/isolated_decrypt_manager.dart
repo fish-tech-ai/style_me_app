@@ -7,7 +7,7 @@ import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/network/utils/aes_encryptor.dart';
 import 'package:style_me/core/views/encrypted_image/isolated_encrypted_image_fetcher_args.dart';
 
-class IsolatedDecryptCompressManager {
+class IsolatedDecryptManager {
   final IsolateManager<Uint8List, IsolatedDecryptBytesArgs> isolateManger =
       IsolateManager.create(isolatedDecrypt, concurrent: 4);
 

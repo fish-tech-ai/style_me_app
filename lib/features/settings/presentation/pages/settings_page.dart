@@ -106,6 +106,8 @@ class SettingsPage extends ConsumerWidget {
             context: ref.context,
             borderColor: ref.context.colorScheme.error,
             child: SettingsDeleteAccountDialogContent(
+              shouldNotExpectPassword:
+                  ref.read(settingsViewModelProvider).isUserFromGoogleSignIn,
               onDeleteClicked: () => viewModel.deleteAccount(() {
                 onUserLogout(ref);
               }),

@@ -160,5 +160,12 @@
   "homeSectionRecentOutfits": "Recent outfits:",
   "homeSectionFavorites": "Favorites:",
   "homeSectionSeeMore": "See more",
-  "download": "Download"
+  "download": "Download",
+  "galTypeAccessDenied": "We don't have permission to access the gallery.",
+  "galTypeNotEnoughSpace": "There is not enough storage space available.",
+  "galTypeNotSupportedFormat": "The selected file format is not supported.",
+  "galTypeUnexpected": "Something went wrong. Please try again later.",
+  "downloadImageSuccess": "The photo was downloaded successfully.",
+  "downloadingInProgress": "Downloading...",
+  "downloadNoPermissionsButtonText": "Manage permissions"
 }
