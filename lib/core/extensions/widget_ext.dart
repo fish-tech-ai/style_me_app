@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/navigation/scoped_page.dart';
 
 extension WidgetExt on Widget {
@@ -14,6 +15,9 @@ extension WidgetExt on Widget {
       ifConditionTrue ? otherWidget : this;
 
   Widget scopedPage() => ScopedPage(child: this);
+
+  Widget withBackground(BuildContext context) =>
+      Container(color: context.colorScheme.surface, child: this);
 }
 
 extension WidgetListExt on List<Widget> {
@@ -25,4 +29,3 @@ extension WidgetListExt on List<Widget> {
   List<Widget> or(List<Widget> otherWidget, bool ifConditionTrue) =>
       ifConditionTrue ? otherWidget : this;
 }
-
