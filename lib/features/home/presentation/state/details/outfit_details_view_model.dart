@@ -95,7 +95,7 @@ class OutfitDetailsViewModel extends _$OutfitDetailsViewModel {
   Future downloadOutfit() async {
     state = AsyncData(state.value!.copyWith(isDownloading: true));
     final result = await _downloadToGalleryWithPermissionsUseCase(
-        state.requireValue.outfit.image, state.requireValue.outfit.name);
+        state.requireValue.outfit.id, state.requireValue.outfit.name);
     result.collect((_) {
       ref
           .read(appGlobalViewModelProvider.notifier)

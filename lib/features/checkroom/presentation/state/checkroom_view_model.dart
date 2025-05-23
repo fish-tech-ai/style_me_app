@@ -72,8 +72,9 @@ class CheckroomViewModel extends _$CheckroomViewModel {
     final convertedUserPhotos = userPhotosWithPaths.asUserPhotosList();
 
     state = state.copyWith(
-      userPhotos: convertedUserPhotos,
-      selectedUserPhoto: convertedUserPhotos.firstOrNull,
+      userPhotos:
+          convertedUserPhotos.getWithDefaultAsFirst().asUserPhotosList(),
+      selectedUserPhoto: convertedUserPhotos.getDefaultOrFirst() as UserPhoto?,
       isUserPhotosEmpty: convertedUserPhotos.isEmpty,
       isUserPhotosLoading: false,
     );
@@ -167,11 +168,20 @@ class CheckroomViewModel extends _$CheckroomViewModel {
   }
 
   void backToTryOnStep() {
-    state = state.copyWith(generatedOutfitPath: null, isLiked: false);
+    state = state.copyWith(
+      generatedOutfitPath: null,
+      isLiked: false,
+      selectedUserPhoto: state.userPhotos.getDefaultOrFirst() as UserPhoto?,
+    );
   }
 
   void backToTryOnStepWithClearedSelected() {
-    state = state.copyWith(generatedOutfitPath: null, selectedClothes: [], isLiked: false);
+    state = state.copyWith(
+      generatedOutfitPath: null,
+      selectedClothes: [],
+      isLiked: false,
+      selectedUserPhoto: state.userPhotos.getDefaultOrFirst() as UserPhoto?,
+    );
     _setClothesWithSelection(state.clothes, []);
   }
 

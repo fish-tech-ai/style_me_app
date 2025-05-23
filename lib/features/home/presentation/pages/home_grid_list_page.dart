@@ -31,57 +31,65 @@ class HomeGridListPage extends ConsumerWidget {
   }
 
   Widget buildContent(HomeGridListStateHolder state, WidgetRef ref) {
-    return Column(
-      children: [
-        AppTopBar(
-          title: type.getTitle(),
-        ),
-        Expanded(
-          child: Stack(
-            children: [
-              PhotoGrid(
-                items: state.outfits,
-                onItemClicked: (photo) => ref.context
-                    .push(AppPage.homeOutfitDetails.path, extra: photo),
-                onFavoriteClicked: type == HomeGridType.recentOutfits
-                    ? getViewModel(ref).toggleFavoriteFor
-                    : null,
-                onDeleteClicked: type == HomeGridType.favorites
-                    ? getViewModel(ref).deletePhoto
-                    : null,
-                onDownloadClicked: getViewModel(ref).downloadPhoto,
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 4,
-                child: InkWell(
-                  onTap: () {
-                    AppSettings.openAppSettings();
-                  },
-                  child: AppStatus.text(
-                    color: ref.context.colorScheme.error,
-                    textColor: ref.context.colorScheme.onError,
-                    text: localizations.galTypeAccessDenied,
-                    endEdgeWidget: _buildTextButton(),
-                  ).orEmpty(!state.isNoPermissionSnackBarVisible),
-                ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 4,
-                child: AppStatus.text(
-                  color: ref.context.colorScheme.primary,
-                  textColor: ref.context.colorScheme.onPrimary,
-                  text: localizations.downloadingInProgress,
-                  endEdgeWidget: CircularProgressIndicator(strokeWidth: 2),
-                ).orEmpty(!state.isDownloading),
-              ),
-            ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      child: Column(
+        children: [
+          AppTopBar(
+            title: type.getTitle(),
           ),
-        ),
-      ],
+          Expanded(
+            child: Stack(
+              children: [
+                PhotoGrid(
+                  items: state.outfits,
+                  onItemClicked: (photo) => ref.context
+                      .push(AppPage.homeOutfitDetails.path, extra: photo),
+                  onFavoriteClicked: type == HomeGridType.recentOutfits
+                      ? getViewModel(ref).toggleFavoriteFor
+                      : null,
+                  onDeleteClicked: type == HomeGridType.favorites
+                      ? getViewModel(ref).deletePhoto
+                      : null,
+                  onDownloadClicked: getViewModel(ref).downloadPhoto,
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 4,
+                  child: InkWell(
+                    onTap: () {
+                      AppSettings.openAppSettings();
+                    },
+                    child: AppStatus.text(
+                      color: ref.context.colorScheme.error,
+                      textColor: ref.context.colorScheme.onError,
+                      text: localizations.galTypeAccessDenied,
+                      endEdgeWidget: _buildTextButton(),
+                    ).orEmpty(!state.isNoPermissionSnackBarVisible),
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 4,
+                  child: AppStatus.text(
+                    color: ref.context.colorScheme.primary,
+                    textColor: ref.context.colorScheme.onPrimary,
+                    text: localizations.downloadingInProgress,
+                    endEdgeWidget: Transform.scale(
+                      scale: 0.6,
+                      child: CircularProgressIndicator(
+                        color: ref.context.colorScheme.onPrimary,
+                      ),
+                    ),
+                  ).orEmpty(!state.isDownloading),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

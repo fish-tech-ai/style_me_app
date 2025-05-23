@@ -68,7 +68,7 @@ class HomeGridListViewModel extends _$HomeGridListViewModel {
   void downloadPhoto(PhotoItem outfit) async {
     showLoadingSnackBar();
     final result = await _downloadToGalleryWithPermissionsUseCase(
-        outfit.image, outfit.name);
+        outfit.id, outfit.name);
     result.collect((_) {
       ref
           .read(appGlobalViewModelProvider.notifier)
@@ -89,7 +89,7 @@ class HomeGridListViewModel extends _$HomeGridListViewModel {
   void showNoPermissionsSnackBar() async {
     state = AsyncData(
         state.requireValue.copyWith(isNoPermissionSnackBarVisible: true));
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 5));
     state = AsyncData(
         state.requireValue.copyWith(isNoPermissionSnackBarVisible: false));
   }

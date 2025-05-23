@@ -180,6 +180,6 @@ class GetItManager {
     getIt.registerFactory(
         () => GetRecentAndFavoriteOutfitUseCase(getIt(), getIt()));
     getIt.registerFactory(
-        () => DownloadToGalleryWithPermissionsUseCase(getIt()));
+        () => DownloadToGalleryWithPermissionsUseCase(getIt(), getIt(), getIt()));
   }
 }

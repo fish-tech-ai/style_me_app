@@ -68,6 +68,26 @@ extension PhotoListExt on List<PhotoItem> {
   List<UserPhoto> asUserPhotosList() {
     return map((item) => item as UserPhoto).toList();
   }
+
+  PhotoItem? getDefaultOrFirst() {
+    return firstWhereOrNull((photo) => photo.isDefault) ?? firstOrNull;
+  }
+
+  List<PhotoItem> getWithDefaultAsFirst() {
+    final PhotoItem? defaultPhoto = getDefaultOrFirst();
+    if (defaultPhoto == null) {
+      return this;
+    }
+    int index = indexWhere((item) => item.id == defaultPhoto.id);
+    final updatedList = List.of(this);
+    if (index != -1) {
+      PhotoItem item = updatedList.removeAt(index);
+      updatedList.insert(0, item);
+      return updatedList;
+    } else {
+      return this;
+    }
+  }
 }
 
 extension UserPhotoListExt on List<UserPhoto> {
