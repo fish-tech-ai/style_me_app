@@ -128,7 +128,7 @@ class PhotoGridItem extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Container(
         constraints: BoxConstraints(
-          maxWidth: labelMaxWidth,
+          maxWidth: MediaQuery.of(context).size.width / 2.6,
         ),
         decoration: BoxDecoration(
           color: context.customColors.accentA80,

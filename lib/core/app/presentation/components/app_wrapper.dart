@@ -27,7 +27,6 @@ class AppWrapper extends ConsumerStatefulWidget {
 
 class _AppWrapperState extends ConsumerState<AppWrapper>
     with WidgetsBindingObserver {
-  EdgeInsets? appInsetsPadding;
 
   @override
   void initState() {
@@ -39,10 +38,6 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
   void didChangeDependencies() {
     super.didChangeDependencies();
     LocalizationHelper.init(context.localizations);
-    final currentSysPadding = MediaQuery.of(context).padding;
-    if (currentSysPadding.bottom > 0) {
-      appInsetsPadding ??= currentSysPadding;
-    }
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -89,7 +84,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
         appGlobalViewModelProvider.select((state) => state.bottomBarState));
     return Stack(children: [
       Container(
-        padding: bottomBarState.isVisible ? appInsetsPadding : null,
+        padding: bottomBarState.isVisible ? MediaQuery.of(context).padding : null,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Column(
