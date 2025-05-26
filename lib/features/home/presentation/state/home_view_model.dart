@@ -107,8 +107,8 @@ class HomeViewModel extends _$HomeViewModel {
     Outfit updatedOutfit =
         (outfit as Outfit).copyWith(isFavorite: !outfit.isFavorite);
     _spamTimer?.cancel();
-    _spamTimer = Timer(
-        Duration(milliseconds: 200), () => _performToggleLikeOutfit(updatedOutfit));
+    _spamTimer = Timer(Duration(milliseconds: 200),
+        () => _performToggleLikeOutfit(updatedOutfit));
   }
 
   void _performToggleLikeOutfit(Outfit outfit) async {
@@ -123,5 +123,10 @@ class HomeViewModel extends _$HomeViewModel {
   }
 
   @visibleForTesting
-  HomeViewModel.test(this._getFavoriteAndRecentOutfitsUseCase);
+  HomeViewModel.test(
+    this._getFavoriteAndRecentOutfitsUseCase,
+    this._getUserUseCase,
+    this._imageFetcher,
+    this._setIsOutfitFavoriteUseCase,
+  );
 }

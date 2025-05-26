@@ -16,7 +16,7 @@ class OutfitRepository {
       GenerateOutfitBody request) async {
     try {
       final Response<GeneratedOutfitResponse> response =
-      await service.generateOutfit(request);
+          await service.generateOutfit(request);
       response.handleIfNotSuccessful();
       return response.body!;
     } catch (error) {

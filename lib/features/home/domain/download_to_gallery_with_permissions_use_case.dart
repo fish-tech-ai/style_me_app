@@ -6,7 +6,9 @@ import 'package:gal/gal.dart';
 import 'package:image/image.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
+import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_type_enum.dart';
 import 'package:style_me/core/network/failures/gal_failure.dart';
+import 'package:style_me/core/network/failures/image_process_failure.dart';
 import 'package:style_me/core/network/failures/permission_failure.dart';
 import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
@@ -30,20 +32,39 @@ class DownloadToGalleryWithPermissionsUseCase {
     final response = await _repository.getOriginalOutfitPhoto(photoId);
 
     final cacheDir = await getTemporaryDirectory();
-    final String originalImagePath =
-        '${cacheDir.path}/${photoId}_download_temp.webp';
+    final String imagePath = '${cacheDir.path}/${photoId}_download_temp.webp';
+
     await _imageFetcher.downloadAndCacheImage(
-        response.originalOutfitUrl, originalImagePath);
+        response.originalOutfitUrl, imagePath);
+
     final Uint8List imageBytes =
-        await decryptManager.getDecryptedImageBytes(originalImagePath);
+        await decryptManager.getDecryptedImageBytes(imagePath);
+
+    final Uint8List imageBytesJpg;
+    try {
+      imageBytesJpg = _convertToJpg(imageBytes);
+    } catch (e) {
+      return Result.fail(
+          ImageProcessFailure(e.toString(), ImageErrorTypeEnum.CANT_PROCESS));
+    }
+
+    return saveToGallery(imageBytesJpg, imagePath, name);
+  }
+
+  Uint8List _convertToJpg(Uint8List imageBytes) {
     final decodedImage = decodeWebP(imageBytes);
     if (decodedImage == null) {
-      throw CompressError("Cannot decode to webP");
+      debugMessagePrint("Cannot decode to webP");
+      throw CompressError("Unsupported file type (webP)");
     }
-    final convertedImageBytes = encodeJpg(decodedImage);
+    return encodeJpg(decodedImage);
+  }
+
+  Future<Result> saveToGallery(
+      Uint8List imageBytesJpg, String imagePath, String name) async {
     try {
-      await Gal.putImageBytes(convertedImageBytes, name: name);
-      File(originalImagePath).delete();
+      await Gal.putImageBytes(imageBytesJpg, name: name);
+      File(imagePath).delete();
       return Result.success(null);
     } on GalException catch (e) {
       return Result.fail(GalFailure(e.type, e.type.message));

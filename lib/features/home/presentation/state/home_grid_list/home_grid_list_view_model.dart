@@ -65,7 +65,7 @@ class HomeGridListViewModel extends _$HomeGridListViewModel {
     return HomeGridListStateHolder(outfits: convertedOutfits.asOutfitList());
   }
 
-  void downloadPhoto(PhotoItem outfit) async {
+  Future downloadPhoto(PhotoItem outfit) async {
     showLoadingSnackBar();
     final result = await _downloadToGalleryWithPermissionsUseCase(
         outfit.id, outfit.name);
@@ -86,7 +86,7 @@ class HomeGridListViewModel extends _$HomeGridListViewModel {
     });
   }
 
-  void showNoPermissionsSnackBar() async {
+  Future showNoPermissionsSnackBar() async {
     state = AsyncData(
         state.requireValue.copyWith(isNoPermissionSnackBarVisible: true));
     await Future.delayed(Duration(seconds: 5));
@@ -94,7 +94,7 @@ class HomeGridListViewModel extends _$HomeGridListViewModel {
         state.requireValue.copyWith(isNoPermissionSnackBarVisible: false));
   }
 
-  void showLoadingSnackBar() async {
+  Future showLoadingSnackBar() async {
     state = AsyncData(state.requireValue.copyWith(isDownloading: true));
     await Future.delayed(Duration(seconds: 5));
     state = AsyncData(state.requireValue.copyWith(isDownloading: false));
@@ -105,7 +105,7 @@ class HomeGridListViewModel extends _$HomeGridListViewModel {
       return;
     }
 
-    toggleFavoriteFor(outfit, delayMilis: 1);
+    toggleFavoriteFor(outfit, delayMillis: 1);
     final newOutfits =
         state.value!.outfits.whereNot((item) => item.id == outfit.id).toList();
 
@@ -114,7 +114,7 @@ class HomeGridListViewModel extends _$HomeGridListViewModel {
 
   Timer? _spamTimer;
 
-  void toggleFavoriteFor(PhotoItem outfit, {int delayMilis = 200}) {
+  void toggleFavoriteFor(PhotoItem outfit, {int delayMillis = 200}) {
     List<Outfit> recentOutfits = List.of(state.value!.outfits);
     final updatedOutfits = recentOutfits.getWithToggledFavorite(outfit);
 
@@ -123,11 +123,11 @@ class HomeGridListViewModel extends _$HomeGridListViewModel {
     Outfit updatedOutfit =
         (outfit as Outfit).copyWith(isFavorite: !outfit.isFavorite);
     _spamTimer?.cancel();
-    _spamTimer = Timer(Duration(milliseconds: delayMilis),
+    _spamTimer = Timer(Duration(milliseconds: delayMillis),
         () => _performToggleLikeOutfit(updatedOutfit));
   }
 
-  void _performToggleLikeOutfit(Outfit outfit) async {
+  Future _performToggleLikeOutfit(Outfit outfit) async {
     final result =
         await _setIsOutfitFavoriteUseCase(outfit.id, outfit.isFavorite);
 

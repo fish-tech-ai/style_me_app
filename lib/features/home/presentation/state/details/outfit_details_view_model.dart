@@ -109,7 +109,7 @@ class OutfitDetailsViewModel extends _$OutfitDetailsViewModel {
 
   void handleDownloadFailure(Failure failure) {
     final AppGlobalViewModel globalViewModel =
-    ref.read(appGlobalViewModelProvider.notifier);
+        ref.read(appGlobalViewModelProvider.notifier);
     if (failure is PermissionFailure) {
       showNoPermissionsSnackBar();
     } else if (failure is GalFailure) {

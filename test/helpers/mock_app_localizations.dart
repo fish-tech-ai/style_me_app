@@ -469,4 +469,25 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get makeAnother => "makeAnother";
+
+  @override
+  String get downloadImageSuccess => "downloadImageSuccess";
+
+  @override
+  String get downloadNoPermissionsButtonText => "downloadNoPermissionsButtonText";
+
+  @override
+  String get downloadingInProgress => "downloadingInProgress";
+
+  @override
+  String get galTypeAccessDenied => "galTypeAccessDenied";
+
+  @override
+  String get galTypeNotEnoughSpace => "galTypeNotEnoughSpace";
+
+  @override
+  String get galTypeNotSupportedFormat => "galTypeNotSupportedFormat";
+
+  @override
+  String get galTypeUnexpected => "galTypeUnexpected";
 }
