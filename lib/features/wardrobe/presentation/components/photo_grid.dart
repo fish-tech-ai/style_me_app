@@ -8,12 +8,20 @@ class PhotoGrid extends StatelessWidget {
   final Clip clipBehavior;
   final ScrollController? scrollController;
 
+  /// when null item buttons will not appear
+  final Function(PhotoItem photoItem)? onFavoriteClicked;
+  final Function(PhotoItem photoItem)? onDeleteClicked;
+  final Function(PhotoItem photoItem)? onDownloadClicked;
+
   const PhotoGrid({
     super.key,
     required this.items,
     required this.onItemClicked,
     this.clipBehavior = Clip.hardEdge,
     this.scrollController,
+    this.onFavoriteClicked,
+    this.onDeleteClicked,
+    this.onDownloadClicked,
   });
 
   @override
@@ -31,6 +39,9 @@ class PhotoGrid extends StatelessWidget {
       itemCount: items.length,
       itemBuilder: (context, index) => PhotoGridItem(
         photo: items[index],
+        onFavoriteClicked: onFavoriteClicked,
+        onDeleteClicked: onDeleteClicked,
+        onDownloadClicked: onDownloadClicked,
         onItemClicked: onItemClicked,
       ),
     );

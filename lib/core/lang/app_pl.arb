@@ -142,5 +142,30 @@
   "missingPostureAndClothing": "Wygląda na to, że nie masz zdjęć siebie oraz zdjęć swoich ubrań. Dodaj brakujące zdjęcia, aby uzyskać dostęp do tej strony:",
   "missingPosture": "Wygląda na to, że nie masz zdjęć siebie. Dodaj brakujące zdjęcia, aby uzyskać dostęp do tej strony:",
   "missingClothing": "Wygląda na to, że nie masz zdjęć ubrań. Dodaj brakujące zdjęcia, aby uzyskać dostęp do tej strony:",
-  "tryOn": "Przymierz!"
+  "tryOn": "Przymierz!",
+  "makeAnother": "Zrób kolejne",
+  "checkroomPostGeneratedNote": "Wszystkie przymierzone przez Ciebie stroje możesz zobaczyć na stronie głównej.",
+  "homeHeaderGreetings": "Cześć {name}.",
+  "@hello": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeHeaderSubTitle": "Twoje lustro właśnie stało się mądrzejsze.",
+  "homeHeaderSeeHowItWorks": "Zobacz, jak to działa",
+  "homeEmptyPageTitle": "Nic tutaj nie ma.",
+  "homeEmptyPageSubTitle": "Stwórz swój pierwszy strój, aby zapełnić ten ekran.",
+  "homeSectionRecentOutfits": "Ostatnie stroje:",
+  "homeSectionFavorites": "Ulubione:",
+  "homeSectionSeeMore": "Zobacz więcej",
+  "download": "Pobierz",
+  "galTypeAccessDenied": "Nie masz uprawnień do dostępu do galerii.",
+  "galTypeNotEnoughSpace": "Brakuje dostępnego miejsca na dysku.",
+  "galTypeNotSupportedFormat": "Wybrany format pliku nie jest obsługiwany.",
+  "galTypeUnexpected": "Coś poszło nie tak. Spróbuj ponownie później.",
+  "downloadImageSuccess": "Zdjęcie zostało pobrane pomyślnie.",
+  "downloadingInProgress": "Pobieranie...",
+  "downloadNoPermissionsButtonText": "Zarządzaj uprawnieniami"
 }

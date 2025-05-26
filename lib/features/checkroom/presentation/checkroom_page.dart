@@ -7,6 +7,7 @@ import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/utils/constants.dart';
+import 'package:style_me/core/views/buttons/app_back_button.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_icon_button.dart';
 import 'package:style_me/core/views/encrypted_image/encrypted_image.dart';
@@ -47,14 +48,20 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   @override
   Widget build(BuildContext context) {
     final CheckroomStateHolder state = ref.watch(checkroomViewModelProvider);
-    return Stack(
-      children: [
-        if (state.generatedOutfitPath != null)
-          ...buildGeneratedImage(state.generatedOutfitPath!, state.isLiked)
-        else
-          ...buildContent(state),
-        Positioned.fill(child: buildOverlayIfNeeded(state)),
-      ],
+    return PopScope(
+      canPop: state.generatedOutfitPath == null,
+      onPopInvokedWithResult: (_, __) {
+        viewModel.backToTryOnStep();
+      },
+      child: Stack(
+        children: [
+          if (state.generatedOutfitPath != null)
+            ...buildGeneratedImage(state.generatedOutfitPath!, state.isLiked)
+          else
+            ...buildContent(state),
+          Positioned.fill(child: buildOverlayIfNeeded(state)),
+        ],
+      ),
     );
   }
 
@@ -126,20 +133,48 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   List<Widget> buildGeneratedImage(String generatedOutfitPath, bool isLiked) {
     return [
       Positioned.fill(
-        child: EncryptedImage(
-          imageSrc: generatedOutfitPath,
-          errorBuilder: (stackTrace) {
-            debugPrintStack(stackTrace: stackTrace);
-            return ImageErrorWidget();
-          },
-          loadingBuilder: () => ImageLoadingWidget(),
+        child: Column(
+          children: [
+            Expanded(
+              child: EncryptedImage(
+                imageSrc: generatedOutfitPath,
+                fit: BoxFit.cover,
+                errorBuilder: (stackTrace) {
+                  debugPrintStack(stackTrace: stackTrace);
+                  return ImageErrorWidget();
+                },
+                loadingBuilder: () => ImageLoadingWidget(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                spacing: 12,
+                children: [
+                  Expanded(
+                    child: Text(localizations.checkroomPostGeneratedNote,
+                        softWrap: true, style: TextStyle(fontSize: 12)),
+                  ),
+                  buildMakeAnotherButton(isLiked),
+                ],
+              ),
+            )
+          ],
         ),
       ),
       Positioned(
         top: 12,
         right: 12,
         child: buildLikeButton(isLiked),
-      )
+      ),
+      Positioned(
+        top: 12,
+        left: 12,
+        child: AppBackButton(
+          onTap: () => viewModel.backToTryOnStep(),
+        ),
+      ),
     ];
   }
 
@@ -176,6 +211,7 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   Widget buildTryOnButton(bool isGenerateLoading) {
     return AppButton(
       text: localizations.tryOn,
+      width: 120,
       isLoading: isGenerateLoading,
       style: ElevatedButton.styleFrom(
         elevation: 10,
@@ -183,9 +219,23 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
           borderRadius: GlobalUiConst.borderRadiusLarge,
         ),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 24),
       onClick: () {
         viewModel.generateOutfit();
+      },
+    );
+  }
+
+  Widget buildMakeAnotherButton(bool isGenerateLoading) {
+    return AppButton(
+      text: localizations.makeAnother,
+      style: ElevatedButton.styleFrom(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: GlobalUiConst.borderRadiusLarge,
+        ),
+      ),
+      onClick: () {
+        viewModel.backToTryOnStepWithClearedSelected();
       },
     );
   }

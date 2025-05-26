@@ -1,3 +1,4 @@
+import 'package:style_me/features/home/data/models/outfit.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
@@ -24,13 +25,24 @@ extension FirstWhereExt<T> on List<T> {
 
   bool everyIndexed(bool Function(T element, int index) test) {
     bool isSatisfied;
-    for (int i = 0; i < length; i++)  {
+    for (int i = 0; i < length; i++) {
       isSatisfied = test(this[i], i);
       if (!isSatisfied) {
         return false;
       }
     }
     return true;
+  }
+}
+
+extension OutfitListExt on List<Outfit> {
+  List<Outfit> getWithToggledFavorite(PhotoItem toggledItem) {
+    return map((item) {
+      if (item.id == toggledItem.id) {
+        return item.copyWith(isFavorite: !toggledItem.isFavorite);
+      }
+      return item;
+    }).toList();
   }
 }
 
@@ -49,8 +61,32 @@ extension PhotoListExt on List<PhotoItem> {
     return map((item) => item as Clothing).toList();
   }
 
+  List<Outfit> asOutfitList() {
+    return map((item) => item as Outfit).toList();
+  }
+
   List<UserPhoto> asUserPhotosList() {
     return map((item) => item as UserPhoto).toList();
+  }
+
+  PhotoItem? getDefaultOrFirst() {
+    return firstWhereOrNull((photo) => photo.isDefault) ?? firstOrNull;
+  }
+
+  List<PhotoItem> getWithDefaultAsFirst() {
+    final PhotoItem? defaultPhoto = getDefaultOrFirst();
+    if (defaultPhoto == null) {
+      return this;
+    }
+    int index = indexWhere((item) => item.id == defaultPhoto.id);
+    final updatedList = List.of(this);
+    if (index != -1) {
+      PhotoItem item = updatedList.removeAt(index);
+      updatedList.insert(0, item);
+      return updatedList;
+    } else {
+      return this;
+    }
   }
 }
 

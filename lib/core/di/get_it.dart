@@ -34,10 +34,16 @@ import 'package:style_me/core/utils/google_auth_service.dart';
 import 'package:style_me/core/utils/token_authenticator.dart';
 import 'package:style_me/core/views/encrypted_image/isolated_decrypt_manager.dart';
 import 'package:style_me/features/auth/data/auth_repository.dart';
-import 'package:style_me/features/checkroom/data/checkroom_repository.dart';
 import 'package:style_me/features/checkroom/domain/generate_outfit_use_case.dart';
 import 'package:style_me/features/checkroom/domain/get_updated_selected_clothes_use_case.dart';
 import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_case.dart';
+import 'package:style_me/features/home/data/outfit_repository.dart';
+import 'package:style_me/features/home/domain/download_to_gallery_with_permissions_use_case.dart';
+import 'package:style_me/features/home/domain/get_favorite_outfits_use_case.dart';
+import 'package:style_me/features/home/domain/get_original_outfit_photo_use_case.dart';
+import 'package:style_me/features/home/domain/get_recent_and_favorite_outfit_use_case.dart';
+import 'package:style_me/features/home/domain/get_recent_outfits_use_case.dart';
+import 'package:style_me/features/home/domain/set_is_outfit_favorite_use_case.dart';
 import 'package:style_me/features/settings/data/settings_repository.dart';
 import 'package:style_me/features/settings/domain/add_report_use_case.dart';
 import 'package:style_me/features/settings/domain/change_password_use_case.dart';
@@ -106,7 +112,7 @@ class GetItManager {
     getIt.registerLazySingleton(() => DeepLinkManager(getIt()));
     getIt.registerLazySingleton(() => AESEncryptor());
     getIt.registerFactory(() => ImageFetcher(getIt()));
-    getIt.registerLazySingleton(() => IsolatedDecryptCompressManager());
+    getIt.registerLazySingleton(() => IsolatedDecryptManager());
 
     ///Global auth
     getIt.registerFactory(() => GoogleSignIn.standard());
@@ -159,10 +165,21 @@ class GetItManager {
     getIt.registerFactory(
         () => GetOriginalUserImageUrlUseCase(getIt(), getIt()));
 
-    ///checkroom
-    getIt.registerFactory(() => CheckroomRepository(getIt()));
+    ///Checkroom
     getIt.registerFactory(() => GetUserOriginalPhotosUseCase(getIt(), getIt()));
     getIt.registerFactory(() => GetUpdatedSelectedClothesUseCase());
     getIt.registerFactory(() => GenerateOutfitUseCase(getIt(), getIt()));
+
+    ///Home
+    getIt.registerFactory(() => OutfitRepository(getIt()));
+    getIt.registerFactory(() => GetFavoriteOutfitsUseCase(getIt(), getIt()));
+    getIt
+        .registerFactory(() => GetOriginalOutfitPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => GetRecentOutfitsUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => SetIsOutfitFavoriteUseCase(getIt(), getIt()));
+    getIt.registerFactory(
+        () => GetRecentAndFavoriteOutfitUseCase(getIt(), getIt()));
+    getIt.registerFactory(
+        () => DownloadToGalleryWithPermissionsUseCase(getIt(), getIt(), getIt()));
   }
 }

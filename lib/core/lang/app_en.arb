@@ -142,5 +142,30 @@
   "missingPostureAndClothing": "It looks like you don't have photos of yourself and photos of your clothes. Add missing photos to access this page:",
   "missingPosture": "Looks like you don't have photos of yourself. Add missing photos to access this page:",
   "missingClothing": "Looks like you don't have photos of your clothes. Add missing photos to access this page:",
-  "tryOn": "Try it on!"
+  "tryOn": "Try it on!",
+  "makeAnother": "Make another",
+  "checkroomPostGeneratedNote": "You can see all your tried-on outfits on the home page.",
+  "homeHeaderGreetings": "Hello {name}.",
+  "@hello": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "homeHeaderSubTitle": "Your mirror just got smarter.",
+  "homeHeaderSeeHowItWorks": "See how it works",
+  "homeEmptyPageTitle": "Nothing here.",
+  "homeEmptyPageSubTitle": "Create your first outfits to fill this screen.",
+  "homeSectionRecentOutfits": "Recent outfits:",
+  "homeSectionFavorites": "Favorites:",
+  "homeSectionSeeMore": "See more",
+  "download": "Download",
+  "galTypeAccessDenied": "We don't have permission to access the gallery.",
+  "galTypeNotEnoughSpace": "There is not enough storage space available.",
+  "galTypeNotSupportedFormat": "The selected file format is not supported.",
+  "galTypeUnexpected": "Something went wrong. Please try again later.",
+  "downloadImageSuccess": "The photo was downloaded successfully.",
+  "downloadingInProgress": "Downloading...",
+  "downloadNoPermissionsButtonText": "Manage permissions"
 }
