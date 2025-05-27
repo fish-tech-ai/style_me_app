@@ -124,6 +124,7 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
             clothesPersistentSheet.currentState?.animateTo(Limit.max);
           },
           isLoading: state.isClothesLoading,
+          shouldShowAddButton: false,
           scrollController: scrollController,
         ),
       ),

@@ -5,11 +5,12 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_me/core/app/data/app_repository.dart';
+import 'package:style_me/core/app/domain/usecases/clear_app_cache_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/fetch_image_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_current_theme_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_language_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_user_use_case.dart';
-import 'package:style_me/core/app/domain/usecases/load_app_legals_to_cache.dart';
+import 'package:style_me/core/app/domain/usecases/load_app_legals_to_cache_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/logout_user_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/refresh_token_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/save_current_theme_use_case.dart';
@@ -104,7 +105,8 @@ class GetItManager {
     getIt.registerFactory(() => GetCurrentThemeUseCase(getIt()));
     getIt.registerFactory(() => SaveCurrentThemeUseCase(getIt()));
     getIt.registerFactory(() => FetchImageUseCase());
-    getIt.registerFactory(() => LoadAppLegalsToCache());
+    getIt.registerFactory(() => LoadAppLegalsToCacheUseCase());
+    getIt.registerFactory(() => ClearAppCacheUseCase());
 
     ///Utils
     getIt.registerFactory(() => NetworkRequestUtil());

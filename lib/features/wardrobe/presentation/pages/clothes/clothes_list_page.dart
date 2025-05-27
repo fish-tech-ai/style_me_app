@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/navigation/app_page.dart';
+import 'package:style_me/core/views/buttons/floating/floating_add_clothing_button.dart';
 import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/core/views/input/search_text_field.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
@@ -17,6 +20,7 @@ class ClothesListPage extends StatefulWidget {
   final Function(ClothingListSearchParameters) onSearchParametersChanged;
   final Function()? onSearchClicked;
   final bool isLoading;
+  final bool shouldShowAddButton;
   final ScrollController? scrollController;
 
   const ClothesListPage({
@@ -26,6 +30,7 @@ class ClothesListPage extends StatefulWidget {
     required this.onSearchParametersChanged,
     this.scrollController,
     this.isLoading = false,
+    this.shouldShowAddButton = true,
     this.onSearchClicked,
   });
 
@@ -90,21 +95,24 @@ class _ClothesListPageState extends State<ClothesListPage> {
     if (!widget.isLoading && widget.clothes.isEmpty) {
       return _buildEmptyPage();
     }
-    return widget.isLoading
-        ? SingleChildScrollView(
-            controller: widget.scrollController,
-            child: SizedBox(
-              height: 200,
-              child: DefaultLoading(),
+    return _buildWithAddButtonIfNeeded(
+      child: widget.isLoading
+          ? SingleChildScrollView(
+              controller: widget.scrollController,
+              child: SizedBox(
+                height: 200,
+                child: DefaultLoading(),
+              ),
+            )
+          : PhotoGrid(
+              items: widget.clothes,
+              scrollController: widget.scrollController,
+              bottomInset: widget.shouldShowAddButton ? 72 : 0,
+              onItemClicked: (item) {
+                widget.onItemClicked.call(item);
+              },
             ),
-          )
-        : PhotoGrid(
-            items: widget.clothes,
-            scrollController: widget.scrollController,
-            onItemClicked: (item) {
-              widget.onItemClicked.call(item);
-            },
-          );
+    );
   }
 
   Widget _buildEmptyPage() {
@@ -115,6 +123,28 @@ class _ClothesListPageState extends State<ClothesListPage> {
         subTitle: localizations.nothingFoundSubText,
       ),
     );
+  }
+
+  Widget _buildWithAddButtonIfNeeded({required Widget child}) {
+    if (widget.shouldShowAddButton) {
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          child,
+          Positioned(
+            bottom: 12,
+            right: 12,
+            child: FloatingAddClothingButton(
+              onClick: () {
+                context.push(AppPage.clothingAdd.path);
+              },
+            ),
+          )
+        ],
+      );
+    } else {
+      return child;
+    }
   }
 
   void onParametersChange({

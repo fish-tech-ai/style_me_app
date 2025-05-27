@@ -6,6 +6,7 @@ import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/network/failures/image_process_failure.dart';
+import 'package:style_me/core/network/failures/server_failure.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/wardrobe/data/models/io/send_user_photo_response.dart';
 import 'package:style_me/features/wardrobe/domain/user_photo/clear_user_photo_use_case.dart';
@@ -65,9 +66,13 @@ class AddUserPhotoViewModel extends _$AddUserPhotoViewModel {
         state = state.copyWith(
             imageProcessingError: failure.type, isImageAddLoading: false);
         return;
+      } else if (failure is ServerFailure &&
+          failure.message!.startsWith("ClientException")) {
+        state = state.copyWith(isImageAddLoading: false);
+        return;
       }
-      state = state.copyWith(isImageAddLoading: false);
       ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+      state = state.copyWith(isImageAddLoading: false);
     });
   }
 

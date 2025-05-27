@@ -91,27 +91,33 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage>
         );
       case AddPhotoPageMode.fillData:
       case AddPhotoPageMode.acceptPhoto:
-        return ImageAcceptationView(
-          imageFile: state.image!,
-          actionButtonText: state.addPhotoPageMode == AddPhotoPageMode.fillData
-              ? localizations.addPhoto
-              : localizations.continueText,
-          isImageAddLoading: state.isImageAddLoading,
-          onTryAgainClicked: () => viewModel.onBackAction(),
-          onAcceptClicked: () => viewModel.onAcceptClicked(() => context.pop()),
-          imageDataForm: ClothingPhotoAddForm(
-            isVisible: state.addPhotoPageMode == AddPhotoPageMode.fillData,
-            nameText: state.clothingForm.nameText,
-            category: state.clothingForm.selectedCategory,
-            onNameTextChanged: (text) {
-              viewModel.onTextChanged(text);
-            },
-            onCategorySelected: (category) {
-              viewModel.onCategorySelected(category);
-            },
-            isRecommendedCategory: state.clothingForm.isRecommendedCategory,
-          ),
-        );
+        if (state.image == null) {
+          return SizedBox();
+        } else {
+          return ImageAcceptationView(
+            imageFile: state.image!,
+            actionButtonText:
+                state.addPhotoPageMode == AddPhotoPageMode.fillData
+                    ? localizations.addPhoto
+                    : localizations.continueText,
+            isImageAddLoading: state.isImageAddLoading,
+            onTryAgainClicked: () => viewModel.onBackAction(),
+            onAcceptClicked: () =>
+                viewModel.onAcceptClicked(() => context.pop()),
+            imageDataForm: ClothingPhotoAddForm(
+              isVisible: state.addPhotoPageMode == AddPhotoPageMode.fillData,
+              nameText: state.clothingForm.nameText,
+              category: state.clothingForm.selectedCategory,
+              onNameTextChanged: (text) {
+                viewModel.onTextChanged(text);
+              },
+              onCategorySelected: (category) {
+                viewModel.onCategorySelected(category);
+              },
+              isRecommendedCategory: state.clothingForm.isRecommendedCategory,
+            ),
+          );
+        }
     }
   }
 

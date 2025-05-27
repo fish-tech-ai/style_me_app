@@ -68,7 +68,7 @@ class CheckroomViewModel extends _$CheckroomViewModel {
 
   void _convertUserImagesAndShow(List<UserPhoto> userPhotosWithUrls) async {
     final userPhotosWithPaths = await _multipleImageFetcher
-        .downloadImagesToCachePaths(userPhotosWithUrls);
+        .downloadImagesToCachePaths(userPhotosWithUrls, suffix: "_original");
     final convertedUserPhotos = userPhotosWithPaths.asUserPhotosList();
 
     state = state.copyWith(

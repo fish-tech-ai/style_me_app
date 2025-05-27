@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:style_me/core/app/domain/usecases/clear_app_cache_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_current_theme_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_language_use_case.dart';
-import 'package:style_me/core/app/domain/usecases/load_app_legals_to_cache.dart';
+import 'package:style_me/core/app/domain/usecases/load_app_legals_to_cache_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/save_current_theme_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/set_language_use_case.dart';
 import 'package:style_me/core/app/presentation/app_global_state_holder.dart';
@@ -28,7 +30,8 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
   late final GetLanguageUseCase _getLanguageUseCase;
   late final SetLanguageUseCase _setLanguageUseCase;
   late final ConfirmEmailUseCase _confirmEmailUseCase;
-  late final LoadAppLegalsToCache _loadAppLegalsToCache;
+  late final LoadAppLegalsToCacheUseCase _loadAppLegalsToCache;
+  late final ClearAppCacheUseCase _clearAppCacheUseCase;
   late final DeepLinkManager _deepLinkManager;
   late final Connection _connection;
 
@@ -39,6 +42,7 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
     _setLanguageUseCase = getIt();
     _confirmEmailUseCase = getIt();
     _loadAppLegalsToCache = getIt();
+    _clearAppCacheUseCase = getIt();
     _connection = getIt();
     _deepLinkManager = getIt();
   }
@@ -143,6 +147,11 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
 
   Future loadFilesToCache() {
     return _loadAppLegalsToCache();
+  }
+
+  Future clearCache() async {
+    final cacheDir = await getTemporaryDirectory();
+    await _clearAppCacheUseCase(cacheDir.path);
   }
 
   @visibleForTesting

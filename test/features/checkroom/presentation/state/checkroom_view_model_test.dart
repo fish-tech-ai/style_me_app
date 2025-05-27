@@ -68,6 +68,8 @@ void main() {
         .thenAnswer((_) async => Result.success([]));
     when(() => mockGetClothesUseCase.call(any(), any(), any()))
         .thenAnswer((_) async => Result.success([]));
+    when(() => mockMultipleImageFetcher.downloadImagesToCachePaths([], suffix: "_original"))
+        .thenAnswer((_) async => []);
     when(() => mockMultipleImageFetcher.downloadImagesToCachePaths([]))
         .thenAnswer((_) async => []);
   });
@@ -127,9 +129,8 @@ void main() {
     verify(() => mockGetClothesUseCase.call('', null, ClothingCategoryEnum.ALL))
         .called(1);
 
-    /// gonna be called once on initial and second later
     verify(() => mockMultipleImageFetcher.downloadImagesToCachePaths(any()))
-        .called(2);
+        .called(1);
     stateListener.close();
   });
 
@@ -161,9 +162,7 @@ void main() {
     verify(() => mockGetClothesUseCase.call('', null, ClothingCategoryEnum.ALL))
         .called(1);
 
-    /// gonna be called once on initial
-    verify(() => mockMultipleImageFetcher.downloadImagesToCachePaths(any()))
-        .called(1);
+    verifyNever(() => mockMultipleImageFetcher.downloadImagesToCachePaths(any()));
 
     stateListener.close();
   });
