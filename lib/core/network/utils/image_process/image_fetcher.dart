@@ -21,23 +21,23 @@ class ImageFetcher {
   /// Returns a new list of [PhotoItem]s where each item's [image] field is replaced
   /// with the path to its cached file.
   ///
-  Future<List<PhotoItem>> downloadImagesToCachePaths(List<PhotoItem> itemsWithUrls) async {
+  Future<List<PhotoItem>> downloadImagesToCachePaths(List<PhotoItem> itemsWithUrls, {String suffix = ""}) async {
     final cacheDir = await getTemporaryDirectory();
-    final List<PhotoItem> userPhotosWithPaths = itemsWithUrls.map(
-          (userPhoto) {
-        return userPhoto.copyWith(
-            image: '${cacheDir.path}/${userPhoto.id}.webp');
+    final List<PhotoItem> itemsWithPaths = itemsWithUrls.map(
+          (item) {
+        return item.copyWith(
+            image: '${cacheDir.path}/${item.id}$suffix.webp');
       },
     ).toList();
     await _downloadAndCacheImages(
       itemsWithUrls
-          .map((userPhotoWithUrl) => userPhotoWithUrl.image)
+          .map((itemWithUrl) => itemWithUrl.image)
           .toList(),
-      userPhotosWithPaths
-          .map((userPhotoWithPath) => userPhotoWithPath.image)
+      itemsWithPaths
+          .map((itemWithPath) => itemWithPath.image)
           .toList(),
     );
-    return userPhotosWithPaths;
+    return itemsWithPaths;
   }
 
   Future downloadAndCacheImage(String url, String path) async {

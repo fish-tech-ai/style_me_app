@@ -6,9 +6,4 @@ extension NavExt on GoRouter {
     return AppPage.getFrom(
         path: routerDelegate.currentConfiguration.matches.last.matchedLocation);
   }
-
-  AppPage getNavSourceAppPage() {
-    return AppPage.getFrom(
-        path: routerDelegate.currentConfiguration.matches.last.matchedLocation);
-  }
 }

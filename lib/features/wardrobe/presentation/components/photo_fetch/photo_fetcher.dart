@@ -108,7 +108,7 @@ class PhotoFetcherState extends ConsumerState<PhotoFetcher> {
                 _takePicture(parentAspectRatio),
             onPasteFromClipboard: _readClipboardForImage,
           )
-        : DefaultLoading();
+        : Flexible(fit: FlexFit.loose, child: DefaultLoading());
   }
 
   void _openGetGalleryImage() async {

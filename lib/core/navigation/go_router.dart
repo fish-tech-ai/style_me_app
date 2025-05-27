@@ -5,7 +5,11 @@ import 'package:style_me/core/navigation/app_nav_observer.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/features/auth/presentation/pages/auth_page.dart';
 import 'package:style_me/features/checkroom/presentation/checkroom_page.dart';
-import 'package:style_me/features/home/presentation/home_page.dart';
+import 'package:style_me/features/home/data/models/outfit.dart';
+import 'package:style_me/features/home/presentation/pages/home_grid_list_page.dart';
+import 'package:style_me/features/home/presentation/pages/home_page.dart';
+import 'package:style_me/features/home/presentation/pages/outfit_details_page.dart';
+import 'package:style_me/features/home/presentation/ui_models/home_grid_type.dart';
 import 'package:style_me/features/settings/presentation/pages/change_password_page.dart';
 import 'package:style_me/features/settings/presentation/pages/privacy_policy_page.dart';
 import 'package:style_me/features/settings/presentation/pages/settings_page.dart';
@@ -26,61 +30,100 @@ GoRouter getRouter(bool isAuthenticated, WidgetRef ref) => GoRouter(
       routes: [
         GoRoute(
           path: AppPage.authPage.path,
-          builder: (context, state) => const AuthPage().scopedPage(),
+          builder: (context, state) =>
+              const AuthPage().withBackground(context).scopedPage(),
         ),
         GoRoute(
           path: AppPage.homePage.path,
-          builder: (context, state) => const HomePage(),
+          builder: (context, state) => const HomePage().withBackground(context),
         ),
         GoRoute(
           path: AppPage.checkroom.path,
-          builder: (context, state) => const CheckroomPage(),
+          builder: (context, state) =>
+              const CheckroomPage().withBackground(context),
         ),
         GoRoute(
           path: AppPage.wardrobe.path,
-          builder: (context, state) => const WardrobePage(),
+          builder: (context, state) =>
+              const WardrobePage().withBackground(context),
         ),
         GoRoute(
           path: AppPage.settings.path,
-          builder: (context, state) => const SettingsPage(),
+          builder: (context, state) =>
+              const SettingsPage().withBackground(context),
         ),
         GoRoute(
           path: AppPage.privacyPolicy.path,
-          builder: (context, state) => const PrivacyPolicyPage().scopedPage(),
+          builder: (context, state) {
+            final bool? shouldShowBottomNavBar = state.extra as bool?;
+            return PrivacyPolicyPage(
+                    shouldShowBottomNavBar: shouldShowBottomNavBar ?? true)
+                .withBackground(context)
+                .scopedPage();
+          },
         ),
         GoRoute(
           path: AppPage.termsAndConditions.path,
-          builder: (context, state) =>
-              const TermsAndConditionsPage().scopedPage(),
+          builder: (context, state) {
+            final bool? shouldShowBottomNavBar = state.extra as bool?;
+            return TermsAndConditionsPage(
+                    shouldShowBottomNavBar: shouldShowBottomNavBar ?? true)
+                .withBackground(context)
+                .scopedPage();
+          },
         ),
         GoRoute(
           path: AppPage.changePasswordPage.path,
           builder: (context, state) {
             final ChangePasswordPageArgs args =
                 state.extra as ChangePasswordPageArgs;
-            return ChangePasswordPage(changePasswordArgs: args).scopedPage();
+            return ChangePasswordPage(changePasswordArgs: args)
+                .withBackground(context)
+                .scopedPage();
           },
         ),
         GoRoute(
           path: AppPage.clothingAdd.path,
-          builder: (context, state) => const AddClothingPage().scopedPage(),
+          builder: (context, state) =>
+              const AddClothingPage().withBackground(context).scopedPage(),
         ),
         GoRoute(
           path: AppPage.editClothingPage.path,
           builder: (context, state) {
             final Clothing clothing = state.extra as Clothing;
-            return EditClothingPage(clothing: clothing).scopedPage();
+            return EditClothingPage(clothing: clothing)
+                .withBackground(context)
+                .scopedPage();
           },
         ),
         GoRoute(
           path: AppPage.userPhotoAdd.path,
-          builder: (context, state) => const AddUserPhotoPage().scopedPage(),
+          builder: (context, state) =>
+              const AddUserPhotoPage().withBackground(context).scopedPage(),
         ),
         GoRoute(
           path: AppPage.editUserPhotoPage.path,
           builder: (context, state) {
             final UserPhoto userPhoto = state.extra as UserPhoto;
-            return EditUserPhotoPage(userPhoto: userPhoto).scopedPage();
+            return EditUserPhotoPage(userPhoto: userPhoto)
+                .withBackground(context)
+                .scopedPage();
+          },
+        ),
+        GoRoute(
+          path: AppPage.homeGridList.path,
+          builder: (context, state) {
+            return HomeGridListPage(type: state.extra as HomeGridType)
+                .withBackground(context)
+                .scopedPage();
+          },
+        ),
+        GoRoute(
+          path: AppPage.homeOutfitDetails.path,
+          builder: (context, state) {
+            return OutfitDetailsPage(outfit: state.extra as Outfit)
+                .withBackground(context)
+                .scopedPage();
           },
         ),
       ],

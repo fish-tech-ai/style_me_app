@@ -44,7 +44,7 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
     final WardrobeViewModel viewModel =
         ref.read(wardrobeViewModelProvider.notifier);
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 12),
+      padding: EdgeInsets.only(top: 12),
       child: Column(
         spacing: 12,
         children: [

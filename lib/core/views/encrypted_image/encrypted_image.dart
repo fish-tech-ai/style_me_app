@@ -44,7 +44,7 @@ class _EncryptedImageState extends State<EncryptedImage> {
   }
 
    Future<Uint8List> _fetchAndDecryptImage() async {
-     return getIt<IsolatedDecryptCompressManager>().getDecryptedImageBytes(_imageFilePath);
+     return getIt<IsolatedDecryptManager>().getDecryptedImageBytes(_imageFilePath);
    }
 
   @override

@@ -15,6 +15,7 @@ import 'package:style_me/core/local/database.dart';
 import 'package:style_me/core/network/failures/failure.dart';
 import 'package:style_me/core/network/failures/server_failure.dart';
 import 'package:style_me/core/network/utils/result.dart';
+import 'package:style_me/core/utils/google_auth_service.dart';
 import 'package:style_me/features/settings/data/models/report_category.dart';
 import 'package:style_me/features/settings/data/models/report_request.dart';
 import 'package:style_me/features/settings/domain/add_report_use_case.dart';
@@ -31,6 +32,7 @@ class SettingsViewModel extends _$SettingsViewModel {
   late final LogoutUserUseCase _logoutUserUseCase;
   late final DeleteAccountUseCase _deleteAccountUseCase;
   late final AddReportUseCase _addReportUseCase;
+  late final GoogleAuthService _googleAuthService;
 
   SettingsViewModel() {
     _getUserUseCase = getIt();
@@ -39,6 +41,7 @@ class SettingsViewModel extends _$SettingsViewModel {
     _logoutUserUseCase = getIt();
     _deleteAccountUseCase = getIt();
     _addReportUseCase = getIt();
+    _googleAuthService = getIt();
   }
 
   @override
@@ -92,6 +95,9 @@ class SettingsViewModel extends _$SettingsViewModel {
   Future deleteAccount(Function onSuccess) async {
     state = state.copyWith(
         deleteDialogState: state.deleteDialogState.copyWith(isLoading: true));
+    if (state.isUserFromGoogleSignIn) {
+      await _googleAuthService.reAuthenticate();
+    }
     final result =
         await _deleteAccountUseCase(state.deleteDialogState.password);
     result.collect((_) {

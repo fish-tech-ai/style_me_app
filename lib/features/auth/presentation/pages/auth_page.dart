@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/utils/constants.dart';
@@ -12,6 +13,7 @@ import 'package:style_me/core/views/buttons/app_back_button.dart';
 import 'package:style_me/core/views/buttons/app_outlined_button.dart';
 import 'package:style_me/features/auth/presentation/components/auth_email_confirmation.dart';
 import 'package:style_me/features/auth/presentation/components/auth_form.dart';
+import 'package:style_me/features/auth/presentation/pages/legal_documents_page.dart';
 import 'package:style_me/features/auth/presentation/state/auth_state_holder.dart';
 import 'package:style_me/features/auth/presentation/state/auth_view_model.dart';
 import 'package:style_me/features/auth/presentation/ui_models/auth_page_mode_enum.dart';
@@ -72,9 +74,11 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                   SizedBox(
                       height:
                           state.mode == AuthPageModeEnum.emailOnly ? 72 : 24),
-                  AppBackButton(border: Border.all(color: context.colorScheme.primary), onTap: () {
-                    viewModel.changePageMode(AuthPageModeEnum.emailOnly);
-                  }).orEmpty(state.mode == AuthPageModeEnum.emailOnly),
+                  AppBackButton(
+                      border: Border.all(color: context.colorScheme.primary),
+                      onTap: () {
+                        viewModel.changePageMode(AuthPageModeEnum.emailOnly);
+                      }).orEmpty(state.mode == AuthPageModeEnum.emailOnly),
                   SizedBox(height: GlobalUiConst.paddingNormal),
                   Text(
                     context.localizations.loginPageTitle,
@@ -166,27 +170,36 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   }
 
   Widget _buildTermsAndPrivacyInfoText(BuildContext context) {
-    final clickableTextStyle = TextStyle(color: context.colorScheme.primary);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: GlobalUiConst.paddingNormal),
-      child: RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          style: TextStyle(
-              fontFamily: 'Inter',
-              fontWeight: FontWeight.w500,
-              fontSize: 12,
-              color: context.colorScheme.onSecondary),
-          children: [
-            TextSpan(text: context.localizations.authPageInfo1),
-            TextSpan(
-                text: context.localizations.authPageInfo2Clickable,
-                style: clickableTextStyle),
-            TextSpan(text: context.localizations.authPageInfo3),
-            TextSpan(
-                text: context.localizations.authPageInfo4Clickable,
-                style: clickableTextStyle),
-          ],
+    final boldedColoredTextStyle =
+        TextStyle(color: context.colorScheme.primary);
+    return InkWell(
+      onTap: () {
+        showAppModalBottomSheet(
+          context: ref.context,
+          child: LegalDocumentsPage(),
+        );
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: GlobalUiConst.paddingNormal),
+        child: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            style: TextStyle(
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w500,
+                fontSize: 12,
+                color: context.colorScheme.onSecondary),
+            children: [
+              TextSpan(text: context.localizations.authPageInfo1),
+              TextSpan(
+                  text: context.localizations.authPageInfo2Clickable,
+                  style: boldedColoredTextStyle),
+              TextSpan(text: context.localizations.authPageInfo3),
+              TextSpan(
+                  text: context.localizations.authPageInfo4Clickable,
+                  style: boldedColoredTextStyle),
+            ],
+          ),
         ),
       ),
     );

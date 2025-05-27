@@ -7,6 +7,7 @@ abstract class PhotoItem {
   final bool isDefault;
   final bool isSelected;
   final bool isDisabled;
+  final bool isFavorite;
 
   PhotoItem(
     this.id,
@@ -15,6 +16,7 @@ abstract class PhotoItem {
     this.isDefault = false,
     this.isSelected = false,
     this.isDisabled = false,
+    this.isFavorite = false,
   });
 
   PhotoWithAction withDeleteAction() {

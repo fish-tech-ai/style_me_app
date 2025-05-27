@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
+import 'package:style_me/core/views/buttons/floating/floating_add_user_photo_button.dart';
+import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
 import 'package:style_me/features/wardrobe/presentation/components/empty_page.dart';
@@ -29,13 +31,40 @@ class UserPhotosListPage extends StatelessWidget {
 
   Widget _buildUserPhotosPage(BuildContext context) {
     if (!state.isUserPhotosLoading && state.userPhotos.isEmpty) {
-      return EmptyPage();
+      return EmptyPage(
+        title: localizations.nothingFound,
+        subTitle: localizations.nothingFoundSubText,
+      );
+    } else if (state.isUserPhotosLoading) {
+      return Align(
+        alignment: Alignment.topCenter,
+        child: SizedBox(
+          height: 200,
+          child: DefaultLoading(),
+        ),
+      );
     }
-    return PhotoGrid(
-      items: state.userPhotos,
-      clipBehavior: Clip.none,
-      onItemClicked: (item) => onItemClicked(item, context),
-    ).orLoading(state.isUserPhotosLoading);
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        PhotoGrid(
+          items: state.userPhotos,
+          clipBehavior: Clip.none,
+          bottomInset: 72,
+          onItemClicked: (item) => onItemClicked(item, context),
+        ),
+        Positioned(
+          bottom: 12,
+          right: 12,
+          child: FloatingAddUserPhotoButton(
+            onClick: () {
+              context.push(AppPage.userPhotoAdd.path);
+            },
+          ),
+        )
+      ],
+    );
   }
 
   void onItemClicked(PhotoItem photoItem, BuildContext context) async {

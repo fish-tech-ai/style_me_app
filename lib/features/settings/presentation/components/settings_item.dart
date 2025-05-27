@@ -7,11 +7,13 @@ import 'package:style_me/features/settings/presentation/ui_models/setting.dart';
 class SettingsItem extends StatelessWidget {
   final Setting setting;
   final Function(Setting) onItemClicked;
+  final bool hideDivider;
 
   const SettingsItem({
     super.key,
     required this.setting,
     required this.onItemClicked,
+    this.hideDivider = false,
   });
 
   @override
@@ -28,7 +30,8 @@ class SettingsItem extends StatelessWidget {
         },
         child: Column(
           children: [
-            Divider(height: 1, color: context.theme.hintColor),
+            Divider(height: 1, color: context.theme.hintColor)
+                .orEmpty(hideDivider),
             Container(
               padding: EdgeInsets.all(12),
               child: Row(

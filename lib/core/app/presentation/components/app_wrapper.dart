@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/app/presentation/components/app_status.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/extensions/go_router_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
@@ -27,7 +28,6 @@ class AppWrapper extends ConsumerStatefulWidget {
 
 class _AppWrapperState extends ConsumerState<AppWrapper>
     with WidgetsBindingObserver {
-  EdgeInsets? appInsetsPadding;
 
   @override
   void initState() {
@@ -39,10 +39,6 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
   void didChangeDependencies() {
     super.didChangeDependencies();
     LocalizationHelper.init(context.localizations);
-    final currentSysPadding = MediaQuery.of(context).padding;
-    if (currentSysPadding.bottom > 0) {
-      appInsetsPadding ??= currentSysPadding;
-    }
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -61,6 +57,8 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
         });
       },
     );
+    await viewModel.clearCache();
+    await viewModel.loadFilesToCache();
     FlutterNativeSplash.remove();
   }
 
@@ -78,6 +76,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    debugMessagePrint("AppLifecycleState state dispose");
     super.dispose();
   }
 
@@ -88,7 +87,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
         appGlobalViewModelProvider.select((state) => state.bottomBarState));
     return Stack(children: [
       Container(
-        padding: bottomBarState.isVisible ? appInsetsPadding : null,
+        padding: bottomBarState.isVisible ? MediaQuery.of(context).padding : null,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Column(
@@ -104,11 +103,12 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
       Positioned(
         left: 0,
         right: 0,
-        bottom: MediaQuery.of(context).padding.bottom,
+        bottom: MediaQuery.of(context).padding.bottom +
+            (state.bottomBarState.isVisible ? 60 : 0),
         child: AnimatedVisibility(
           isVisible: !state.isConnected || state.bannerMessage.isVisible,
           animDirection: AnimDirectionEnum.bottomToTop,
-          child: AppStatus(
+          child: AppStatus.simple(
             text: !state.isConnected
                 ? localizations.connectionError
                 : state.bannerMessage.message.isNotEmpty

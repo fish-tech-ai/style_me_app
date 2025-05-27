@@ -5,10 +5,12 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:style_me/core/app/data/app_repository.dart';
+import 'package:style_me/core/app/domain/usecases/clear_app_cache_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/fetch_image_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_current_theme_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_language_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_user_use_case.dart';
+import 'package:style_me/core/app/domain/usecases/load_app_legals_to_cache_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/logout_user_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/refresh_token_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/save_current_theme_use_case.dart';
@@ -19,6 +21,7 @@ import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/services/app_service.dart';
 import 'package:style_me/core/network/services/auth_service.dart';
 import 'package:style_me/core/network/services/clothes_service.dart';
+import 'package:style_me/core/network/services/outfit_service.dart';
 import 'package:style_me/core/network/services/user_photos_service.dart';
 import 'package:style_me/core/network/services/user_service.dart';
 import 'package:style_me/core/network/utils/aes_encryptor.dart';
@@ -32,8 +35,16 @@ import 'package:style_me/core/utils/google_auth_service.dart';
 import 'package:style_me/core/utils/token_authenticator.dart';
 import 'package:style_me/core/views/encrypted_image/isolated_decrypt_manager.dart';
 import 'package:style_me/features/auth/data/auth_repository.dart';
+import 'package:style_me/features/checkroom/domain/generate_outfit_use_case.dart';
 import 'package:style_me/features/checkroom/domain/get_updated_selected_clothes_use_case.dart';
 import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_case.dart';
+import 'package:style_me/features/home/data/outfit_repository.dart';
+import 'package:style_me/features/home/domain/download_to_gallery_with_permissions_use_case.dart';
+import 'package:style_me/features/home/domain/get_favorite_outfits_use_case.dart';
+import 'package:style_me/features/home/domain/get_original_outfit_photo_use_case.dart';
+import 'package:style_me/features/home/domain/get_recent_and_favorite_outfit_use_case.dart';
+import 'package:style_me/features/home/domain/get_recent_outfits_use_case.dart';
+import 'package:style_me/features/home/domain/set_is_outfit_favorite_use_case.dart';
 import 'package:style_me/features/settings/data/settings_repository.dart';
 import 'package:style_me/features/settings/domain/add_report_use_case.dart';
 import 'package:style_me/features/settings/domain/change_password_use_case.dart';
@@ -81,6 +92,8 @@ class GetItManager {
         () => ClothesService.create(getIt<ChopperClient>()));
     getIt.registerFactory<UserPhotosService>(
         () => UserPhotosService.create(getIt<ChopperClient>()));
+    getIt.registerFactory<OutfitService>(
+        () => OutfitService.create(getIt<ChopperClient>()));
     getIt.registerLazySingleton(() => ThemeManager());
     final sharedPrefs = await SharedPreferences.getInstance();
     getIt.registerLazySingleton(() => sharedPrefs);
@@ -92,6 +105,8 @@ class GetItManager {
     getIt.registerFactory(() => GetCurrentThemeUseCase(getIt()));
     getIt.registerFactory(() => SaveCurrentThemeUseCase(getIt()));
     getIt.registerFactory(() => FetchImageUseCase());
+    getIt.registerFactory(() => LoadAppLegalsToCacheUseCase());
+    getIt.registerFactory(() => ClearAppCacheUseCase());
 
     ///Utils
     getIt.registerFactory(() => NetworkRequestUtil());
@@ -99,7 +114,7 @@ class GetItManager {
     getIt.registerLazySingleton(() => DeepLinkManager(getIt()));
     getIt.registerLazySingleton(() => AESEncryptor());
     getIt.registerFactory(() => ImageFetcher(getIt()));
-    getIt.registerLazySingleton(() => IsolatedDecryptCompressManager());
+    getIt.registerLazySingleton(() => IsolatedDecryptManager());
 
     ///Global auth
     getIt.registerFactory(() => GoogleSignIn.standard());
@@ -152,8 +167,21 @@ class GetItManager {
     getIt.registerFactory(
         () => GetOriginalUserImageUrlUseCase(getIt(), getIt()));
 
-    ///checkroom
+    ///Checkroom
     getIt.registerFactory(() => GetUserOriginalPhotosUseCase(getIt(), getIt()));
     getIt.registerFactory(() => GetUpdatedSelectedClothesUseCase());
+    getIt.registerFactory(() => GenerateOutfitUseCase(getIt(), getIt()));
+
+    ///Home
+    getIt.registerFactory(() => OutfitRepository(getIt()));
+    getIt.registerFactory(() => GetFavoriteOutfitsUseCase(getIt(), getIt()));
+    getIt
+        .registerFactory(() => GetOriginalOutfitPhotoUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => GetRecentOutfitsUseCase(getIt(), getIt()));
+    getIt.registerFactory(() => SetIsOutfitFavoriteUseCase(getIt(), getIt()));
+    getIt.registerFactory(
+        () => GetRecentAndFavoriteOutfitUseCase(getIt(), getIt()));
+    getIt.registerFactory(
+        () => DownloadToGalleryWithPermissionsUseCase(getIt(), getIt(), getIt()));
   }
 }

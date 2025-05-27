@@ -7,6 +7,12 @@ class PhotoGrid extends StatelessWidget {
   final Function(PhotoItem photoItem) onItemClicked;
   final Clip clipBehavior;
   final ScrollController? scrollController;
+  final double bottomInset;
+
+  /// when null item buttons will not appear
+  final Function(PhotoItem photoItem)? onFavoriteClicked;
+  final Function(PhotoItem photoItem)? onDeleteClicked;
+  final Function(PhotoItem photoItem)? onDownloadClicked;
 
   const PhotoGrid({
     super.key,
@@ -14,6 +20,10 @@ class PhotoGrid extends StatelessWidget {
     required this.onItemClicked,
     this.clipBehavior = Clip.hardEdge,
     this.scrollController,
+    this.onFavoriteClicked,
+    this.onDeleteClicked,
+    this.onDownloadClicked,
+    this.bottomInset = 0,
   });
 
   @override
@@ -21,7 +31,7 @@ class PhotoGrid extends StatelessWidget {
     return GridView.builder(
       clipBehavior: clipBehavior,
       controller: scrollController,
-      padding: EdgeInsets.zero,
+      padding: EdgeInsets.zero.copyWith(bottom: bottomInset),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 12,
@@ -31,6 +41,9 @@ class PhotoGrid extends StatelessWidget {
       itemCount: items.length,
       itemBuilder: (context, index) => PhotoGridItem(
         photo: items[index],
+        onFavoriteClicked: onFavoriteClicked,
+        onDeleteClicked: onDeleteClicked,
+        onDownloadClicked: onDownloadClicked,
         onItemClicked: onItemClicked,
       ),
     );

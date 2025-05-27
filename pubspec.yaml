@@ -1,7 +1,7 @@
 name: style_me
-description: "A new Flutter project."
+description: "Style me project."
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ^3.5.4
@@ -54,6 +54,9 @@ dependencies:
   flutter_image_compress: ^2.4.0
   isolate_manager: ^6.0.0
   smooth_page_indicator: ^1.2.1
+  markdown_widget: ^2.3.2+8
+  gal: ^2.3.1
+  app_settings: ^6.1.1
 
 dev_dependencies:
   flutter_test:

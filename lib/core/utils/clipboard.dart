@@ -51,7 +51,7 @@ class Clipboard {
       final tempDir = await getTemporaryDirectory();
       final filePath = '${tempDir.path}/clipboard_image.jpg';
       final fullFile = File(filePath);
-      await fullFile.writeAsBytes(bytes);
+      await fullFile.writeAsBytes(bytes, flush: true);
 
       onFileReceived(fullFile);
     });

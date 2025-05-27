@@ -15,8 +15,14 @@ class PhotoGridItem extends StatelessWidget {
   final double labelMaxWidth;
   final Function(PhotoItem photo) onItemClicked;
 
+  /// when null favorite button will not appear
+  final Function(PhotoItem photo)? onFavoriteClicked;
+
   /// when null delete button will not appear
   final Function(PhotoItem photo)? onDeleteClicked;
+
+  /// when null download button will not appear
+  final Function(PhotoItem photo)? onDownloadClicked;
 
   const PhotoGridItem({
     super.key,
@@ -24,6 +30,8 @@ class PhotoGridItem extends StatelessWidget {
     required this.onItemClicked,
     this.labelMaxWidth = 180,
     this.onDeleteClicked,
+    this.onFavoriteClicked,
+    this.onDownloadClicked,
   });
 
   @override
@@ -82,8 +90,27 @@ class PhotoGridItem extends StatelessWidget {
             Positioned(
               top: 0,
               right: 0,
-              child: _buildDeleteButton(context),
+              child: _wideClickableArea(
+                child: _buildDeleteButton(context),
+                onClick: onDeleteClicked,
+              ),
             ).orEmpty(onDeleteClicked == null),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: _wideClickableArea(
+                child: _buildFavoriteButton(context),
+                onClick: onFavoriteClicked,
+              ),
+            ).orEmpty(onFavoriteClicked == null),
+            Positioned(
+              top: 0,
+              left: 0,
+              child: _wideClickableArea(
+                child: _buildDownloadButton(context),
+                onClick: onDownloadClicked,
+              ),
+            ).orEmpty(onDownloadClicked == null),
             Positioned(
               top: 16,
               right: 16,
@@ -101,7 +128,7 @@ class PhotoGridItem extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Container(
         constraints: BoxConstraints(
-          maxWidth: labelMaxWidth,
+          maxWidth: MediaQuery.of(context).size.width / 2.6,
         ),
         decoration: BoxDecoration(
           color: context.customColors.accentA80,
@@ -113,7 +140,9 @@ class PhotoGridItem extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         margin: EdgeInsets.only(right: 12),
         child: Text(
-          photo.name,
+          photo is Clothing
+              ? "${(photo as Clothing).category.text}: ${photo.name}"
+              : photo.name,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(fontWeight: FontWeight.w500),
@@ -156,24 +185,27 @@ class PhotoGridItem extends StatelessWidget {
     );
   }
 
-  Widget _buildDeleteButton(BuildContext context) {
+  Widget _wideClickableArea(
+      {Function(PhotoItem)? onClick, required Widget child}) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        onDeleteClicked?.call(photo);
+        onClick?.call(photo);
       },
       child: Padding(
         padding: EdgeInsets.all(12),
-        child: IgnorePointer(
-          child: AppIconButton(
-            icon: Icon(Icons.close_rounded, color: context.colorScheme.onSurface),
-            borderRadius: BorderRadius.circular(100),
-            padding: EdgeInsets.all(6),
-            backgroundColor: context.colorScheme.error,
-            onClick: () {},
-          ),
-        ),
+        child: IgnorePointer(child: child),
       ),
+    );
+  }
+
+  Widget _buildDeleteButton(BuildContext context) {
+    return AppIconButton(
+      icon: Icon(Icons.close_rounded, color: context.colorScheme.onSurface),
+      borderRadius: BorderRadius.circular(100),
+      padding: EdgeInsets.all(6),
+      backgroundColor: context.colorScheme.error,
+      onClick: () {},
     );
   }
 
@@ -186,6 +218,37 @@ class PhotoGridItem extends StatelessWidget {
         Icons.not_interested_rounded,
         color: context.theme.disabledColor,
       ),
+    );
+  }
+
+  Widget _buildFavoriteButton(BuildContext context) {
+    return AppIconButton(
+      icon: Icon(
+        photo.isFavorite
+            ? Icons.favorite_rounded
+            : Icons.favorite_border_rounded,
+        color: photo.isFavorite
+            ? context.colorScheme.onPrimary
+            : context.colorScheme.primary,
+      ),
+      backgroundColor: photo.isFavorite
+          ? context.colorScheme.primary
+          : context.colorScheme.secondary,
+      borderRadius: GlobalUiConst.borderRadiusSmall,
+      padding: EdgeInsets.all(6),
+      onClick: () {},
+    );
+  }
+
+  Widget _buildDownloadButton(BuildContext context) {
+    return AppIconButton(
+      icon: Icon(
+        Icons.file_download_outlined,
+        color: context.colorScheme.onPrimary,
+      ),
+      borderRadius: GlobalUiConst.borderRadiusSmall,
+      padding: EdgeInsets.all(6),
+      onClick: () {},
     );
   }
 }

@@ -1,15 +1,20 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/list_ext.dart';
 import 'package:style_me/core/network/utils/image_process/image_fetcher.dart';
 import 'package:style_me/core/network/utils/result.dart';
+import 'package:style_me/features/checkroom/data/models/generate_outfit_body.dart';
+import 'package:style_me/features/checkroom/domain/generate_outfit_use_case.dart';
 import 'package:style_me/features/checkroom/domain/get_updated_selected_clothes_use_case.dart';
 import 'package:style_me/features/checkroom/domain/get_user_original_photos_use_case.dart';
 import 'package:style_me/features/checkroom/presentation/state/checkroom_state_holder.dart';
+import 'package:style_me/features/home/domain/set_is_outfit_favorite_use_case.dart';
+import 'package:style_me/features/home/presentation/state/home_view_model.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
@@ -24,12 +29,16 @@ class CheckroomViewModel extends _$CheckroomViewModel {
   late final GetUserOriginalPhotosUseCase _getUserOriginalPhotosUseCase;
   late final GetUpdatedSelectedClothesUseCase _getUpdatedSelectedClothesUseCase;
   late final GetClothesUseCase _getClothesUseCase;
+  late final GenerateOutfitUseCase _generateOutfitUseCase;
+  late final SetIsOutfitFavoriteUseCase _setIsOutfitFavoriteUseCase;
   late final ImageFetcher _multipleImageFetcher;
 
   CheckroomViewModel() {
     _getUserOriginalPhotosUseCase = getIt();
     _getUpdatedSelectedClothesUseCase = getIt();
     _getClothesUseCase = getIt();
+    _setIsOutfitFavoriteUseCase = getIt();
+    _generateOutfitUseCase = getIt();
     _multipleImageFetcher = getIt();
   }
 
@@ -59,12 +68,13 @@ class CheckroomViewModel extends _$CheckroomViewModel {
 
   void _convertUserImagesAndShow(List<UserPhoto> userPhotosWithUrls) async {
     final userPhotosWithPaths = await _multipleImageFetcher
-        .downloadImagesToCachePaths(userPhotosWithUrls);
+        .downloadImagesToCachePaths(userPhotosWithUrls, suffix: "_original");
     final convertedUserPhotos = userPhotosWithPaths.asUserPhotosList();
 
     state = state.copyWith(
-      userPhotos: convertedUserPhotos,
-      selectedUserPhoto: convertedUserPhotos.firstOrNull,
+      userPhotos:
+          convertedUserPhotos.getWithDefaultAsFirst().asUserPhotosList(),
+      selectedUserPhoto: convertedUserPhotos.getDefaultOrFirst() as UserPhoto?,
       isUserPhotosEmpty: convertedUserPhotos.isEmpty,
       isUserPhotosLoading: false,
     );
@@ -107,6 +117,72 @@ class CheckroomViewModel extends _$CheckroomViewModel {
     final updatedSelectedClothes = List.of(state.selectedClothes)
       ..removeWhere((clothing) => clothing.id == id);
     _setClothesWithSelection(state.clothes, updatedSelectedClothes);
+  }
+
+  void generateOutfit() async {
+    state = state.copyWith(isGenerateLoading: true);
+    final request = GenerateOutfitBody.from(
+        state.selectedUserPhoto?.id ?? "", state.selectedClothes);
+
+    final result = await _generateOutfitUseCase(request);
+    final cacheDir = await getTemporaryDirectory();
+
+    result.collect((response) async {
+      final String generatedImagePath =
+          '${cacheDir.path}/${response.id}_outfit.webp';
+      await _multipleImageFetcher.downloadAndCacheImage(
+          response.image, generatedImagePath);
+      ref.invalidate(homeViewModelProvider);
+      state = state.copyWith(
+        generatedOutfitPath: generatedImagePath,
+        isGenerateLoading: false,
+        generatedOutfitId: response.id,
+      );
+    }, (failure) {
+      ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+      state = state.copyWith(
+        isGenerateLoading: false,
+        generatedOutfitId: "",
+      );
+    });
+  }
+
+  Timer? _spamLikeTimer;
+
+  void toggleLikeOutfit() {
+    state = state.copyWith(isLiked: !state.isLiked);
+    _spamLikeTimer?.cancel();
+    _spamLikeTimer =
+        Timer(Duration(seconds: 1), () => _performToggleLikeOutfit());
+  }
+
+  void _performToggleLikeOutfit() async {
+    final result = await _setIsOutfitFavoriteUseCase(
+        state.generatedOutfitId, state.isLiked);
+
+    result.collect((_) {
+      ///Do nothing
+    }, (failure) {
+      ref.read(appGlobalViewModelProvider.notifier).showFailure(failure);
+    });
+  }
+
+  void backToTryOnStep() {
+    state = state.copyWith(
+      generatedOutfitPath: null,
+      isLiked: false,
+      selectedUserPhoto: state.userPhotos.getDefaultOrFirst() as UserPhoto?,
+    );
+  }
+
+  void backToTryOnStepWithClearedSelected() {
+    state = state.copyWith(
+      generatedOutfitPath: null,
+      selectedClothes: [],
+      isLiked: false,
+      selectedUserPhoto: state.userPhotos.getDefaultOrFirst() as UserPhoto?,
+    );
+    _setClothesWithSelection(state.clothes, []);
   }
 
   /// clothing list handling
