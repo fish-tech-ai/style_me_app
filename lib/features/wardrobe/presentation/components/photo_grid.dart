@@ -7,6 +7,7 @@ class PhotoGrid extends StatelessWidget {
   final Function(PhotoItem photoItem) onItemClicked;
   final Clip clipBehavior;
   final ScrollController? scrollController;
+  final double bottomInset;
 
   /// when null item buttons will not appear
   final Function(PhotoItem photoItem)? onFavoriteClicked;
@@ -22,6 +23,7 @@ class PhotoGrid extends StatelessWidget {
     this.onFavoriteClicked,
     this.onDeleteClicked,
     this.onDownloadClicked,
+    this.bottomInset = 0,
   });
 
   @override
@@ -29,7 +31,7 @@ class PhotoGrid extends StatelessWidget {
     return GridView.builder(
       clipBehavior: clipBehavior,
       controller: scrollController,
-      padding: EdgeInsets.zero,
+      padding: EdgeInsets.zero.copyWith(bottom: bottomInset),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 12,
