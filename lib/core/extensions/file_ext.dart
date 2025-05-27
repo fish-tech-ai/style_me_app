@@ -85,4 +85,15 @@ extension ImageTransformations on File {
     }
     return this;
   }
+
+  Future<void> safeWriteFile(String path, String contents) async {
+    final file = File(path);
+    final directory = file.parent;
+
+    if (!await directory.exists()) {
+      await directory.create(recursive: true);
+    }
+
+    await file.writeAsString(contents);
+  }
 }

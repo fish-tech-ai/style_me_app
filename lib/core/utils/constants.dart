@@ -48,7 +48,7 @@ abstract class ImageTransformationsOptions {
 }
 
 abstract class CacheFileNames {
-  static const String privacyPolicy = "privacy_policy.md";
-  static const String termsOfUse = "terms_of_use.md";
+  static const String privacyPolicy = "legals/privacy_policy.md";
+  static const String termsOfUse = "legals/terms_of_use.md";
 }
 
