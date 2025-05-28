@@ -31,9 +31,12 @@ class UserPhotosListPage extends StatelessWidget {
 
   Widget _buildUserPhotosPage(BuildContext context) {
     if (!state.isUserPhotosLoading && state.userPhotos.isEmpty) {
-      return EmptyPage(
-        title: localizations.nothingFound,
-        subTitle: localizations.nothingFoundSubText,
+      return _buildWithAddButtonIfNeeded(
+        context,
+        child: EmptyPage(
+          title: localizations.nothingFound,
+          subTitle: localizations.nothingFoundSubText,
+        ),
       );
     } else if (state.isUserPhotosLoading) {
       return Align(
@@ -45,15 +48,23 @@ class UserPhotosListPage extends StatelessWidget {
       );
     }
 
+    return _buildWithAddButtonIfNeeded(
+      context,
+      child: PhotoGrid(
+        items: state.userPhotos,
+        clipBehavior: Clip.none,
+        bottomInset: 72,
+        onItemClicked: (item) => onItemClicked(item, context),
+      ),
+    );
+  }
+
+  Widget _buildWithAddButtonIfNeeded(BuildContext context,
+      {required Widget child}) {
     return Stack(
       fit: StackFit.expand,
       children: [
-        PhotoGrid(
-          items: state.userPhotos,
-          clipBehavior: Clip.none,
-          bottomInset: 72,
-          onItemClicked: (item) => onItemClicked(item, context),
-        ),
+        child,
         Positioned(
           bottom: 12,
           right: 12,

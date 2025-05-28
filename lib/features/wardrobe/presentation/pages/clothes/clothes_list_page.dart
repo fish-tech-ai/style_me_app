@@ -93,7 +93,7 @@ class _ClothesListPageState extends State<ClothesListPage> {
 
   Widget _buildClothesPage(BuildContext context) {
     if (!widget.isLoading && widget.clothes.isEmpty) {
-      return _buildEmptyPage();
+      return _buildWithAddButtonIfNeeded(child: _buildEmptyPage());
     }
     return _buildWithAddButtonIfNeeded(
       child: widget.isLoading
