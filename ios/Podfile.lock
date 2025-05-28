@@ -1,0 +1,279 @@
+PODS:
+  - app_links (0.0.2):
+    - Flutter
+  - app_settings (5.1.1):
+    - Flutter
+  - AppAuth (1.7.6):
+    - AppAuth/Core (= 1.7.6)
+    - AppAuth/ExternalUserAgent (= 1.7.6)
+  - AppAuth/Core (1.7.6)
+  - AppAuth/ExternalUserAgent (1.7.6):
+    - AppAuth/Core
+  - camera_avfoundation (0.0.1):
+    - Flutter
+  - connectivity_plus (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - device_info_plus (0.0.1):
+    - Flutter
+  - Firebase/Auth (11.7.0):
+    - Firebase/CoreOnly
+    - FirebaseAuth (~> 11.7.0)
+  - Firebase/CoreOnly (11.7.0):
+    - FirebaseCore (~> 11.7.0)
+  - firebase_auth (5.4.2):
+    - Firebase/Auth (= 11.7.0)
+    - firebase_core
+    - Flutter
+  - firebase_core (3.11.0):
+    - Firebase/CoreOnly (= 11.7.0)
+    - Flutter
+  - FirebaseAppCheckInterop (11.13.0)
+  - FirebaseAuth (11.7.0):
+    - FirebaseAppCheckInterop (~> 11.0)
+    - FirebaseAuthInterop (~> 11.0)
+    - FirebaseCore (~> 11.7.0)
+    - FirebaseCoreExtension (~> 11.7.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
+    - GoogleUtilities/Environment (~> 8.0)
+    - GTMSessionFetcher/Core (< 5.0, >= 3.4)
+    - RecaptchaInterop (~> 100.0)
+  - FirebaseAuthInterop (11.13.0)
+  - FirebaseCore (11.7.0):
+    - FirebaseCoreInternal (~> 11.7.0)
+    - GoogleUtilities/Environment (~> 8.0)
+    - GoogleUtilities/Logger (~> 8.0)
+  - FirebaseCoreExtension (11.7.0):
+    - FirebaseCore (~> 11.7.0)
+  - FirebaseCoreInternal (11.7.0):
+    - "GoogleUtilities/NSData+zlib (~> 8.0)"
+  - Flutter (1.0.0)
+  - flutter_image_compress_common (1.0.0):
+    - Flutter
+    - Mantle
+    - SDWebImage
+    - SDWebImageWebPCoder
+  - flutter_native_splash (2.4.3):
+    - Flutter
+  - gal (1.0.0):
+    - Flutter
+    - FlutterMacOS
+  - google_sign_in_ios (0.0.1):
+    - AppAuth (>= 1.7.4)
+    - Flutter
+    - FlutterMacOS
+    - GoogleSignIn (~> 7.1)
+    - GTMSessionFetcher (>= 3.4.0)
+  - GoogleSignIn (7.1.0):
+    - AppAuth (< 2.0, >= 1.7.3)
+    - GTMAppAuth (< 5.0, >= 4.1.1)
+    - GTMSessionFetcher/Core (~> 3.3)
+  - GoogleUtilities/AppDelegateSwizzler (8.1.0):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Environment (8.1.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Logger (8.1.0):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Network (8.1.0):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Privacy
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (8.1.0)":
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Privacy (8.1.0)
+  - GoogleUtilities/Reachability (8.1.0):
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Privacy
+  - GTMAppAuth (4.1.1):
+    - AppAuth/Core (~> 1.7)
+    - GTMSessionFetcher/Core (< 4.0, >= 3.3)
+  - GTMSessionFetcher (3.5.0):
+    - GTMSessionFetcher/Full (= 3.5.0)
+  - GTMSessionFetcher/Core (3.5.0)
+  - GTMSessionFetcher/Full (3.5.0):
+    - GTMSessionFetcher/Core
+  - image_picker_ios (0.0.1):
+    - Flutter
+  - irondash_engine_context (0.0.1):
+    - Flutter
+  - libwebp (1.5.0):
+    - libwebp/demux (= 1.5.0)
+    - libwebp/mux (= 1.5.0)
+    - libwebp/sharpyuv (= 1.5.0)
+    - libwebp/webp (= 1.5.0)
+  - libwebp/demux (1.5.0):
+    - libwebp/webp
+  - libwebp/mux (1.5.0):
+    - libwebp/demux
+  - libwebp/sharpyuv (1.5.0)
+  - libwebp/webp (1.5.0):
+    - libwebp/sharpyuv
+  - Mantle (2.2.0):
+    - Mantle/extobjc (= 2.2.0)
+  - Mantle/extobjc (2.2.0)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - RecaptchaInterop (100.0.0)
+  - SDWebImage (5.21.0):
+    - SDWebImage/Core (= 5.21.0)
+  - SDWebImage/Core (5.21.0)
+  - SDWebImageWebPCoder (0.14.6):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.17)
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - sqlite3 (3.48.0):
+    - sqlite3/common (= 3.48.0)
+  - sqlite3/common (3.48.0)
+  - sqlite3/dbstatvtab (3.48.0):
+    - sqlite3/common
+  - sqlite3/fts5 (3.48.0):
+    - sqlite3/common
+  - sqlite3/perf-threadsafe (3.48.0):
+    - sqlite3/common
+  - sqlite3/rtree (3.48.0):
+    - sqlite3/common
+  - sqlite3_flutter_libs (0.0.1):
+    - Flutter
+    - FlutterMacOS
+    - sqlite3 (~> 3.48.0)
+    - sqlite3/dbstatvtab
+    - sqlite3/fts5
+    - sqlite3/perf-threadsafe
+    - sqlite3/rtree
+  - super_native_extensions (0.0.1):
+    - Flutter
+  - url_launcher_ios (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - app_links (from `.symlinks/plugins/app_links/ios`)
+  - app_settings (from `.symlinks/plugins/app_settings/ios`)
+  - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/darwin`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
+  - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
+  - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_image_compress_common (from `.symlinks/plugins/flutter_image_compress_common/ios`)
+  - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
+  - gal (from `.symlinks/plugins/gal/darwin`)
+  - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - irondash_engine_context (from `.symlinks/plugins/irondash_engine_context/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+  - sqlite3_flutter_libs (from `.symlinks/plugins/sqlite3_flutter_libs/darwin`)
+  - super_native_extensions (from `.symlinks/plugins/super_native_extensions/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+
+SPEC REPOS:
+  trunk:
+    - AppAuth
+    - Firebase
+    - FirebaseAppCheckInterop
+    - FirebaseAuth
+    - FirebaseAuthInterop
+    - FirebaseCore
+    - FirebaseCoreExtension
+    - FirebaseCoreInternal
+    - GoogleSignIn
+    - GoogleUtilities
+    - GTMAppAuth
+    - GTMSessionFetcher
+    - libwebp
+    - Mantle
+    - RecaptchaInterop
+    - SDWebImage
+    - SDWebImageWebPCoder
+    - sqlite3
+
+EXTERNAL SOURCES:
+  app_links:
+    :path: ".symlinks/plugins/app_links/ios"
+  app_settings:
+    :path: ".symlinks/plugins/app_settings/ios"
+  camera_avfoundation:
+    :path: ".symlinks/plugins/camera_avfoundation/ios"
+  connectivity_plus:
+    :path: ".symlinks/plugins/connectivity_plus/darwin"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
+  firebase_auth:
+    :path: ".symlinks/plugins/firebase_auth/ios"
+  firebase_core:
+    :path: ".symlinks/plugins/firebase_core/ios"
+  Flutter:
+    :path: Flutter
+  flutter_image_compress_common:
+    :path: ".symlinks/plugins/flutter_image_compress_common/ios"
+  flutter_native_splash:
+    :path: ".symlinks/plugins/flutter_native_splash/ios"
+  gal:
+    :path: ".symlinks/plugins/gal/darwin"
+  google_sign_in_ios:
+    :path: ".symlinks/plugins/google_sign_in_ios/darwin"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
+  irondash_engine_context:
+    :path: ".symlinks/plugins/irondash_engine_context/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+  sqlite3_flutter_libs:
+    :path: ".symlinks/plugins/sqlite3_flutter_libs/darwin"
+  super_native_extensions:
+    :path: ".symlinks/plugins/super_native_extensions/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
+
+SPEC CHECKSUMS:
+  app_links: e7a6750a915a9e161c58d91bc610e8cd1d4d0ad0
+  app_settings: 58017cd26b604ae98c3e65acbdd8ba173703cc82
+  AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
+  camera_avfoundation: dd002b0330f4981e1bbcb46ae9b62829237459a4
+  connectivity_plus: 18382e7311ba19efcaee94442b23b32507b20695
+  device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
+  Firebase: a64bf6a8546e6eab54f1c715cd6151f39d2329f4
+  firebase_auth: bcc25c2992fb3e655b59faca6f0f5bc9215d463d
+  firebase_core: aa979ae726f00b3ef4ccf59dfb96170af84efbd4
+  FirebaseAppCheckInterop: 72066489c209823649a997132bcd9269bc33a4bb
+  FirebaseAuth: 77e25aa24f3e1c626c5babd3338551fc1669ee0e
+  FirebaseAuthInterop: 4fa327ec3c551a80a6929561f83af80b1dd44937
+  FirebaseCore: 3227e35f4197a924206fbcdc0349325baf4f5de4
+  FirebaseCoreExtension: 206c1b399f0d103055207c16f299b28e3dbd1949
+  FirebaseCoreInternal: d6c17dafc8dc33614733a8b52df78fcb4394c881
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_image_compress_common: ec1d45c362c9d30a3f6a0426c297f47c52007e3e
+  flutter_native_splash: f71420956eb811e6d310720fee915f1d42852e7a
+  gal: 6a522c75909f1244732d4596d11d6a2f86ff37a5
+  google_sign_in_ios: 07375bfbf2620bc93a602c0e27160d6afc6ead38
+  GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
+  GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
+  GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
+  GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
+  image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
+  irondash_engine_context: 3458bf979b90d616ffb8ae03a150bafe2e860cc9
+  libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
+  Mantle: c5aa8794a29a022dfbbfc9799af95f477a69b62d
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+  RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
+  SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868
+  SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
+  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
+  sqlite3: 3da10a59910c809fb584a93aa46a3f05b785e12e
+  sqlite3_flutter_libs: 5f386339eccc9516a12ab10e4aa925cbef5f2dcf
+  super_native_extensions: 4916b3c627a9c7fffdc48a23a9eca0b1ac228fa7
+  url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
+
+PODFILE CHECKSUM: a57f30d18f102dd3ce366b1d62a55ecbef2158e5
+
+COCOAPODS: 1.16.2
