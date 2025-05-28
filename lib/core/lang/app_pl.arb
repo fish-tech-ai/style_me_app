@@ -167,5 +167,9 @@
   "galTypeUnexpected": "Coś poszło nie tak. Spróbuj ponownie później.",
   "downloadImageSuccess": "Zdjęcie zostało pobrane pomyślnie.",
   "downloadingInProgress": "Pobieranie...",
-  "downloadNoPermissionsButtonText": "Zarządzaj uprawnieniami"
+  "downloadNoPermissionsButtonText": "Zarządzaj uprawnieniami",
+  "photoFetcherNoCameraPermissionsTitle": "Brak uprawnień do kamery.",
+  "photoFetcherNoCameraPermissionsSubtitle": "Otwórz ustawienia aplikacji > uprawnienia i zezwól na używanie kamery.",
+  "photoFetcherNoCameraPermissionsGoToSettings": "Przejdź do ustawień"
+
 }

@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/app/presentation/components/app_status.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
-import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/extensions/go_router_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
@@ -76,7 +75,6 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    debugMessagePrint("AppLifecycleState state dispose");
     super.dispose();
   }
 

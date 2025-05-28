@@ -474,7 +474,8 @@ class MockAppLocalizations extends AppLocalizations {
   String get downloadImageSuccess => "downloadImageSuccess";
 
   @override
-  String get downloadNoPermissionsButtonText => "downloadNoPermissionsButtonText";
+  String get downloadNoPermissionsButtonText =>
+      "downloadNoPermissionsButtonText";
 
   @override
   String get downloadingInProgress => "downloadingInProgress";
@@ -490,4 +491,16 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get galTypeUnexpected => "galTypeUnexpected";
+
+  @override
+  String get photoFetcherNoCameraPermissionsGoToSettings =>
+      "photoFetcherNoCameraPermissionsGoToSettings";
+
+  @override
+  String get photoFetcherNoCameraPermissionsSubtitle =>
+      "photoFetcherNoCameraPermissionsSubtitle";
+
+  @override
+  String get photoFetcherNoCameraPermissionsTitle =>
+      "photoFetcherNoCameraPermissionsTitle";
 }
