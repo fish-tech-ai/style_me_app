@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/views/containers/bottom_sheet_container.dart';
 
-void debugMessagePrint(String message) {
+void debugMessagePrint(String message, [String label = ""]) {
   if (kDebugMode) {
-    print(message);
+    print("$label$message");
   }
 }
 

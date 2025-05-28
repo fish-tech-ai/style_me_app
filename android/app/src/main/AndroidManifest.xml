@@ -17,6 +17,7 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
             android:taskAffinity=""
+            android:screenOrientation="portrait"
             android:theme="@style/LaunchTheme"
             android:windowSoftInputMode="adjustResize">
             <meta-data android:name="flutter_deeplinking_enabled" android:value="false" />
