@@ -5,13 +5,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/views/animators/countdown_timer.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_icon_button.dart';
 import 'package:style_me/core/views/ui_models/app_button_icon_data.dart';
+import 'package:style_me/core/views/ui_models/countdown_option_enum.dart';
 import 'package:style_me/core/views/ui_models/icon_position.dart';
+import 'package:style_me/features/wardrobe/presentation/components/add_photos/expandable_timer_picker.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/photo_take_button.dart';
 
-class CameraPickerView extends StatelessWidget {
+class CameraPickerView extends StatefulWidget {
   final CameraController controller;
   final bool isInitialized;
   final Function() onOpenGalleryClicked;
@@ -30,14 +33,23 @@ class CameraPickerView extends StatelessWidget {
   });
 
   @override
+  State<CameraPickerView> createState() => _CameraPickerViewState();
+}
+
+class _CameraPickerViewState extends State<CameraPickerView> {
+  bool isTimerPickerExpanded = false;
+  bool showCountdownTimer = false;
+  int? _countdownTime;
+
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: LayoutBuilder(builder: (context, constraints) {
         double? parentAspectRatio;
         double? scale;
 
-        if (isInitialized) {
-          CameraValue camera = controller.value;
+        if (widget.isInitialized) {
+          CameraValue camera = widget.controller.value;
           parentAspectRatio = constraints.maxWidth / constraints.maxHeight;
           scale = parentAspectRatio * camera.aspectRatio;
           if (scale < 1) scale = 1 / scale;
@@ -52,7 +64,7 @@ class CameraPickerView extends StatelessWidget {
               bottom: 24,
               child: AppIconButton(
                 icon: Icon(Icons.image_outlined),
-                onClick: onOpenGalleryClicked,
+                onClick: widget.onOpenGalleryClicked,
               ),
             ),
             Positioned(
@@ -62,23 +74,36 @@ class CameraPickerView extends StatelessWidget {
                 icon: SvgPicture.asset("assets/circle_icon.svg"),
                 backgroundColor: context.colorScheme.secondary,
                 border: Border.all(color: context.colorScheme.primary),
-                onClick: onRotateCameraClicked,
+                onClick: widget.onRotateCameraClicked,
               ),
-            ).orEmpty(!isInitialized),
+            ).orEmpty(!widget.isInitialized),
             Positioned(
               bottom: 56,
               child: PhotoTakeButton(
-                onClick: () => onTakePictureClicked(parentAspectRatio ?? 1),
+                onClick: () async {
+                  await countdownIfNeeded();
+                  return widget.onTakePictureClicked(parentAspectRatio ?? 1);
+                },
               ),
-            ).orEmpty(!isInitialized),
+            ).orEmpty(!widget.isInitialized),
             Positioned(
               right: 12,
               top: 12,
               child: AppIconButton(
                 icon: Icon(Icons.content_paste_go_rounded),
-                onClick: onPasteFromClipboard,
+                onClick: widget.onPasteFromClipboard,
               ),
             ),
+            Positioned(
+              left: 12,
+              top: 12,
+              child: ExpandableTimerPicker(
+                onOptionSelected: _setCountdownTime,
+              ),
+            ).orEmpty(!widget.isInitialized),
+            Positioned.fill(
+              child: CountdownTimer(_countdownTime),
+            ).orEmpty(!showCountdownTimer)
           ],
         );
       }),
@@ -86,15 +111,15 @@ class CameraPickerView extends StatelessWidget {
   }
 
   Widget _buildCameraPreview(BoxConstraints constraints, double scale) {
-    if (isInitialized) {
+    if (widget.isInitialized) {
       return Transform.flip(
-        flipX:
-        controller.description.lensDirection == CameraLensDirection.front,
+        flipX: widget.controller.description.lensDirection ==
+            CameraLensDirection.front,
         child: Transform.scale(
           scale: scale,
           child: Center(
             child: CameraPreview(
-              controller,
+              widget.controller,
             ),
           ),
         ),
@@ -133,5 +158,27 @@ class CameraPickerView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _setCountdownTime(CountdownOptionEnum? option) {
+    _countdownTime = option?.value ?? 0;
+  }
+
+  Future<void> countdownIfNeeded() async {
+    if (_countdownTime == null || _countdownTime == 0) return;
+
+    setState(() {
+      showCountdownTimer = true;
+    });
+    for (int i = _countdownTime!; i >= 0; i--) {
+      setState(() {
+        _countdownTime = i;
+      });
+      await Future.delayed(const Duration(seconds: 1));
+    }
+    setState(() {
+      showCountdownTimer = false;
+      _countdownTime = null;
+    });
   }
 }
