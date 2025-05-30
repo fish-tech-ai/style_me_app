@@ -11,6 +11,7 @@ import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/core/views/app_bottom_nav_bar.dart';
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
+import 'package:style_me/features/onboarding/onboarding_widget_factory.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 
 ///Initialization point for all operations that need to use localizations, MediaQuery etc.
@@ -27,7 +28,6 @@ class AppWrapper extends ConsumerStatefulWidget {
 
 class _AppWrapperState extends ConsumerState<AppWrapper>
     with WidgetsBindingObserver {
-
   @override
   void initState() {
     super.initState();
@@ -85,7 +85,8 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
         appGlobalViewModelProvider.select((state) => state.bottomBarState));
     return Stack(children: [
       Container(
-        padding: bottomBarState.isVisible ? MediaQuery.of(context).padding : null,
+        padding:
+            bottomBarState.isVisible ? MediaQuery.of(context).padding : null,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Column(
@@ -126,6 +127,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
           ),
         ),
       ),
+      OnboardingWidgetFactory.step1(),
     ]);
   }
 }

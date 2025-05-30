@@ -20,7 +20,7 @@ class ArrowPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.red
+      ..color = color
       ..strokeWidth = 4
       ..style = PaintingStyle.stroke
     ..strokeCap = StrokeCap.round;

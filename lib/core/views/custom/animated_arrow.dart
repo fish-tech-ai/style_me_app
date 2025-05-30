@@ -18,7 +18,7 @@ class AnimatedArrow extends StatelessWidget {
     this.duration = const Duration(seconds: 1),
     this.animCurve = Curves.easeInOut,
     this.color,
-    this.curvature = 0.2,
+    this.curvature = 0.4,
   });
 
   @override

@@ -9,13 +9,14 @@ import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enu
 class PageWithFloatingAddButton extends StatefulWidget {
   final Function() addClothingClicked;
   final Function() addUserPhotoClicked;
+  final EdgeInsets margin;
   final Widget child;
 
   const PageWithFloatingAddButton(
       {super.key,
       required this.child,
       required this.addClothingClicked,
-      required this.addUserPhotoClicked});
+      required this.addUserPhotoClicked, this.margin = const EdgeInsets.all(24)});
 
   @override
   State<PageWithFloatingAddButton> createState() =>
@@ -42,8 +43,8 @@ class _PageWithFloatingAddButtonState extends State<PageWithFloatingAddButton> {
           ),
         Builder(builder: (context) {
           return Positioned(
-            right: 24,
-            bottom: 24,
+            right: widget.margin.right,
+            bottom: widget.margin.bottom,
             child: Column(
               spacing: 6,
               crossAxisAlignment: CrossAxisAlignment.end,
