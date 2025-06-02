@@ -134,7 +134,8 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
     state = state.copyWith(
       bottomBarState: state.bottomBarState.copyWith(
         items: state.bottomBarState.items.mapIndexed((index, item) {
-          return item.copyWith(isSelected: appPageWithNavIndex.bottomNavIndex == index);
+          return item.copyWith(
+              isSelected: appPageWithNavIndex.bottomNavIndex == index);
         }).toList(),
       ),
     );
@@ -152,6 +153,35 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
   Future clearCache() async {
     final cacheDir = await getTemporaryDirectory();
     await _clearAppCacheUseCase(cacheDir.path);
+  }
+
+  void onboardingStart() {
+    state = state.copyWith(
+      onboardingStep: 0,
+      isUserMakingOnboardingActions: false,
+      isOnboardingRunning: true,
+    );
+  }
+
+  void goToNextOnBoardingStep() {
+    state = state.copyWith(onboardingStep: state.onboardingStep + 1);
+  }
+
+  void showCurrentOnboardingPageStep() {
+    state = state.copyWith(isUserMakingOnboardingActions: false);
+  }
+
+  void hideCurrentOnboardingPageStep() {
+    state = state.copyWith(isUserMakingOnboardingActions: true);
+    goToNextOnBoardingStep();
+  }
+
+  void onboardingStop() {
+    state = state.copyWith(
+      onboardingStep: 0,
+      isUserMakingOnboardingActions: true,
+      isOnboardingRunning: false,
+    );
   }
 
   @visibleForTesting

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/utils/constants.dart';
@@ -220,8 +221,12 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
           borderRadius: GlobalUiConst.borderRadiusLarge,
         ),
       ),
-      onClick: () {
-        viewModel.generateOutfit();
+      onClick: () async {
+        await viewModel.generateOutfit();
+        if (ref.globalState.isOnboardingRunning) {
+          await Future.delayed(Duration(seconds: 2));
+          ref.globalViewModel.showCurrentOnboardingPageStep();
+        }
       },
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_type_enum.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
@@ -28,6 +29,9 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
     super.initState();
     viewModel = ref.read(addUserPhotoViewModelProvider.notifier);
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.globalViewModel.showCurrentOnboardingPageStep();
+    });
   }
 
   @override
@@ -98,7 +102,13 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
               : localizations.continueText,
           isImageAddLoading: state.isImageAddLoading,
           onTryAgainClicked: () => viewModel.onBackAction(),
-          onAcceptClicked: () => viewModel.onAcceptClicked(() => context.pop()),
+          onAcceptClicked: () => viewModel.onAcceptClicked(() {
+            if (ref.globalState.isOnboardingRunning) {
+              ref.globalViewModel.showCurrentOnboardingPageStep();
+              return;
+            }
+            context.pop();
+          }),
           imageDataForm: UserPhotoAddForm(
             isVisible: state.addPhotoPageMode == AddPhotoPageMode.fillData,
             nameText: state.userPhotoForm.nameText,

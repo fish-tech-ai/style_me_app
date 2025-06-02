@@ -5,8 +5,10 @@ import 'package:style_me/core/utils/constants.dart';
 
 class HomeHeaderBanner extends StatelessWidget {
   final String userName;
+  final Function() onClick;
 
-  const HomeHeaderBanner({super.key, required this.userName});
+  const HomeHeaderBanner(
+      {super.key, required this.userName, required this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class HomeHeaderBanner extends StatelessWidget {
                 fit: BoxFit.cover),
           ),
           child: InkWell(
-            onTap: () {},
+            onTap: onClick,
             child: Container(
               decoration: BoxDecoration(
                 color: context.colorScheme.primaryContainer,

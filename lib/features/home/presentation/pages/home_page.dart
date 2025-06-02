@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/buttons/floating/page_with_floating_add_button.dart';
@@ -33,6 +34,7 @@ class HomePage extends ConsumerWidget {
           return buildContent(
             state,
             context,
+            ref,
             onFavoriteClicked:
                 ref.read(homeViewModelProvider.notifier).toggleFavoriteFor,
           );
@@ -44,12 +46,21 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget buildContent(HomeStateHolder state, BuildContext context,
-      {required Function(PhotoItem outfit) onFavoriteClicked}) {
+  Widget buildContent(
+    HomeStateHolder state,
+    BuildContext context,
+    WidgetRef ref, {
+    required Function(PhotoItem outfit) onFavoriteClicked,
+  }) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          HomeHeaderBanner(userName: state.userName),
+          HomeHeaderBanner(
+            userName: state.userName,
+            onClick: () {
+              ref.globalViewModel.onboardingStart();
+            },
+          ),
           buildCarousels(state, context, onFavoriteClicked)
               .or(buildEmptyPage(), state.noOutfitsAvailable()),
         ],

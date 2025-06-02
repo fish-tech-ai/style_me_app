@@ -13,5 +13,8 @@ class AppGlobalStateHolder with _$AppGlobalStateHolder {
     @Default(true) bool isConnected,
     @Default(BannerMessage()) BannerMessage bannerMessage,
     @Default(BottomBarState()) BottomBarState bottomBarState,
+    @Default(false) isOnboardingRunning,
+    @Default(false) isUserMakingOnboardingActions,
+    @Default(0) int onboardingStep
   }) = _AppStateHolder;
 }

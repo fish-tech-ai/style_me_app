@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
-import 'package:style_me/core/views/animators/animated_visibility.dart';
-import 'package:style_me/core/views/buttons/app_icon_button.dart';
-import 'package:style_me/core/views/buttons/floating/floating_add_clothing_button.dart';
-import 'package:style_me/core/views/buttons/floating/floating_add_user_photo_button.dart';
-import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
+import 'package:style_me/core/views/buttons/floating/add_photo_menu_button.dart';
 
 class PageWithFloatingAddButton extends StatefulWidget {
   final Function() addClothingClicked;
@@ -12,11 +8,13 @@ class PageWithFloatingAddButton extends StatefulWidget {
   final EdgeInsets margin;
   final Widget child;
 
-  const PageWithFloatingAddButton(
-      {super.key,
-      required this.child,
-      required this.addClothingClicked,
-      required this.addUserPhotoClicked, this.margin = const EdgeInsets.all(24)});
+  const PageWithFloatingAddButton({
+    super.key,
+    required this.child,
+    required this.addClothingClicked,
+    required this.addUserPhotoClicked,
+    this.margin = const EdgeInsets.all(24),
+  });
 
   @override
   State<PageWithFloatingAddButton> createState() =>
@@ -45,24 +43,11 @@ class _PageWithFloatingAddButtonState extends State<PageWithFloatingAddButton> {
           return Positioned(
             right: widget.margin.right,
             bottom: widget.margin.bottom,
-            child: Column(
-              spacing: 6,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                AnimatedVisibility(
-                  isVisible: isExpanded,
-                  animateAtFirstBuild: false,
-                  animDirection: AnimDirectionEnum.bottomToTop,
-                  duration: Duration(milliseconds: 300),
-                  child: _buildExpandableButtons(),
-                ),
-                AppIconButton(
-                  onClick: toggleButtons,
-                  padding: EdgeInsets.all(14),
-                  icon: Icon(Icons.add_rounded),
-                  elevation: 4,
-                ),
-              ],
+            child: AddPhotoMenuButton(
+              isExpanded: isExpanded,
+              onClicked: toggleButtons,
+              addClothingClicked: widget.addClothingClicked,
+              addUserPhotoClicked: widget.addUserPhotoClicked,
             ),
           );
         }),
@@ -80,16 +65,5 @@ class _PageWithFloatingAddButtonState extends State<PageWithFloatingAddButton> {
     setState(() {
       isExpanded = !isExpanded;
     });
-  }
-
-  Widget _buildExpandableButtons() {
-    return Column(
-      spacing: 6,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        FloatingAddClothingButton(onClick: widget.addClothingClicked),
-        FloatingAddUserPhotoButton(onClick: widget.addUserPhotoClicked),
-      ],
-    );
   }
 }

@@ -11,7 +11,7 @@ import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/core/views/app_bottom_nav_bar.dart';
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
-import 'package:style_me/features/onboarding/onboarding_widget_factory.dart';
+import 'package:style_me/features/onboarding/presentation/onboarding_step_widget_provider.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 
 ///Initialization point for all operations that need to use localizations, MediaQuery etc.
@@ -127,7 +127,11 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
           ),
         ),
       ),
-      OnboardingWidgetFactory.step1(),
+      if (state.isOnboardingRunning && !state.isUserMakingOnboardingActions)
+        OnboardingStepWidgetProvider(
+          router: widget.router,
+          step: state.onboardingStep,
+        ),
     ]);
   }
 }

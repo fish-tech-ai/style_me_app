@@ -15,7 +15,7 @@ class AnimatedArrow extends StatelessWidget {
     super.key,
     required this.sourcePosition,
     required this.targetPosition,
-    this.duration = const Duration(seconds: 1),
+    this.duration = const Duration(milliseconds: 500),
     this.animCurve = Curves.easeInOut,
     this.color,
     this.curvature = 0.4,

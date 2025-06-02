@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:style_me/core/lang/localizations_helper.dart';
-import 'package:style_me/core/views/buttons/floating/page_with_floating_add_button.dart';
-import 'package:style_me/features/onboarding/presentation/components/onboarding_page.dart';
+import 'package:style_me/features/onboarding/presentation/steps/onboarding_step_1.dart';
+import 'package:style_me/features/onboarding/presentation/steps/onboarding_step_2.dart';
+import 'package:style_me/features/onboarding/presentation/steps/onboarding_step_3.dart';
+import 'package:style_me/features/onboarding/presentation/steps/onboarding_step_4.dart';
+import 'package:style_me/features/onboarding/presentation/steps/onboarding_step_5.dart';
 
 abstract class OnboardingWidgetFactory {
-  static Widget step1() {
-    return OnboardingStackPage.simple(
-      title: localizations.onboardingStep1Title("Suzan"),
-      subtitle: localizations.onboardingStep1SubTitle,
-      target: Offset(0.8, 0.88),
-      children: [
-        Positioned.fill(
-          child: PageWithFloatingAddButton(
-            addClothingClicked: () {},
-            addUserPhotoClicked: () {},
-            margin: EdgeInsets.only(right: 24, bottom: 56),
-            child: SizedBox(),
-          ),
-        ),
-      ],
-    );
+  static Widget startStep(Function() goToNextStep) {
+    return OnboardingStep1(goToNextStep: goToNextStep);
+  }
+
+  static Widget addClothingStep(Function() goToNextStep) {
+    return OnboardingStep2();
+  }
+
+  static Widget addUserPhotoStep(Function() goToNextStep) {
+    return OnboardingStep3();
+  }
+
+  static Widget tryOnStep(Function() goToNextStep) {
+    return OnboardingStep4(goToNextStep);
+  }
+
+  static Widget endStep(Function() goToNextStep) {
+    return OnboardingStep5();
   }
 }
