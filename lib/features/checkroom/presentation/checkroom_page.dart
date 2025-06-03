@@ -11,6 +11,7 @@ import 'package:style_me/core/utils/constants.dart';
 import 'package:style_me/core/views/buttons/app_back_button.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_icon_button.dart';
+import 'package:style_me/core/views/containers/onboarding_pop_scope.dart';
 import 'package:style_me/core/views/encrypted_image/encrypted_image.dart';
 import 'package:style_me/core/views/popups/app_draggable_horizontal_sheet.dart';
 import 'package:style_me/core/views/popups/app_persistent_bottom_sheet.dart';
@@ -49,11 +50,10 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   @override
   Widget build(BuildContext context) {
     final CheckroomStateHolder state = ref.watch(checkroomViewModelProvider);
-    return PopScope(
-      canPop: state.generatedOutfitPath == null,
-      onPopInvokedWithResult: (_, __) {
-        viewModel.backToTryOnStep();
-      },
+    return OnboardingPopScope(
+      ownCanPop: state.generatedOutfitPath == null &&
+          !ref.globalState.isOnboardingRunning,
+      onOnboardingNotRunning: () => viewModel.backToTryOnStep(),
       child: Stack(
         children: [
           if (state.generatedOutfitPath != null)

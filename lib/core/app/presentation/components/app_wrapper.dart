@@ -3,14 +3,17 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
+import 'package:style_me/core/app/presentation/components/app_dialog_overlay.dart';
 import 'package:style_me/core/app/presentation/components/app_status.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/go_router_ext.dart';
+import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/core/views/app_bottom_nav_bar.dart';
 import 'package:style_me/features/auth/presentation/ui_models/anim_direction_enum.dart';
+import 'package:style_me/features/onboarding/presentation/components/onboarding_exit_dialog.dart';
 import 'package:style_me/features/onboarding/presentation/onboarding_step_widget_provider.dart';
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 
@@ -131,6 +134,11 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
         OnboardingStepWidgetProvider(
           router: widget.router,
           step: state.onboardingStep,
+        ),
+      if (state.isOnboardingExitDialogVisible)
+        AppDialogOverlay(
+          child: OnboardingExitDialog(),
+          onDismiss: () => ref.globalViewModel.hideOnboardingExitDialog(),
         ),
     ]);
   }

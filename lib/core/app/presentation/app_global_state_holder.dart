@@ -15,6 +15,7 @@ class AppGlobalStateHolder with _$AppGlobalStateHolder {
     @Default(BottomBarState()) BottomBarState bottomBarState,
     @Default(false) isOnboardingRunning,
     @Default(false) isUserMakingOnboardingActions,
+    @Default(false) isOnboardingExitDialogVisible,
     @Default(0) int onboardingStep
   }) = _AppStateHolder;
 }

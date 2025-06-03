@@ -5,6 +5,7 @@ import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_type_enum.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
+import 'package:style_me/core/views/containers/onboarding_pop_scope.dart';
 import 'package:style_me/features/wardrobe/presentation/components/add_photos/image_acceptation_view.dart';
 import 'package:style_me/features/wardrobe/presentation/components/add_photos/user_photo_add_form.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/photo_fetcher.dart';
@@ -62,11 +63,10 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
       state.imageProcessingError,
       viewModel,
     );
-    return PopScope(
-      canPop: state.addPhotoPageMode == AddPhotoPageMode.pickPhoto,
-      onPopInvokedWithResult: (_, __) {
-        viewModel.onBackAction(() {});
-      },
+    return OnboardingPopScope(
+      ownCanPop: state.addPhotoPageMode == AddPhotoPageMode.pickPhoto &&
+          !ref.globalState.isOnboardingRunning,
+      handlePopBeforeDialogExitShow: () => handleBackPressWhenNeeded(state),
       child: Padding(
         padding: padding ?? EdgeInsets.zero,
         child: Column(
@@ -74,7 +74,13 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
             AppTopBar(
               title: localizations.userPhotoAddPageTitle,
               onBackButtonClicked: () {
-                viewModel.onBackAction(() => context.pop());
+                viewModel.onBackAction(() {
+                  if (ref.globalState.isOnboardingRunning) {
+                    ref.globalViewModel.showOnboardingExitDialog();
+                  } else {
+                    context.pop();
+                  }
+                });
               },
             ),
             _buildPageContentBasedOn(state, viewModel, context)
@@ -82,6 +88,14 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
         ),
       ),
     );
+  }
+
+  bool handleBackPressWhenNeeded(AddUserPhotoStateHolder state) {
+    if (state.addPhotoPageMode != AddPhotoPageMode.pickPhoto) {
+      viewModel.onBackAction(() {});
+      return true;
+    }
+    return false;
   }
 
   Widget _buildPageContentBasedOn(AddUserPhotoStateHolder state,

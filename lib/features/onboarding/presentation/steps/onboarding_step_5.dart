@@ -5,6 +5,7 @@ import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/features/onboarding/presentation/components/onboarding_stack_page.dart';
 
 class OnboardingStep5 extends ConsumerWidget {
+
   const OnboardingStep5({super.key});
 
   @override

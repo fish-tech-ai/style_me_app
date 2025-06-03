@@ -6,5 +6,5 @@ extension WidgetRefExt on WidgetRef {
   AppGlobalViewModel get globalViewModel =>
       read(appGlobalViewModelProvider.notifier);
 
-  AppGlobalStateHolder get globalState => read(appGlobalViewModelProvider);
+  AppGlobalStateHolder get globalState => watch(appGlobalViewModelProvider);
 }

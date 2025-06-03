@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/domain/usecases/clear_app_cache_use_case.dart';
@@ -155,7 +156,10 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
     await _clearAppCacheUseCase(cacheDir.path);
   }
 
-  void onboardingStart() {
+  GoRouter? _router;
+
+  void onboardingStart(GoRouter router) {
+    _router = router;
     state = state.copyWith(
       onboardingStep: 0,
       isUserMakingOnboardingActions: false,
@@ -177,6 +181,8 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
   }
 
   void onboardingStop() {
+    _router?.go(AppPage.homePage.path);
+    _router == null;
     state = state.copyWith(
       onboardingStep: 0,
       isUserMakingOnboardingActions: true,
@@ -193,4 +199,12 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
       this._confirmEmailUseCase,
       this._deepLinkManager,
       this._connection);
+
+  void showOnboardingExitDialog() {
+    state = state.copyWith(isOnboardingExitDialogVisible: true);
+  }
+
+  void hideOnboardingExitDialog() {
+    state = state.copyWith(isOnboardingExitDialogVisible: false);
+  }
 }

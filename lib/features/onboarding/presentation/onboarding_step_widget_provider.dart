@@ -14,7 +14,7 @@ class OnboardingStepWidgetProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(step >= 0 && step < OnboardingSteps.values.length,
         "Onboarding out of range");
-    final currentStep = OnboardingSteps.values.firstWhereIndexedOrNull(
+    final OnboardingSteps? currentStep = OnboardingSteps.values.firstWhereIndexedOrNull(
       (index, _) => index == step,
     );
     if (currentStep != null) {
