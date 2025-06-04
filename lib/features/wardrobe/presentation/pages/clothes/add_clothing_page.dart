@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_type_enum.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
+import 'package:style_me/core/views/containers/onboarding_pop_scope.dart';
 import 'package:style_me/features/wardrobe/presentation/components/add_photos/clothing_photo_add_form.dart';
 import 'package:style_me/features/wardrobe/presentation/components/add_photos/image_acceptation_view.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/photo_fetcher.dart';
@@ -28,6 +31,9 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage>
     super.initState();
     viewModel = ref.read(addClothingPhotoViewModelProvider.notifier);
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.globalViewModel.showCurrentOnboardingPageStep();
+    });
   }
 
   @override
@@ -58,11 +64,10 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage>
       state.imageProcessingError,
       viewModel,
     );
-    return PopScope(
-      canPop: state.addPhotoPageMode == AddPhotoPageMode.pickPhoto,
-      onPopInvokedWithResult: (_, __) {
-        viewModel.onBackAction(() {});
-      },
+    return OnboardingPopScope(
+      ownCanPop: state.addPhotoPageMode == AddPhotoPageMode.pickPhoto &&
+          !ref.globalState.isOnboardingRunning,
+      handlePopBeforeDialogExitShow: () => handleBackPressWithOnboarding(state),
       child: Padding(
         padding: padding ?? EdgeInsets.zero,
         child: Column(
@@ -70,7 +75,13 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage>
             AppTopBar(
               title: localizations.floatingAddClothingButtonText,
               onBackButtonClicked: () {
-                viewModel.onBackAction(() => context.pop());
+                viewModel.onBackAction(() {
+                  if (ref.globalState.isOnboardingRunning) {
+                    ref.globalViewModel.showOnboardingExitDialog();
+                  } else {
+                    context.pop();
+                  }
+                });
               },
             ),
             _buildPageContentBasedOn(state, viewModel, context)
@@ -78,6 +89,14 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage>
         ),
       ),
     );
+  }
+
+  bool handleBackPressWithOnboarding(AddClothingPhotoStateHolder state) {
+    if (state.addPhotoPageMode != AddPhotoPageMode.pickPhoto) {
+      viewModel.onBackAction(() {});
+      return true;
+    }
+    return false;
   }
 
   Widget _buildPageContentBasedOn(AddClothingPhotoStateHolder state,
@@ -102,8 +121,13 @@ class _AddClothingPageState extends ConsumerState<AddClothingPage>
                     : localizations.continueText,
             isImageAddLoading: state.isImageAddLoading,
             onTryAgainClicked: () => viewModel.onBackAction(),
-            onAcceptClicked: () =>
-                viewModel.onAcceptClicked(() => context.pop()),
+            onAcceptClicked: () => viewModel.onAcceptClicked(() {
+              if (ref.globalState.isOnboardingRunning) {
+                context.push(AppPage.userPhotoAdd.path);
+                return;
+              }
+              context.pop();
+            }),
             imageDataForm: ClothingPhotoAddForm(
               isVisible: state.addPhotoPageMode == AddPhotoPageMode.fillData,
               nameText: state.clothingForm.nameText,

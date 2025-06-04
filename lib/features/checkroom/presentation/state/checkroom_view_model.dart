@@ -119,7 +119,7 @@ class CheckroomViewModel extends _$CheckroomViewModel {
     _setClothesWithSelection(state.clothes, updatedSelectedClothes);
   }
 
-  void generateOutfit() async {
+  Future generateOutfit() async {
     state = state.copyWith(isGenerateLoading: true);
     final request = GenerateOutfitBody.from(
         state.selectedUserPhoto?.id ?? "", state.selectedClothes);

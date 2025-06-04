@@ -27,7 +27,7 @@ class SelectedClothesList extends StatelessWidget {
                 width: 150,
                 child: PhotoGridItem(
                   photo: clothing,
-                  labelMaxWidth: 140,
+                  labelWidthFraction: 2.8,
                   onItemClicked: (clothing) {},
                   onDeleteClicked: (clothing) {
                     onDeleteClicked(clothing as Clothing);

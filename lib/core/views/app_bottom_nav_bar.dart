@@ -8,6 +8,7 @@ import 'package:style_me/core/app/presentation/ui_models/bottom_bar_state.dart';
 import 'package:style_me/core/app/presentation/ui_models/bottom_nav_item.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/utils/constants.dart';
 
 class AppBottomNavBar extends ConsumerWidget {
@@ -46,8 +47,12 @@ class AppBottomNavBar extends ConsumerWidget {
         borderRadius: GlobalUiConst.borderRadiusNormal,
         child: GestureDetector(
           onTap: () {
+            if (ref.globalState.isOnboardingRunning) {
+              ref.globalViewModel.showOnboardingExitDialog();
+              return;
+            }
             ref
-                .read(appGlobalViewModelProvider.notifier)
+                .globalViewModel
                 .selectBottomNavItem(item.appPage);
             router.push(item.appPage.path);
           },

@@ -12,7 +12,7 @@ import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 
 class PhotoGridItem extends StatelessWidget {
   final PhotoItem photo;
-  final double labelMaxWidth;
+  final double labelWidthFraction;
   final Function(PhotoItem photo) onItemClicked;
 
   /// when null favorite button will not appear
@@ -28,7 +28,7 @@ class PhotoGridItem extends StatelessWidget {
     super.key,
     required this.photo,
     required this.onItemClicked,
-    this.labelMaxWidth = 180,
+    this.labelWidthFraction = 2.6,
     this.onDeleteClicked,
     this.onFavoriteClicked,
     this.onDownloadClicked,
@@ -128,7 +128,7 @@ class PhotoGridItem extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Container(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width / 2.6,
+          maxWidth: MediaQuery.of(context).size.width / labelWidthFraction,
         ),
         decoration: BoxDecoration(
           color: context.customColors.accentA80,

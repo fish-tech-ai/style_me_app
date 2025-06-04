@@ -170,6 +170,39 @@
   "downloadNoPermissionsButtonText": "Zarządzaj uprawnieniami",
   "photoFetcherNoCameraPermissionsTitle": "Brak uprawnień do kamery.",
   "photoFetcherNoCameraPermissionsSubtitle": "Otwórz ustawienia aplikacji > uprawnienia i zezwól na używanie kamery.",
-  "photoFetcherNoCameraPermissionsGoToSettings": "Przejdź do ustawień"
+  "photoFetcherNoCameraPermissionsGoToSettings": "Przejdź do ustawień",
+  "onboardingStep1Title": "Cześć {name}, zaczynajmy!",
+  "@onboardingStep1Title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingStep1SubTitle": "Kliknij ten przycisk, aby zobaczyć, co możesz dodać!",
+  "onboardingStep1SubTitle2": "Zacznijmy od dodania zdjęcia ubrań.",
+  "onboardingStep2Text1": "Możesz dodać zdjęcie ubrania, robiąc je samodzielnie...",
+  "onboardingStep2Text2": "...lub wybierając je z galerii...",
+  "onboardingStep2Text3": "...albo wklejając je ze schowka, jeśli tam się znajduje.",
+  "onboardingStep3Title": "Dobra robota {name}!",
+  "@onboardingStep3Title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingStep3SubTitle": "Teraz czas dodać swoje zdjęcie — pamiętaj, aby uchwycić całą sylwetkę.",
+  "onboardingStep4Title": "Wszystko gotowe!",
+  "onboardingStep4SubTitle": "Zobaczmy teraz, jak to będzie na Tobie wyglądać (stuknij by kontynuować).",
+  "onboardingStep5Title": "Gratulacje! Wyglądasz świetnie!",
+  "onboardingStep5SubTitle": "Dodając więcej swoich zdjęć, będziesz mógł przesuwać w lewo, aby zobaczyć stylizacje na różnych fotografiach. Odkrywaj dalej i najważniejsze... baw się dobrze!",
+  "onboardingSkip": "Pomiń samouczek",
+  "onboardingContinue": "Stuknij, aby kontynuować",
+  "onboardingFinish": "Stuknij, aby zakończyć samouczek",
+  "onboardingExitDialogTitle": "Na pewno?",
+  "onboardingExitDialogSubTitle": "Ta akcja zakończy samouczek. Możesz go zawsze rozpocząć ponownie z ekranu głównego.",
+  "onboardingExitDialogEndText": "Zakończ samouczek"
+
 
 }

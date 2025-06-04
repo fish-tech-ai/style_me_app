@@ -170,5 +170,37 @@
   "downloadNoPermissionsButtonText": "Manage permissions",
   "photoFetcherNoCameraPermissionsTitle": "No camera permissions.",
   "photoFetcherNoCameraPermissionsSubtitle": "Open app settings > permissions and allow camera use.",
-  "photoFetcherNoCameraPermissionsGoToSettings": "Go to settings"
+  "photoFetcherNoCameraPermissionsGoToSettings": "Go to settings",
+  "onboardingStep1Title": "Hello {name}, let’s begin!",
+  "@onboardingStep1Title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingStep1SubTitle": "Click this button to see what you can add!",
+  "onboardingStep1SubTitle2": "Let's start by adding a picture of some clothes.",
+  "onboardingStep2Text1": "You can add a photo of clothing by taking it yourself...",
+  "onboardingStep2Text2": "or by selecting from the gallery...",
+  "onboardingStep2Text3": "or by pasting from the clipboard if the photo is there.",
+  "onboardingStep3Title": "Well done {name}!",
+  "@onboardingStep3Title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingStep3SubTitle": "Now it's time to add your photo, remember to include your whole figure in the picture.",
+  "onboardingStep4Title": "All set!",
+  "onboardingStep4SubTitle": "Now let's see how it will look on you (tap to continue).",
+  "onboardingStep5Title": "Congratulations! You look great!",
+  "onboardingStep5SubTitle": "As you add more of your photos you will be able to swipe to the left to see your outfit in different photos. Discover the rest for yourself and most importantly.... have fun!",
+  "onboardingSkip": "Skip tutorial",
+  "onboardingContinue": "Tap to continue",
+  "onboardingFinish": "Tap to finish tutorial",
+  "onboardingExitDialogTitle": "Are you sure?",
+  "onboardingExitDialogSubTitle": "This action will end the tutorial. You can always start it from the beginning on the home page",
+  "onboardingExitDialogEndText": "End tutorial"
 }

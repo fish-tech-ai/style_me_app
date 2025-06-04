@@ -103,7 +103,7 @@ class _CameraPickerViewState extends State<CameraPickerView> {
             ).orEmpty(!widget.isInitialized),
             Positioned.fill(
               child: CountdownTimer(_countdownTime),
-            ).orEmpty(!showCountdownTimer)
+            ).orEmpty(!showCountdownTimer),
           ],
         );
       }),
