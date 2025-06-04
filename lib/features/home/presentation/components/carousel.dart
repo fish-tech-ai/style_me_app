@@ -29,7 +29,6 @@ class PhotosCarousel extends StatelessWidget {
             onItemClicked: onItemClicked,
             onFavoriteClicked: onItemFavoriteClicked,
             onDeleteClicked: onItemDeleteClicked,
-            labelMaxWidth: 160,
           ),
         ),
         separatorBuilder: (BuildContext _, int __) => SizedBox(width: 12),

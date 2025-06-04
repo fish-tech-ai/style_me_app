@@ -474,7 +474,8 @@ class MockAppLocalizations extends AppLocalizations {
   String get downloadImageSuccess => "downloadImageSuccess";
 
   @override
-  String get downloadNoPermissionsButtonText => "downloadNoPermissionsButtonText";
+  String get downloadNoPermissionsButtonText =>
+      "downloadNoPermissionsButtonText";
 
   @override
   String get downloadingInProgress => "downloadingInProgress";
@@ -490,4 +491,71 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get galTypeUnexpected => "galTypeUnexpected";
+
+  @override
+  String get photoFetcherNoCameraPermissionsGoToSettings =>
+      "photoFetcherNoCameraPermissionsGoToSettings";
+
+  @override
+  String get photoFetcherNoCameraPermissionsSubtitle =>
+      "photoFetcherNoCameraPermissionsSubtitle";
+
+  @override
+  String get photoFetcherNoCameraPermissionsTitle =>
+      "photoFetcherNoCameraPermissionsTitle";
+
+  @override
+  String get onboardingContinue => "onboardingContinue";
+
+  @override
+  String get onboardingExitDialogEndText => "onboardingExitDialogEndText";
+
+  @override
+  String get onboardingExitDialogSubTitle => "onboardingExitDialogSubTitle";
+
+  @override
+  String get onboardingExitDialogTitle => "onboardingExitDialogTitle";
+
+  @override
+  String get onboardingFinish => "onboardingFinish";
+
+  @override
+  String get onboardingSkip => "onboardingSkip";
+
+  @override
+  String get onboardingStep1SubTitle => "onboardingStep1SubTitle";
+
+  @override
+  String get onboardingStep1SubTitle2 => "onboardingStep1SubTitle2";
+
+  @override
+  String onboardingStep1Title(String name) => "onboardingStep1Title: $name";
+
+  @override
+  String get onboardingStep2Text1 => "onboardingStep2Text1";
+
+  @override
+  String get onboardingStep2Text2 => "onboardingStep2Text2";
+
+  @override
+  String get onboardingStep2Text3 => "onboardingStep2Text3";
+
+  @override
+  String get onboardingStep3SubTitle => "onboardingStep3SubTitle";
+
+  @override
+  String onboardingStep3Title(String name) => "onboardingStep3Title: $name";
+
+  @override
+  String get onboardingStep4SubTitle => "onboardingStep4SubTitle";
+
+  @override
+  String get onboardingStep4Title => "onboardingStep4Title";
+
+  @override
+  String get onboardingStep5SubTitle => "onboardingStep5SubTitle";
+
+  @override
+  String get onboardingStep5Title => "onboardingStep5Title";
+
 }

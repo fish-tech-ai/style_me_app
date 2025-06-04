@@ -24,10 +24,12 @@ class PhotoFetcher extends ConsumerStatefulWidget {
   ConsumerState<PhotoFetcher> createState() => PhotoFetcherState();
 }
 
-class PhotoFetcherState extends ConsumerState<PhotoFetcher> {
+class PhotoFetcherState extends ConsumerState<PhotoFetcher>
+    with WidgetsBindingObserver {
   late CameraController _controller;
   List<CameraDescription>? _cameras;
   bool _isCameraInitialized = false;
+  bool _isCameraLoading = true;
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -36,18 +38,53 @@ class PhotoFetcherState extends ConsumerState<PhotoFetcher> {
     _initializeCamera();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _initializeCamera();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _controller.dispose();
+    super.dispose();
+  }
+
   Future<void> _initializeCamera() async {
     _cameras = await availableCameras();
     _initCameraController(0);
 
-    await _controller.initialize();
-    if (!mounted) return;
-    setState(() {
-      _isCameraInitialized = true;
+    _controller.initialize().then((_) {
+      if (!mounted) return;
+      setState(() {
+        _isCameraInitialized = true;
+        _isCameraLoading = false;
+      });
+    }).catchError((Object e) {
+      if (e is CameraException && e.code == 'CameraAccessDenied') {
+        setState(() {
+          _isCameraInitialized = false;
+        });
+      }
+      setState(() {
+        _isCameraLoading = false;
+      });
+      debugMessagePrint(e.toString(), "STYLE_ME_PHOTO_LABEL: ");
     });
   }
 
   void _initCameraController(int index) {
+    if (_cameras?.isEmpty == true) {
+      return;
+    }
     _controller = CameraController(
       _cameras![index],
       ResolutionPreset.medium,
@@ -92,16 +129,11 @@ class PhotoFetcherState extends ConsumerState<PhotoFetcher> {
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return _isCameraInitialized
+    return !_isCameraLoading
         ? CameraPickerView(
             controller: _controller,
+            isInitialized: _isCameraInitialized,
             onOpenGalleryClicked: _openGetGalleryImage,
             onRotateCameraClicked: _switchCamera,
             onTakePictureClicked: (parentAspectRatio) =>

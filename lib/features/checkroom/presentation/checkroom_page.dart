@@ -4,12 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/utils/constants.dart';
 import 'package:style_me/core/views/buttons/app_back_button.dart';
 import 'package:style_me/core/views/buttons/app_button.dart';
 import 'package:style_me/core/views/buttons/app_icon_button.dart';
+import 'package:style_me/core/views/containers/onboarding_pop_scope.dart';
 import 'package:style_me/core/views/encrypted_image/encrypted_image.dart';
 import 'package:style_me/core/views/popups/app_draggable_horizontal_sheet.dart';
 import 'package:style_me/core/views/popups/app_persistent_bottom_sheet.dart';
@@ -48,10 +50,19 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   @override
   Widget build(BuildContext context) {
     final CheckroomStateHolder state = ref.watch(checkroomViewModelProvider);
-    return PopScope(
-      canPop: state.generatedOutfitPath == null,
-      onPopInvokedWithResult: (_, __) {
-        viewModel.backToTryOnStep();
+    return OnboardingPopScope(
+      ownCanPop: state.generatedOutfitPath == null &&
+          !ref.globalState.isOnboardingRunning,
+      onOnboardingNotRunning: () => viewModel.backToTryOnStep(),
+      handlePopBeforeDialogExitShow: () {
+        if (ref.globalState.isOnboardingRunning) {
+          return false;
+        }
+        if(state.generatedOutfitPath != null) {
+          viewModel.backToTryOnStep();
+          return true;
+        }
+        return false;
       },
       child: Stack(
         children: [
@@ -78,9 +89,15 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   List<Widget> buildContent(CheckroomStateHolder state) {
     return [
       Positioned.fill(
-        child: PhotosPager(
-          photos: state.userPhotos,
-          onPageChange: viewModel.onUserPhotoChange,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: FractionallySizedBox(
+            heightFactor: 0.92,
+            child: PhotosPager(
+              photos: state.userPhotos,
+              onPageChange: viewModel.onUserPhotoChange,
+            ),
+          ),
         ),
       ).orLoading(state.isLoading).orEmpty(state.userPhotos.isEmpty),
       Positioned(
@@ -173,6 +190,7 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
         top: 12,
         left: 12,
         child: AppBackButton(
+          backgroundColor: context.colorScheme.secondary,
           onTap: () => viewModel.backToTryOnStep(),
         ),
       ),
@@ -220,8 +238,12 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
           borderRadius: GlobalUiConst.borderRadiusLarge,
         ),
       ),
-      onClick: () {
-        viewModel.generateOutfit();
+      onClick: () async {
+        await viewModel.generateOutfit();
+        if (ref.globalState.isOnboardingRunning) {
+          await Future.delayed(Duration(seconds: 2));
+          ref.globalViewModel.showCurrentOnboardingPageStep();
+        }
       },
     );
   }

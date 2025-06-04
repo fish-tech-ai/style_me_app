@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/views/buttons/floating/page_with_floating_add_button.dart';
+import 'package:style_me/core/views/containers/onboarding_pop_scope.dart';
 import 'package:style_me/core/views/default_loading_page.dart';
 import 'package:style_me/features/home/presentation/components/carousel.dart';
 import 'package:style_me/features/home/presentation/components/home_header_banner.dart';
@@ -21,35 +23,47 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(homeViewModelProvider);
-    return PageWithFloatingAddButton(
-      addClothingClicked: () {
-        context.push(AppPage.clothingAdd.path);
-      },
-      addUserPhotoClicked: () {
-        context.push(AppPage.userPhotoAdd.path);
-      },
-      child: state.when(
-        data: (state) {
-          return buildContent(
-            state,
-            context,
-            onFavoriteClicked:
-                ref.read(homeViewModelProvider.notifier).toggleFavoriteFor,
-          );
+    return OnboardingPopScope(
+      child: PageWithFloatingAddButton(
+        addClothingClicked: () {
+          context.push(AppPage.clothingAdd.path);
         },
-        error: (_, __) => buildEmptyPage(),
-        loading: () => DefaultLoading(),
-        skipError: true,
+        addUserPhotoClicked: () {
+          context.push(AppPage.userPhotoAdd.path);
+        },
+        child: state.when(
+          data: (state) {
+            return buildContent(
+              state,
+              context,
+              ref,
+              onFavoriteClicked:
+                  ref.read(homeViewModelProvider.notifier).toggleFavoriteFor,
+            );
+          },
+          error: (_, __) => buildEmptyPage(),
+          loading: () => DefaultLoading(),
+          skipError: true,
+        ),
       ),
     );
   }
 
-  Widget buildContent(HomeStateHolder state, BuildContext context,
-      {required Function(PhotoItem outfit) onFavoriteClicked}) {
+  Widget buildContent(
+    HomeStateHolder state,
+    BuildContext context,
+    WidgetRef ref, {
+    required Function(PhotoItem outfit) onFavoriteClicked,
+  }) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          HomeHeaderBanner(userName: state.userName),
+          HomeHeaderBanner(
+            userName: state.userName,
+            onClick: () {
+              ref.globalViewModel.onboardingStart(GoRouter.of(context));
+            },
+          ),
           buildCarousels(state, context, onFavoriteClicked)
               .or(buildEmptyPage(), state.noOutfitsAvailable()),
         ],
