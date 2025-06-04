@@ -35,9 +35,8 @@ class AppIconButton extends StatelessWidget {
         highlightColor: disableVisualFeedback ? Colors.transparent : null,
         hoverColor: disableVisualFeedback ? Colors.transparent : null,
         borderRadius: GlobalUiConst.borderRadiusLarge,
-        child: Material(
-          elevation: elevation,
-          shape: RoundedRectangleBorder(borderRadius: borderRadius),
+        child: _buildElevationContainer(
+          borderRadius: borderRadius,
           child: Container(
               padding: padding,
               alignment: Alignment.center,
@@ -50,5 +49,16 @@ class AppIconButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildElevationContainer(
+      {required BorderRadius borderRadius, required Widget child}) {
+    if (elevation <= 0) {
+      return child;
+    }
+    return Material(
+        elevation: elevation,
+        shape: RoundedRectangleBorder(borderRadius: borderRadius),
+        child: child);
   }
 }
