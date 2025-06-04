@@ -54,6 +54,16 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
       ownCanPop: state.generatedOutfitPath == null &&
           !ref.globalState.isOnboardingRunning,
       onOnboardingNotRunning: () => viewModel.backToTryOnStep(),
+      handlePopBeforeDialogExitShow: () {
+        if (ref.globalState.isOnboardingRunning) {
+          return false;
+        }
+        if(state.generatedOutfitPath != null) {
+          viewModel.backToTryOnStep();
+          return true;
+        }
+        return false;
+      },
       child: Stack(
         children: [
           if (state.generatedOutfitPath != null)
@@ -79,9 +89,15 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
   List<Widget> buildContent(CheckroomStateHolder state) {
     return [
       Positioned.fill(
-        child: PhotosPager(
-          photos: state.userPhotos,
-          onPageChange: viewModel.onUserPhotoChange,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: FractionallySizedBox(
+            heightFactor: 0.92,
+            child: PhotosPager(
+              photos: state.userPhotos,
+              onPageChange: viewModel.onUserPhotoChange,
+            ),
+          ),
         ),
       ).orLoading(state.isLoading).orEmpty(state.userPhotos.isEmpty),
       Positioned(
@@ -174,6 +190,7 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
         top: 12,
         left: 12,
         child: AppBackButton(
+          backgroundColor: context.colorScheme.secondary,
           onTap: () => viewModel.backToTryOnStep(),
         ),
       ),

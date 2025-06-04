@@ -7,13 +7,14 @@ import 'package:style_me/core/views/buttons/app_icon_button.dart';
 class AppBackButton extends StatelessWidget {
   final Function()? onTap;
   final BoxBorder? border;
+  final Color? backgroundColor;
 
-  const AppBackButton({super.key, this.onTap, this.border});
+  const AppBackButton({super.key, this.onTap, this.border, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
     return AppIconButton(
-      backgroundColor: context.colorScheme.primaryContainer,
+      backgroundColor: backgroundColor ?? context.colorScheme.primaryContainer,
       border: border,
       padding: EdgeInsets.all(GlobalUiConst.paddingNormal),
       disableVisualFeedback: true,

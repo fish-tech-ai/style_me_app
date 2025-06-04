@@ -74,10 +74,11 @@ class _PhotosPagerState extends State<PhotosPager> {
               child: SmoothPageIndicator(
                 controller: _pagerController,
                 count: widget.photos.length,
-                effect: ExpandingDotsEffect(
+                effect: ScrollingDotsEffect(
                   activeDotColor: context.colorScheme.primary,
                   dotColor: context.colorScheme.onSurface,
                   offset: 0,
+                  maxVisibleDots: 7
                 ),
               ),
             ),

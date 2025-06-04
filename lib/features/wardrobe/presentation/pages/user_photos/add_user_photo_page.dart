@@ -6,6 +6,7 @@ import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/network/exceptions/helpers/image_error_type/image_type_enum.dart';
 import 'package:style_me/core/views/app_top_bar.dart';
 import 'package:style_me/core/views/containers/onboarding_pop_scope.dart';
+import 'package:style_me/features/checkroom/presentation/state/checkroom_view_model.dart';
 import 'package:style_me/features/wardrobe/presentation/components/add_photos/image_acceptation_view.dart';
 import 'package:style_me/features/wardrobe/presentation/components/add_photos/user_photo_add_form.dart';
 import 'package:style_me/features/wardrobe/presentation/components/photo_fetch/photo_fetcher.dart';
@@ -119,6 +120,7 @@ class _AddUserPhotoPageState extends ConsumerState<AddUserPhotoPage>
           onAcceptClicked: () => viewModel.onAcceptClicked(() {
             if (ref.globalState.isOnboardingRunning) {
               ref.globalViewModel.showCurrentOnboardingPageStep();
+              ref.invalidate(checkroomViewModelProvider);
               return;
             }
             context.pop();
