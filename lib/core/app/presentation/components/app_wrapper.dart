@@ -59,6 +59,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper>
         });
       },
     );
+    await viewModel.initUser();
     await viewModel.clearCache();
     await viewModel.loadFilesToCache();
     FlutterNativeSplash.remove();

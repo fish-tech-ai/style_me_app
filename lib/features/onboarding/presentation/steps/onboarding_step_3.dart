@@ -10,7 +10,7 @@ class OnboardingStep3 extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return OnboardingStackPage.simple(
-      title: localizations.onboardingStep3Title("Suzan"), //TODO replace with real name
+      title: localizations.onboardingStep3Title(ref.globalState.userName),
       subtitle: localizations.onboardingStep3SubTitle,
       onContinueClicked: () {
         ref.globalViewModel.hideCurrentOnboardingPageStep();

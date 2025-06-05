@@ -10,6 +10,7 @@ class AppGlobalStateHolder with _$AppGlobalStateHolder {
   const factory AppGlobalStateHolder({
     Brightness? currentTheme,
     Locale? lang,
+    @Default("") String userName,
     @Default(true) bool isConnected,
     @Default(BannerMessage()) BannerMessage bannerMessage,
     @Default(BottomBarState()) BottomBarState bottomBarState,
