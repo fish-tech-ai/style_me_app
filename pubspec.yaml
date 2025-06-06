@@ -1,7 +1,7 @@
 name: style_me
 description: "Style me project."
 publish_to: 'none'
-version: 1.0.0+7
+version: 1.0.0+8
 
 environment:
   sdk: ^3.5.4
@@ -57,6 +57,7 @@ dependencies:
   markdown_widget: ^2.3.2+8
   gal: ^2.3.1
   app_settings: ^6.1.1
+  android_gesture_exclusion: ^0.4.0
 
 dev_dependencies:
   flutter_test:

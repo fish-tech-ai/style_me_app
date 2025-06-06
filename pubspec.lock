@@ -38,6 +38,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.3"
+  android_gesture_exclusion:
+    dependency: "direct main"
+    description:
+      name: android_gesture_exclusion
+      sha256: ca0118f776d0ad2c6b10ace4a8f860cfd64e264806337d086a46724616f0df7c
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0"
+  android_gesture_exclusion_platform_interface:
+    dependency: transitive
+    description:
+      name: android_gesture_exclusion_platform_interface
+      sha256: b52b1911b8cf205c7e633b92bd9e774e15b475f4f01b8f135ce2f99533fb7596
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   ansicolor:
     dependency: transitive
     description:

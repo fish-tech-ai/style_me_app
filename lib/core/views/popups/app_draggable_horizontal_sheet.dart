@@ -38,19 +38,21 @@ class AppDraggableHorizontalSheetState
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: 0,
+      right: 0,
       top: 0,
       bottom: 0,
       child: GestureDetector(
         onHorizontalDragUpdate: (details) {
           setState(() {
-            sheetWidth = (sheetWidth + details.delta.dx)
+            sheetWidth = (sheetWidth - details.delta.dx)
                 .clamp(widget.minWidth, widget.maxWidth);
           });
         },
         onHorizontalDragEnd: (details) {
           final velocity = details.velocity.pixelsPerSecond.dx;
-          final targetSize = velocity > 0 ? widget.maxWidth : widget.minWidth;
+          final targetSize = velocity == 0 ? getClosestMinMaxWidth() : velocity < 0
+              ? widget.maxWidth
+              : widget.minWidth;
           setState(() {
             sheetWidth = targetSize;
           });
@@ -69,5 +71,10 @@ class AppDraggableHorizontalSheetState
         ),
       ),
     );
+  }
+
+  double getClosestMinMaxWidth() {
+    final midpoint = (widget.minWidth + widget.maxWidth) / 2;
+    return (sheetWidth < midpoint) ? widget.minWidth : widget.maxWidth;
   }
 }
