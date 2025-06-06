@@ -62,10 +62,6 @@ class SettingsStateHolder with _$SettingsStateHolder {
         label: localizations.reportBug,
         action: SettingAction.openReportBottomSheet,
       ),
-      Setting(
-        label: localizations.about,
-        actionText: localizations.seeMore,
-      ),
     ];
   }
 

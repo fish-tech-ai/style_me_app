@@ -56,7 +56,7 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
                 height: 24,
                 width: 24,
                 colorFilter: ColorFilter.mode(
-                  context.colorScheme.onPrimary,
+                  context.colorScheme.onSurface,
                   BlendMode.srcIn,
                 ),
               ),
@@ -65,7 +65,7 @@ class _WardrobePageState extends ConsumerState<WardrobePage>
               text: localizations.yourPhotos,
               icon: Icon(
                 Icons.accessibility_new_rounded,
-                color: context.colorScheme.onPrimary,
+                color: context.colorScheme.onSurface,
               ),
             ),
           ]),

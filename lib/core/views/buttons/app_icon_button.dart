@@ -11,6 +11,7 @@ class AppIconButton extends StatelessWidget {
   final EdgeInsets padding;
   final BoxBorder? border;
   final BorderRadius? borderRadius;
+  final ColorFilter? iconColorFilter;
 
   const AppIconButton({
     super.key,
@@ -22,6 +23,7 @@ class AppIconButton extends StatelessWidget {
     this.border,
     this.borderRadius,
     this.disableVisualFeedback = false,
+    this.iconColorFilter,
   });
 
   @override
@@ -38,14 +40,15 @@ class AppIconButton extends StatelessWidget {
         child: _buildElevationContainer(
           borderRadius: borderRadius,
           child: Container(
-              padding: padding,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: borderRadius,
-                border: border,
-              ),
-              child: icon),
+            padding: padding,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: borderRadius,
+              border: border,
+            ),
+            child: icon,
+          ),
         ),
       ),
     );

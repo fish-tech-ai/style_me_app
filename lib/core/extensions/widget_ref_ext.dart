@@ -8,3 +8,10 @@ extension WidgetRefExt on WidgetRef {
 
   AppGlobalStateHolder get globalState => watch(appGlobalViewModelProvider);
 }
+
+extension AutoDisposeNotifierProviderRefExt on Ref {
+AppGlobalViewModel get globalViewModel =>
+    read(appGlobalViewModelProvider.notifier);
+
+AppGlobalStateHolder get globalState => watch(appGlobalViewModelProvider);
+}

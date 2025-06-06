@@ -15,6 +15,8 @@ mixin AppColorsMixin {
 
   Color get backgroundA85;
 
+  Color get googleButtonBackgroundColor;
+
   Color get backgroundDarker;
 
   Color get disabled;
@@ -37,6 +39,9 @@ mixin AppColorsMixin {
 }
 
 class AppColorsDark with AppColorsMixin {
+  @override
+  Brightness get brightness => Brightness.dark;
+
   @override
   Color get accent => const Color(0xFF7B4DB2);
 
@@ -86,10 +91,13 @@ class AppColorsDark with AppColorsMixin {
   Color get dangerSurface => const Color(0xFF2B181C);
 
   @override
-  Brightness get brightness => Brightness.dark;
+  Color get googleButtonBackgroundColor => const Color(0xFF131314);
 }
 
 class AppColorsLight with AppColorsMixin {
+  @override
+  Brightness get brightness => Brightness.light;
+
   @override
   Color get accent => const Color(0xFF8B6AB1);
 
@@ -139,5 +147,5 @@ class AppColorsLight with AppColorsMixin {
   Color get dangerSurface => const Color(0xFF2B181C);
 
   @override
-  Brightness get brightness => Brightness.light;
+  Color get googleButtonBackgroundColor => Color(0xFFF2F2F2);
 }

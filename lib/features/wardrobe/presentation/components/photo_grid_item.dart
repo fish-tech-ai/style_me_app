@@ -145,7 +145,10 @@ class PhotoGridItem extends StatelessWidget {
               : photo.name,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontWeight: FontWeight.w500),
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            color: context.colorScheme.onPrimary,
+          ),
         ),
       ),
     );
@@ -157,7 +160,10 @@ class PhotoGridItem extends StatelessWidget {
           color: context.colorScheme.primary,
           borderRadius: BorderRadius.circular(14)),
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: Text(localizations.defaultText),
+      child: Text(
+        localizations.defaultText,
+        style: TextStyle(color: context.colorScheme.onPrimary),
+      ),
     );
   }
 
@@ -201,7 +207,7 @@ class PhotoGridItem extends StatelessWidget {
 
   Widget _buildDeleteButton(BuildContext context) {
     return AppIconButton(
-      icon: Icon(Icons.close_rounded, color: context.colorScheme.onSurface),
+      icon: Icon(Icons.close_rounded, color: context.colorScheme.onPrimary),
       borderRadius: BorderRadius.circular(100),
       padding: EdgeInsets.all(6),
       backgroundColor: context.colorScheme.error,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:style_me/core/extensions/context_ext.dart';
 
 class EmptyPage extends StatelessWidget {
   final String title;
@@ -15,7 +16,11 @@ class EmptyPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SvgPicture.asset("assets/no_clothes.svg"),
+          SvgPicture.asset(
+            "assets/no_clothes.svg",
+            colorFilter: ColorFilter.mode(
+                context.colorScheme.onSurface, BlendMode.srcIn),
+          ),
           SizedBox(height: 24),
           Text(
             title,

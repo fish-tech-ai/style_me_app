@@ -35,7 +35,6 @@ class AppDialog extends StatelessWidget {
             ),
             AppButton(
               text: actionButtonText,
-              width: 120,
               height: 46,
               backgroundColor: actionButtonBackgroundColor,
               onClick: onActionButtonClicked,

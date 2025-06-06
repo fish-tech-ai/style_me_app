@@ -16,6 +16,7 @@ class ThemeManager {
             backgroundA85: appColors.backgroundA85,
             dangerA20: appColors.dangerA20,
             accentA80: appColors.accentA80,
+            googleButtonBackgroundColor: appColors.googleButtonBackgroundColor,
           ),
         ],
         colorScheme: ColorScheme(

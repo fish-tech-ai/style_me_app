@@ -78,9 +78,7 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
     final Result<UserData> userResult = await _getUserUseCase();
     userResult.collect((user) {
       state = state.copyWith(userName: user.name);
-    }, (failure) {
-      showFailure(failure);
-    });
+    }, (failure) {});
   }
 
   void showFailure(Failure failure) async {

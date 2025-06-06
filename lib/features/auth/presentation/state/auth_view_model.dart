@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
+import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/network/failures/login_failure.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/core/utils/google_auth_service.dart';
@@ -253,6 +254,7 @@ class AuthViewModel extends _$AuthViewModel {
     result.collect((result) {
       goToHome();
       state = state.copyWith(isLoading: false);
+      ref.globalViewModel.initUser();
     }, (failure) {
       ref
           .read(appGlobalViewModelProvider.notifier)

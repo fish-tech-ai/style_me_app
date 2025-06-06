@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
+import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/utils/constants.dart';
 
-class HomeHeaderBanner extends StatelessWidget {
+class HomeHeaderBanner extends ConsumerWidget {
   final String userName;
   final Function() onClick;
 
@@ -11,7 +13,7 @@ class HomeHeaderBanner extends StatelessWidget {
       {super.key, required this.userName, required this.onClick});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ClipRRect(
       borderRadius: GlobalUiConst.borderRadiusExtraLarge
           .copyWith(topLeft: Radius.zero, topRight: Radius.zero),
@@ -22,14 +24,17 @@ class HomeHeaderBanner extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/home_header_image.png"),
-                fit: BoxFit.cover),
+              image: AssetImage("assets/home_header_image.png"),
+              fit: BoxFit.cover,
+            ),
           ),
           child: InkWell(
             onTap: onClick,
             child: Container(
               decoration: BoxDecoration(
-                color: context.colorScheme.primaryContainer,
+                color: ref.globalState.currentTheme == Brightness.dark
+                    ? context.colorScheme.primaryContainer
+                    : context.colorScheme.primary.withAlpha(125),
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 36),
