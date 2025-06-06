@@ -63,7 +63,10 @@ class _CameraPickerViewState extends State<CameraPickerView> {
               left: 24,
               bottom: 24,
               child: AppIconButton(
-                icon: Icon(Icons.image_outlined),
+                icon: Icon(
+                  Icons.image_outlined,
+                  color: context.colorScheme.onPrimary,
+                ),
                 onClick: widget.onOpenGalleryClicked,
               ),
             ),
@@ -90,7 +93,10 @@ class _CameraPickerViewState extends State<CameraPickerView> {
               right: 12,
               top: 12,
               child: AppIconButton(
-                icon: Icon(Icons.content_paste_go_rounded),
+                icon: Icon(
+                  Icons.content_paste_go_rounded,
+                  color: context.colorScheme.onPrimary,
+                ),
                 onClick: widget.onPasteFromClipboard,
               ),
             ),

@@ -21,7 +21,7 @@ class _OnboardingStep1State extends ConsumerState<OnboardingStep1> {
   @override
   Widget build(BuildContext context) {
     return OnboardingStackPage.simple(
-      title: localizations.onboardingStep1Title("Suzan"),
+      title: localizations.onboardingStep1Title(ref.globalState.userName),
       subtitle: isExpanded
           ? localizations.onboardingStep1SubTitle2
           : localizations.onboardingStep1SubTitle,

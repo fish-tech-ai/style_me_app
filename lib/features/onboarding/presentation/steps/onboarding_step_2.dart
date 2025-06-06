@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
 import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
@@ -117,7 +118,10 @@ class _OnboardingStep2State extends ConsumerState<OnboardingStep2> {
       left: 24,
       bottom: 24,
       child: AppIconButton(
-        icon: Icon(Icons.image_outlined),
+        icon: Icon(
+          Icons.image_outlined,
+          color: context.colorScheme.onPrimary,
+        ),
         onClick: () {},
       ),
     );
@@ -128,7 +132,10 @@ class _OnboardingStep2State extends ConsumerState<OnboardingStep2> {
       right: 12,
       top: 76,
       child: AppIconButton(
-        icon: Icon(Icons.content_paste_go_rounded),
+        icon: Icon(
+          Icons.content_paste_go_rounded,
+          color: context.colorScheme.onPrimary,
+        ),
         onClick: () {},
       ),
     );

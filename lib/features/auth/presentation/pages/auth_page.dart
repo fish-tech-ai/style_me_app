@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/utils/constants.dart';
 import 'package:style_me/core/utils/show_enum.dart';
@@ -83,7 +84,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                   Text(
                     context.localizations.loginPageTitle,
                     style: TextStyle(
-                        color: context.colorScheme.onSurface,
+                        color: context.colorScheme.onPrimary,
                         fontSize: 36,
                         fontWeight: FontWeight.w500),
                   ),
@@ -154,9 +155,13 @@ class _AuthPageState extends ConsumerState<AuthPage> {
             leadingIcon: SvgPicture.asset("assets/google_logo.svg"),
             spacing: 10,
             style: OutlinedButton.styleFrom(
-                backgroundColor: Color(0xFF131314),
+                backgroundColor:
+                    context.customColors.googleButtonBackgroundColor,
                 side: BorderSide(
-                    color: context.theme.colorScheme.onSurface, width: 1),
+                    color: ref.globalState.currentTheme == Brightness.dark
+                        ? context.colorScheme.onSurface
+                        : Colors.transparent,
+                    width: 1),
                 foregroundColor: context.theme.colorScheme.onSurface),
             onClick: () {
               viewModel

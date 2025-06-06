@@ -8,6 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/domain/usecases/clear_app_cache_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_current_theme_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_language_use_case.dart';
+import 'package:style_me/core/app/domain/usecases/get_user_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/load_app_legals_to_cache_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/save_current_theme_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/set_language_use_case.dart';
@@ -16,9 +17,11 @@ import 'package:style_me/core/app/presentation/ui_models/banner_message.dart';
 import 'package:style_me/core/app/presentation/ui_models/bottom_bar_state.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/local/database.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/network/failures/failure.dart';
+import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/core/utils/deep_link_manager.dart';
 import 'package:style_me/features/auth/domain/confirm_email_use_case.dart';
 
@@ -29,6 +32,7 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
   late final GetCurrentThemeUseCase _getCurrentThemeUseCase;
   late final SaveCurrentThemeUseCase _saveCurrentThemeUseCase;
   late final GetLanguageUseCase _getLanguageUseCase;
+  late final GetUserUseCase _getUserUseCase;
   late final SetLanguageUseCase _setLanguageUseCase;
   late final ConfirmEmailUseCase _confirmEmailUseCase;
   late final LoadAppLegalsToCacheUseCase _loadAppLegalsToCache;
@@ -46,6 +50,7 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
     _clearAppCacheUseCase = getIt();
     _connection = getIt();
     _deepLinkManager = getIt();
+    _getUserUseCase = getIt();
   }
 
   @override
@@ -63,9 +68,17 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
 
   void initBottomNavItems() {
     state = state.copyWith(
-        bottomBarState: BottomBarState(
-      items: BottomBarState.getBottomNavItems(),
-    ));
+      bottomBarState: BottomBarState(
+        items: BottomBarState.getBottomNavItems(),
+      ),
+    );
+  }
+
+  Future initUser() async {
+    final Result<UserData> userResult = await _getUserUseCase();
+    userResult.collect((user) {
+      state = state.copyWith(userName: user.name);
+    }, (failure) {});
   }
 
   void showFailure(Failure failure) async {

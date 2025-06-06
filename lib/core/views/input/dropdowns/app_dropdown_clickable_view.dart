@@ -59,6 +59,7 @@ class AppDropdownClickableView<T> extends StatelessWidget {
                         isDropdownOpen //TODO dropdown not updated after first time change
                             ? Icons.expand_more_rounded
                             : Icons.expand_less_rounded,
+                        color: context.colorScheme.onPrimary,
                       ),
                     ),
                   ],
@@ -98,7 +99,7 @@ class AppDropdownClickableView<T> extends StatelessWidget {
           text: text,
           style: textStyle.copyWith(
               fontSize:
-              MediaQuery.textScalerOf(context).scale(textStyle.fontSize!)),
+                  MediaQuery.textScalerOf(context).scale(textStyle.fontSize!)),
         ),
         maxLines: 1,
         textDirection: Directionality.of(context))

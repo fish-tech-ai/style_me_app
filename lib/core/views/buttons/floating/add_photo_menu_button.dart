@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/views/animators/animated_visibility.dart';
 import 'package:style_me/core/views/buttons/app_icon_button.dart';
 import 'package:style_me/core/views/buttons/floating/floating_add_clothing_button.dart';
@@ -35,7 +36,10 @@ class AddPhotoMenuButton extends StatelessWidget {
         AppIconButton(
           onClick: onClicked,
           padding: EdgeInsets.all(14),
-          icon: Icon(Icons.add_rounded),
+          icon: Icon(
+            Icons.add_rounded,
+            color: context.colorScheme.onPrimary,
+          ),
           elevation: 4,
         ),
       ],
