@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
-import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/core/utils/constants.dart';
 import 'package:style_me/core/utils/show_enum.dart';
@@ -158,9 +157,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 backgroundColor:
                     context.customColors.googleButtonBackgroundColor,
                 side: BorderSide(
-                    color: ref.globalState.currentTheme == Brightness.dark
-                        ? context.colorScheme.onSurface
-                        : Colors.transparent,
+                    color: context.colorScheme.onSurface,
                     width: 1),
                 foregroundColor: context.theme.colorScheme.onSurface),
             onClick: () {
