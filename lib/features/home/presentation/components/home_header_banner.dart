@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
-import 'package:style_me/core/extensions/widget_ref_ext.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/utils/constants.dart';
 
@@ -32,7 +31,7 @@ class HomeHeaderBanner extends ConsumerWidget {
             onTap: onClick,
             child: Container(
               decoration: BoxDecoration(
-                color: ref.globalState.currentTheme == Brightness.dark
+                color: context.theme.brightness == Brightness.dark
                     ? context.colorScheme.primaryContainer
                     : context.colorScheme.primary.withAlpha(125),
               ),

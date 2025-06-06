@@ -157,7 +157,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 backgroundColor:
                     context.customColors.googleButtonBackgroundColor,
                 side: BorderSide(
-                    color: context.colorScheme.onSurface,
+                    color: context.theme.brightness == Brightness.dark
+                        ? context.colorScheme.onSurface
+                        : Colors.transparent,
                     width: 1),
                 foregroundColor: context.theme.colorScheme.onSurface),
             onClick: () {

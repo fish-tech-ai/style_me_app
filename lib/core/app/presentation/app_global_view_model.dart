@@ -203,6 +203,14 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
     );
   }
 
+  void showOnboardingExitDialog() {
+    state = state.copyWith(isOnboardingExitDialogVisible: true);
+  }
+
+  void hideOnboardingExitDialog() {
+    state = state.copyWith(isOnboardingExitDialogVisible: false);
+  }
+
   @visibleForTesting
   AppGlobalViewModel.test(
       this._getCurrentThemeUseCase,
@@ -212,12 +220,4 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
       this._confirmEmailUseCase,
       this._deepLinkManager,
       this._connection);
-
-  void showOnboardingExitDialog() {
-    state = state.copyWith(isOnboardingExitDialogVisible: true);
-  }
-
-  void hideOnboardingExitDialog() {
-    state = state.copyWith(isOnboardingExitDialogVisible: false);
-  }
 }
