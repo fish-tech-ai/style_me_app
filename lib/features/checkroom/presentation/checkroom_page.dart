@@ -58,7 +58,7 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
         if (ref.globalState.isOnboardingRunning) {
           return false;
         }
-        if(state.generatedOutfitPath != null) {
+        if (state.generatedOutfitPath != null) {
           viewModel.backToTryOnStep();
           return true;
         }
@@ -130,8 +130,10 @@ class _CheckroomPageState extends ConsumerState<CheckroomPage> {
             viewModel.onClothingSelected(item as Clothing);
             if (viewModel.isClothesFullyChosen()) {
               clothesPersistentSheet.currentState?.animateTo(Limit.min);
-              selectedClothesPersistentHorizontalSheet.currentState
-                  ?.animateTo(Limit.max);
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                selectedClothesPersistentHorizontalSheet.currentState
+                    ?.animateTo(Limit.max);
+              });
             }
           },
           onSearchParametersChanged: (searchParameters) {
