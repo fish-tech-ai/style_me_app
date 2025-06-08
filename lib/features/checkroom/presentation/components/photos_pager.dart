@@ -81,9 +81,9 @@ class _PhotosPagerState extends State<PhotosPager> {
                   maxVisibleDots: 7
                 ),
               ),
-            ),
+            ).orEmpty(widget.photos.length <= 1),
           ),
-        ).orEmpty(widget.photos.length <= 1),
+        ),
       ],
     );
   }
