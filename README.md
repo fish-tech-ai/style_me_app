@@ -5,7 +5,7 @@ Style me app.
 ## Getting Started
 ### Prerequisites
 - Flutter version: `3.27.1`
-- Android Studio installed (tested on `Ladybug`)
+- Android Studio installed
 - files from encrypted zip on [google drive secrets](https://drive.google.com/drive/u/1/folders/10qL2TMG0SCIuH8206Qts-3rayI_khszU):
 	- .env 
 	- for android folder:
