@@ -1,5 +1,5 @@
+import 'package:style_me/core/lang/app_localizations.dart';
 import 'package:style_me/core/utils/constants.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:style_me/features/auth/presentation/state/auth_state_holder.dart';
 import 'package:style_me/features/auth/presentation/ui_models/auth_page_mode_enum.dart';
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/di/get_it.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/extensions/widget_ref_ext.dart';
+import 'package:style_me/core/lang/app_localizations.dart';
 import 'package:style_me/core/network/failures/login_failure.dart';
 import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/core/utils/google_auth_service.dart';

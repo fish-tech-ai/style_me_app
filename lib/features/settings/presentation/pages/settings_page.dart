@@ -6,6 +6,7 @@ import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/extensions/context_ext.dart';
 import 'package:style_me/core/extensions/global_ext.dart';
 import 'package:style_me/core/extensions/widget_ext.dart';
+import 'package:style_me/core/lang/app_localizations.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
 import 'package:style_me/core/navigation/app_page.dart';
 import 'package:style_me/features/settings/presentation/components/settings_banner.dart';
@@ -19,7 +20,6 @@ import 'package:style_me/features/settings/presentation/state/view_models/settin
 import 'package:style_me/features/settings/presentation/ui_models/change_password_args.dart';
 import 'package:style_me/features/settings/presentation/ui_models/setting.dart';
 import 'package:style_me/features/settings/presentation/ui_models/setting_action.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});

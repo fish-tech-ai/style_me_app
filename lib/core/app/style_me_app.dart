@@ -5,7 +5,7 @@ import 'package:style_me/core/app/presentation/app_global_state_holder.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/app/presentation/components/app_wrapper.dart';
 import 'package:style_me/core/di/get_it.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:style_me/core/lang/app_localizations.dart';
 import 'package:style_me/core/navigation/go_router.dart';
 import 'package:style_me/core/theme/theme_manager.dart';
 
