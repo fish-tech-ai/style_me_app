@@ -4,7 +4,7 @@ import 'package:style_me/features/auth/presentation/ui_models/text_field_state.d
 part 'change_password_state_holder.freezed.dart';
 
 @freezed
-class ChangePasswordStateHolder with _$ChangePasswordStateHolder {
+sealed class ChangePasswordStateHolder with _$ChangePasswordStateHolder {
   const factory ChangePasswordStateHolder({
     @Default(TextFieldState()) TextFieldState oldPassword,
     @Default(TextFieldState()) TextFieldState newPassword,

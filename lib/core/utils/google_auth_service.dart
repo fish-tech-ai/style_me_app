@@ -5,46 +5,66 @@ import 'package:style_me/core/extensions/global_ext.dart';
 class GoogleAuthService {
   final FirebaseAuth _auth;
   final GoogleSignIn _googleSignIn;
+  GoogleSignInAccount? _googleUser;
 
   GoogleAuthService(this._auth, this._googleSignIn);
 
   Future<String?> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null;
+      _googleUser = await _googleSignIn.authenticate();
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      if (_googleUser == null) {
+        return null;
+      }
+
+      final GoogleSignInAuthentication googleAuth = _googleUser!.authentication;
+      final String? idToken = googleAuth.idToken;
+
+      final authorizationClient = _googleUser!.authorizationClient;
+      GoogleSignInClientAuthorization? authorization = await authorizationClient
+          .authorizationForScopes(['email', 'profile']);
+
+      String? accessToken = authorization?.accessToken;
+
+      if (accessToken == null) {
+        final auth2 =
+            await authorizationClient.authorizeScopes(['email', 'profile']);
+        accessToken = auth2.accessToken;
+      }
 
       final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
+        accessToken: accessToken,
+        idToken: idToken,
       );
 
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
       final User? user = userCredential.user;
 
       if (user != null) {
-        String? idToken = await user.getIdToken();
-        return idToken;
+        String? firebaseIdToken = await user.getIdToken();
+        return firebaseIdToken;
       }
     } catch (e) {
-      debugMessagePrint("Error signing in with Google: $e");
       return null;
     }
     return null;
   }
 
   Future<bool> reAuthenticate() async {
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    if (googleUser == null) return false;
-    return true;
+    try {
+      _googleUser = await _googleSignIn.authenticate();
+      return _googleUser != null;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<void> signOut() async {
-    if (await _googleSignIn.isSignedIn()) {
+    try {
       await _googleSignIn.disconnect();
-      await _googleSignIn.signOut();
-    }
+    } catch (e) {}
+    _googleUser = null;
     await _auth.signOut();
   }
 }

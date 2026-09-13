@@ -4,7 +4,7 @@ import 'package:style_me/features/home/data/models/outfit.dart';
 part 'outfit_details_state_holder.freezed.dart';
 
 @freezed
-class OutfitDetailsStateHolder with _$OutfitDetailsStateHolder {
+sealed class OutfitDetailsStateHolder with _$OutfitDetailsStateHolder {
   const factory OutfitDetailsStateHolder({
     required Outfit outfit,
     @Default(false) bool isFavorite,

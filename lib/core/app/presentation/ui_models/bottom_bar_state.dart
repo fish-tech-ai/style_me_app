@@ -6,7 +6,7 @@ import 'package:style_me/core/navigation/app_page.dart';
 part 'bottom_bar_state.freezed.dart';
 
 @freezed
-class BottomBarState with _$BottomBarState {
+sealed class BottomBarState with _$BottomBarState {
   const factory BottomBarState({
     @Default(0) int selectedIndex,
     @Default(false) bool isVisible,

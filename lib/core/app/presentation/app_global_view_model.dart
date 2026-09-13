@@ -216,8 +216,11 @@ class AppGlobalViewModel extends _$AppGlobalViewModel {
       this._getCurrentThemeUseCase,
       this._saveCurrentThemeUseCase,
       this._getLanguageUseCase,
+      this._getUserUseCase,
       this._setLanguageUseCase,
       this._confirmEmailUseCase,
+      this._loadAppLegalsToCache,
+      this._clearAppCacheUseCase,
       this._deepLinkManager,
       this._connection);
 }

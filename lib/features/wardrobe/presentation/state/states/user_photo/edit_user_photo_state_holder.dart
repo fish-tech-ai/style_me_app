@@ -5,7 +5,7 @@ import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.da
 part 'edit_user_photo_state_holder.freezed.dart';
 
 @freezed
-class EditUserPhotoStateHolder with _$EditUserPhotoStateHolder {
+sealed class EditUserPhotoStateHolder with _$EditUserPhotoStateHolder {
   const factory EditUserPhotoStateHolder({
     @Default(false) bool isSaveLoading,
     @Default(false) bool isDeleteLoading,

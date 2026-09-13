@@ -5,7 +5,7 @@ import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.da
 part 'checkroom_state_holder.freezed.dart';
 
 @freezed
-class CheckroomStateHolder with _$CheckroomStateHolder {
+sealed class CheckroomStateHolder with _$CheckroomStateHolder {
   const CheckroomStateHolder._();
 
   const factory CheckroomStateHolder({

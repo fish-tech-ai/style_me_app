@@ -26,7 +26,7 @@ void main() {
     final key = List.generate(32, (i) => i)
         .map((e) => e.toRadixString(16).padLeft(2, '0'))
         .join();
-    dotenv.testLoad(fileInput: "AES_KEY=$key");
+    dotenv.loadFromString(envString: "AES_KEY=$key");
     encryptor = AESEncryptor.withKey(key);
 
     PathProviderPlatform.instance = mockPathProvider;
@@ -50,7 +50,7 @@ void main() {
       final key = List.generate(32, (i) => i)
           .map((e) => e.toRadixString(16).padLeft(2, '0'))
           .join();
-      dotenv.testLoad(fileInput: "AES_KEY=$key");
+      dotenv.loadFromString(envString: "AES_KEY=$key");
 
       final testFile = File('${tempDir.path}/test.jpg');
       await testFile.writeAsBytes(List.filled(32, 1));
@@ -68,7 +68,7 @@ void main() {
       final key = List.generate(32, (i) => i)
           .map((e) => e.toRadixString(16).padLeft(2, '0'))
           .join();
-      dotenv.testLoad(fileInput: "AES_KEY=$key");
+      dotenv.loadFromString(envString: "AES_KEY=$key");
 
       final testFile = File('${tempDir.path}/test.jpg');
       final originalBytes = List.filled(32, 1);

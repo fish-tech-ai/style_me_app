@@ -4,7 +4,7 @@ import 'package:style_me/features/home/data/models/outfit.dart';
 part 'home_state_holder.freezed.dart';
 
 @freezed
-class HomeStateHolder with _$HomeStateHolder {
+sealed class HomeStateHolder with _$HomeStateHolder {
   const HomeStateHolder._();
 
   const factory HomeStateHolder({

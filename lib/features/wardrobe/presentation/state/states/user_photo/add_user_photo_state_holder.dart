@@ -10,7 +10,7 @@ import 'package:style_me/features/wardrobe/presentation/ui_models/add_photo_page
 part 'add_user_photo_state_holder.freezed.dart';
 
 @freezed
-class AddUserPhotoStateHolder with _$AddUserPhotoStateHolder {
+sealed class AddUserPhotoStateHolder with _$AddUserPhotoStateHolder {
   const factory AddUserPhotoStateHolder({
     File? image,
     @Default(false) bool isImageAddLoading,

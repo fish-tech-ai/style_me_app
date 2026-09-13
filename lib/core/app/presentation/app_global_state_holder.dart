@@ -6,7 +6,7 @@ import 'package:style_me/core/app/presentation/ui_models/bottom_bar_state.dart';
 part 'app_global_state_holder.freezed.dart';
 
 @freezed
-class AppGlobalStateHolder with _$AppGlobalStateHolder {
+sealed class AppGlobalStateHolder with _$AppGlobalStateHolder {
   const factory AppGlobalStateHolder({
     Brightness? currentTheme,
     Locale? lang,

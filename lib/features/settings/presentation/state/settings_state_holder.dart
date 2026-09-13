@@ -13,7 +13,7 @@ import 'package:style_me/features/settings/presentation/ui_models/setting_action
 part 'settings_state_holder.freezed.dart';
 
 @freezed
-class SettingsStateHolder with _$SettingsStateHolder {
+sealed class SettingsStateHolder with _$SettingsStateHolder {
   const factory SettingsStateHolder({
     @Default([]) List<Setting> appSettings,
     @Default([]) List<Setting> accountSettings,

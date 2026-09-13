@@ -4,7 +4,7 @@ import 'package:style_me/features/wardrobe/data/models/clothing/clothing_categor
 part 'clothing_form_state.freezed.dart';
 
 @freezed
-class ClothingFormState with _$ClothingFormState {
+sealed class ClothingFormState with _$ClothingFormState {
   const factory ClothingFormState({
     @Default("") String nameText,
     @Default(ClothingCategoryEnum.ALL) ClothingCategoryEnum selectedCategory,

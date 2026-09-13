@@ -117,7 +117,8 @@ class GetItManager {
     getIt.registerLazySingleton(() => IsolatedDecryptManager());
 
     ///Global auth
-    getIt.registerFactory(() => GoogleSignIn.standard());
+    await GoogleSignIn.instance.initialize();
+    getIt.registerFactory(() => GoogleSignIn.instance);
     getIt.registerFactory(() => FirebaseAuth.instance);
     getIt.registerFactory(() => GoogleAuthService(getIt(), getIt()));
     getIt.registerFactory(() => GetUserUseCase(getIt()));

@@ -7,7 +7,7 @@ import 'package:style_me/features/auth/presentation/ui_models/text_field_state.d
 part 'auth_state_holder.freezed.dart';
 
 @freezed
-class AuthStateHolder with _$AuthStateHolder {
+sealed class AuthStateHolder with _$AuthStateHolder {
   const AuthStateHolder._();
 
   const factory AuthStateHolder(

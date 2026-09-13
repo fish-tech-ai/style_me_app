@@ -4,7 +4,7 @@ import 'package:style_me/core/navigation/app_page.dart';
 part 'bottom_nav_item.freezed.dart';
 
 @freezed
-class BottomNavItem with _$BottomNavItem {
+sealed class BottomNavItem with _$BottomNavItem {
   const factory BottomNavItem({
     required String asset,
     required bool isSelected,

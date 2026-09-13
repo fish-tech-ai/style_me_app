@@ -28,3 +28,13 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+subprojects {
+    pluginManager.withPlugin("com.android.library") {
+        androidComponents {
+            finalizeDsl { ext ->
+                ext.compileSdk = 36
+            }
+        }
+    }
+}

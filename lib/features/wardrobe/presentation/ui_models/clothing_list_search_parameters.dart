@@ -5,7 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'clothing_list_search_parameters.freezed.dart';
 
 @freezed
-class ClothingListSearchParameters with _$ClothingListSearchParameters {
+sealed class ClothingListSearchParameters with _$ClothingListSearchParameters {
   const factory ClothingListSearchParameters({
     @Default("") String searchText,
     ClothingPositionEnum? position,

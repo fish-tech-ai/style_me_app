@@ -10,7 +10,7 @@ part 'setting.freezed.dart';
 ///
 /// [action] - runs action if path is null
 @freezed
-class Setting with _$Setting {
+sealed class Setting with _$Setting {
   const factory Setting({
     required String label,
     String? subLabel,
