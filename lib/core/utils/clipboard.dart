@@ -1,59 +1,58 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
+import 'package:pasteboard/pasteboard.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:super_clipboard/super_clipboard.dart';
 
 class Clipboard {
-  late final SystemClipboard systemClipboard;
-  final List<SimpleFileFormat> supportedFormats = [
-    Formats.jpeg,
-    Formats.png,
-    Formats.webp,
-    Formats.bmp,
-    Formats.heif,
+  final List<String> supportedExtensions = [
+    '.jpg',
+    '.jpeg',
+    '.png',
+    '.webp',
+    '.bmp',
+    '.heif'
   ];
 
-  Clipboard() {
-    /// system clipboard from super_clipboards are not available only on firefox, so this value will not be null
-    systemClipboard = SystemClipboard.instance!;
+  Clipboard();
+
+  Future<bool> containsImage() async {
+    final imageBytes = await Pasteboard.image;
+    if (imageBytes != null) return true;
+
+    final files = await Pasteboard.files();
+    return files.any((path) {
+      final lowerPath = path.toLowerCase();
+      return supportedExtensions.any((ext) => lowerPath.endsWith(ext));
+    });
   }
 
-  Future<bool> containsImage(ClipboardReader reader) async {
-    return supportedFormats.any(
-      (supportedFormat) => reader.canProvide(supportedFormat),
-    );
-  }
-
-  void fetchImageFile({
+  Future<void> fetchImageFile({
     required Function(File) onImageReceived,
     required Function() onNoImageInClipboard,
   }) async {
-    final reader = await systemClipboard.read();
-    if (await containsImage(reader)) {
-      final format =
-          reader.getFormats(supportedFormats).first as SimpleFileFormat;
-      _fetchFileFromClipboard(reader, format, onImageReceived);
-    } else {
-      onNoImageInClipboard();
-    }
-  }
-
-  void _fetchFileFromClipboard(ClipboardReader reader, SimpleFileFormat format,
-      Function(File file) onFileReceived) {
-    reader.getFile(format, (file) async {
-      final stream = file.getStream();
-      List<int> bytes = [];
-
-      await for (final chunk in stream) {
-        bytes.addAll(chunk);
-      }
-
+    final imageBytes = await Pasteboard.image;
+    if (imageBytes != null) {
       final tempDir = await getTemporaryDirectory();
-      final filePath = '${tempDir.path}/clipboard_image.jpg';
-      final fullFile = File(filePath);
-      await fullFile.writeAsBytes(bytes, flush: true);
+      final file = File('${tempDir.path}/clipboard_image.jpg');
+      await file.writeAsBytes(imageBytes, flush: true);
+      onImageReceived(file);
+      return;
+    }
 
-      onFileReceived(fullFile);
-    });
+    final files = await Pasteboard.files();
+    if (files.isNotEmpty) {
+      final imagePath = files.firstWhereOrNull((path) {
+        final lowerPath = path.toLowerCase();
+        return supportedExtensions.any((ext) => lowerPath.endsWith(ext));
+      });
+
+      if (imagePath != null) {
+        onImageReceived(File(imagePath));
+        return;
+      }
+    }
+
+    onNoImageInClipboard();
   }
 }
