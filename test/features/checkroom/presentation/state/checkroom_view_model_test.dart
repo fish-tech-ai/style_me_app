@@ -12,6 +12,7 @@ import 'package:style_me/features/checkroom/presentation/state/checkroom_view_mo
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
 import 'package:style_me/features/wardrobe/presentation/ui_models/clothing_list_search_parameters.dart';
@@ -76,20 +77,28 @@ void main() {
 
   test('initial state is loading and then updates with user photos on success',
       () async {
-    final List<UserPhoto> userPhotosList = [];
+    final userPhoto = UserPhoto('1', 'Test', 'url');
     when(() => mockGetUserPhotosUseCase.call())
-        .thenAnswer((_) async => Result.success(userPhotosList));
+        .thenAnswer((_) async => Result.success([userPhoto]));
+    when(() => mockMultipleImageFetcher.downloadImagesToCachePaths(any(),
+            suffix: "_original"))
+        .thenAnswer(
+            (inv) async => inv.positionalArguments[0] as List<PhotoItem>);
 
+
+    final subscription =
+        container.listen(checkroomViewModelProvider, (_, __) {});
     container.read(checkroomViewModelProvider.notifier);
 
-    await Future.delayed(Duration.zero);
+    await Future.delayed(Duration(milliseconds: 1100));
 
     final CheckroomStateHolder state =
         container.read(checkroomViewModelProvider);
 
-    await Future.delayed(Duration.zero);
-    expect(state.isUserPhotosLoading, true);
-    expect(state.userPhotos, []);
+    expect(state.isUserPhotosLoading, false);
+    expect(state.userPhotos, [userPhoto]);
+    expect(state.selectedUserPhoto, userPhoto);
+    subscription.close();
   });
 
   test('getClothes fetches and sets clothes with image paths', () async {
@@ -168,6 +177,9 @@ void main() {
   });
 
   test('onUserPhotoChange updates selectedUserPhoto', () async {
+
+    final subscription =
+        container.listen(checkroomViewModelProvider, (_, __) {});
     final notifier = container.read(checkroomViewModelProvider.notifier);
     final dummyPhoto = UserPhoto('1', 'path/to/photo.jpg', "");
 
@@ -175,6 +187,11 @@ void main() {
 
     final state = container.read(checkroomViewModelProvider);
     expect(state.selectedUserPhoto, dummyPhoto);
+
+
+
+    await Future.delayed(Duration(milliseconds: 1100));
+    subscription.close();
   });
 
   test('onClothingSelected updates selectedClothes', () async {
@@ -184,11 +201,19 @@ void main() {
     when(() => mockGetUpdatedSelectedClothesUseCase.call(any(), any()))
         .thenReturn([clothing]);
 
+
+    final subscription =
+        container.listen(checkroomViewModelProvider, (_, __) {});
     final notifier = container.read(checkroomViewModelProvider.notifier);
     notifier.onClothingSelected(clothing);
 
     final state = container.read(checkroomViewModelProvider);
     expect(state.selectedClothes, contains(clothing));
+
+
+
+    await Future.delayed(Duration(milliseconds: 1100));
+    subscription.close();
   });
 
   test(
@@ -206,6 +231,9 @@ void main() {
     when(() => mockGetUpdatedSelectedClothesUseCase.call(any(), any()))
         .thenReturn([clothing]);
 
+
+    final subscription =
+        container.listen(checkroomViewModelProvider, (_, __) {});
     final notifier = container.read(checkroomViewModelProvider.notifier);
 
     notifier.onClothingSelected(clothing);
@@ -215,6 +243,11 @@ void main() {
     notifier.unselectClothingBy(clothing.id);
     final state = container.read(checkroomViewModelProvider);
     expect(state.selectedClothes, isNot(contains(clothing)));
+
+
+
+    await Future.delayed(Duration(milliseconds: 1100));
+    subscription.close();
   });
 
   test('onSearchParametersChanged triggers clothes search', () async {
@@ -227,13 +260,16 @@ void main() {
     );
     final clothingItems = [clothing];
 
-    final notifier = container.read(checkroomViewModelProvider.notifier);
-
     when(() => mockGetClothesUseCase.call(any(), any(), any()))
         .thenAnswer((_) async => Result.success(clothingItems));
 
     when(() => mockMultipleImageFetcher.downloadImagesToCachePaths(any()))
         .thenAnswer((_) async => []);
+
+
+    final subscription =
+        container.listen(checkroomViewModelProvider, (_, __) {});
+    final notifier = container.read(checkroomViewModelProvider.notifier);
 
     final searchParams = ClothingListSearchParameters(searchText: 'Test');
 
@@ -241,10 +277,11 @@ void main() {
     await Future.delayed(Duration(milliseconds: 1100));
 
     verify(() => mockGetClothesUseCase.call(any(), any(), any())).called(1);
+    subscription.close();
   });
 
   test('isClothesFullyChosen returns true when full-body clothing selected',
-      () {
+      () async {
     final fullBodyClothing = Clothing(
       '1',
       'Full Body',
@@ -256,13 +293,22 @@ void main() {
     when(() => mockGetUpdatedSelectedClothesUseCase.call(any(), any()))
         .thenReturn([fullBodyClothing]);
 
+
+    final subscription =
+        container.listen(checkroomViewModelProvider, (_, __) {});
     final notifier = container.read(checkroomViewModelProvider.notifier);
     notifier.onClothingSelected(fullBodyClothing);
 
     expect(notifier.isClothesFullyChosen(), true);
+
+
+
+    await Future.delayed(Duration(milliseconds: 1100));
+    subscription.close();
   });
 
-  test('isClothesFullyChosen returns true when top and bottom selected', () {
+  test('isClothesFullyChosen returns true when top and bottom selected',
+      () async {
     final top = Clothing(
       '1',
       'Top',
@@ -281,14 +327,23 @@ void main() {
     when(() => mockGetUpdatedSelectedClothesUseCase.call(any(), any()))
         .thenReturn([top, bottom]);
 
+
+    final subscription =
+        container.listen(checkroomViewModelProvider, (_, __) {});
     final notifier = container.read(checkroomViewModelProvider.notifier);
     notifier.onClothingSelected(top);
     notifier.onClothingSelected(bottom);
 
     expect(notifier.isClothesFullyChosen(), true);
+
+
+
+    await Future.delayed(Duration(milliseconds: 1100));
+    subscription.close();
   });
 
-  test('isClothesFullyChosen returns false with only one top clothing', () {
+  test('isClothesFullyChosen returns false with only one top clothing',
+      () async {
     final top = Clothing(
       '1',
       'Top',
@@ -300,9 +355,17 @@ void main() {
     when(() => mockGetUpdatedSelectedClothesUseCase.call(any(), any()))
         .thenReturn([top]);
 
+
+    final subscription =
+        container.listen(checkroomViewModelProvider, (_, __) {});
     final notifier = container.read(checkroomViewModelProvider.notifier);
     notifier.onClothingSelected(top);
 
     expect(notifier.isClothesFullyChosen(), false);
+
+
+
+    await Future.delayed(Duration(milliseconds: 1100));
+    subscription.close();
   });
 }

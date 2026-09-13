@@ -96,12 +96,18 @@ void main() {
         .thenAnswer((inv) async => inv.positionalArguments[0]);
 
     final provider = homeGridListViewModelProvider(HomeGridType.recentOutfits);
+
+    final listener = container.listen(provider, (_, __) {});
     final notifier = container.read(provider.notifier);
     await notifier.future;
 
     await notifier.downloadPhoto(outfit);
 
     verify(() => mockGlobal.showSuccessInfo(any())).called(1);
+
+
+    await Future.delayed(Duration(seconds: 6));
+    listener.close();
   });
 
   test('downloadPhoto with PermissionFailure shows permission snackbar',
@@ -115,6 +121,7 @@ void main() {
         .thenAnswer((_) async => Result.success(OutfitsResponse([outfit])));
 
     final provider = homeGridListViewModelProvider(HomeGridType.recentOutfits);
+    final listener = container.listen(provider, (_, __) {});
     final notifier = container.read(provider.notifier);
     await notifier.future;
     await notifier.downloadPhoto(outfit);
@@ -122,6 +129,14 @@ void main() {
     final state = container
         .read(homeGridListViewModelProvider(HomeGridType.recentOutfits));
     expect(state.value?.isNoPermissionSnackBarVisible, true);
+
+
+
+    await Future.delayed(Duration(seconds: 6));
+    final updated = container
+        .read(homeGridListViewModelProvider(HomeGridType.recentOutfits));
+    expect(updated.value?.isNoPermissionSnackBarVisible, false);
+    listener.close();
   });
 
   test('downloadPhoto with GalFailure shows translated message', () async {
@@ -135,12 +150,18 @@ void main() {
         .thenAnswer((_) async => Result.success(OutfitsResponse([outfit])));
 
     final provider = homeGridListViewModelProvider(HomeGridType.recentOutfits);
+
+    final listener = container.listen(provider, (_, __) {});
     final notifier = container.read(provider.notifier);
     await notifier.future;
     await notifier.downloadPhoto(outfit);
 
     verify(() => mockGlobal.showErrorMessage(galFailure.getTranslatedText()))
         .called(1);
+
+
+    await Future.delayed(Duration(seconds: 6));
+    listener.close();
   });
 
   test(
@@ -202,6 +223,8 @@ void main() {
   });
 
   test('showNoPermissionsSnackBar toggles state flags', () async {
+    final listener = container.listen(
+        homeGridListViewModelProvider(HomeGridType.recentOutfits), (_, __) {});
     final notifier = container.read(
         homeGridListViewModelProvider(HomeGridType.recentOutfits).notifier);
     await notifier.future;
@@ -227,6 +250,7 @@ void main() {
           updated.value.isNoPermissionSnackBarVisible,
       false,
     );
+    listener.close();
   });
 
   test("showLoadingSnackBar toggles isDownloading", () async {

@@ -14,6 +14,7 @@ import 'package:style_me/core/app/domain/usecases/set_language_use_case.dart';
 import 'package:style_me/core/app/presentation/app_global_state_holder.dart';
 import 'package:style_me/core/app/presentation/app_global_view_model.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
+import 'package:style_me/core/network/failures/failure.dart';
 import 'package:style_me/core/network/connection.dart';
 import 'package:style_me/core/utils/deep_link_manager.dart';
 import 'package:style_me/features/auth/domain/confirm_email_use_case.dart';
@@ -62,6 +63,37 @@ class MockitoAppGlobalViewModel extends AppGlobalViewModel with mockito.Mock {
       lang: const Locale('en'),
     );
   }
+
+  @override
+  void showFailure(Failure failure) => super.noSuchMethod(
+        Invocation.method(#showFailure, [failure]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void showErrorMessage(String message) => super.noSuchMethod(
+        Invocation.method(#showErrorMessage, [message]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void showSuccessInfo(String message) => super.noSuchMethod(
+        Invocation.method(#showSuccessInfo, [message]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void changeLanguage(Locale lang) => super.noSuchMethod(
+        Invocation.method(#changeLanguage, [lang]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  Future initUser() => (super.noSuchMethod(
+        Invocation.method(#initUser, []),
+        returnValue: Future<void>.value(),
+        returnValueForMissingStub: Future<void>.value(),
+      ) as Future);
 }
 
 class MockAppGlobalViewModel extends AppGlobalViewModel with Mock {
@@ -86,6 +118,26 @@ class MockAppGlobalViewModel extends AppGlobalViewModel with Mock {
       lang: const Locale('en'),
     );
   }
+
+  @override
+  void showFailure(Failure failure) =>
+      super.noSuchMethod(Invocation.method(#showFailure, [failure]));
+
+  @override
+  void showErrorMessage(String message) => super
+      .noSuchMethod(Invocation.method(#showErrorMessage, [message]));
+
+  @override
+  void showSuccessInfo(String message) =>
+      super.noSuchMethod(Invocation.method(#showSuccessInfo, [message]));
+
+  @override
+  void changeLanguage(Locale lang) =>
+      super.noSuchMethod(Invocation.method(#changeLanguage, [lang]));
+
+  @override
+  Future initUser() =>
+      super.noSuchMethod(Invocation.method(#initUser, [])) as Future;
 }
 
 MockAppLocalizations initializeAndGetLocalizations() {

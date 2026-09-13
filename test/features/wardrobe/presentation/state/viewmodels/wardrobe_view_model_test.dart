@@ -8,6 +8,7 @@ import 'package:style_me/core/network/utils/result.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_category_enum.dart';
 import 'package:style_me/features/wardrobe/data/models/clothing/clothing_position_enum.dart';
+import 'package:style_me/features/wardrobe/data/models/photo_item.dart';
 import 'package:style_me/features/wardrobe/data/models/user_photos/user_photo.dart';
 import 'package:style_me/features/wardrobe/domain/clothing/get_clothes_use_case.dart';
 import 'package:style_me/features/wardrobe/domain/user_photo/get_user_photos_use_case.dart';
@@ -61,22 +62,31 @@ void main() {
 
   test('initial state is loading and then updates with user photos on success',
       () async {
-    final List<UserPhoto> userPhotosList = [];
+    final userPhoto = UserPhoto('1', 'Test', 'url');
     when(() => mockGetUserPhotosUseCase.call())
-        .thenAnswer((_) async => Result.success(userPhotosList));
+        .thenAnswer((_) async => Result.success([userPhoto]));
+    when(() => mockMultipleImageFetcher.downloadImagesToCachePaths(any()))
+        .thenAnswer(
+            (inv) async => inv.positionalArguments[0] as List<PhotoItem>);
 
+
+    final subscription =
+        container.listen(wardrobeViewModelProvider, (_, __) {});
     container.read(wardrobeViewModelProvider.notifier);
 
-    await Future.delayed(Duration.zero);
+    await Future.delayed(Duration(milliseconds: 1100));
 
     final WardrobeStateHolder state = container.read(wardrobeViewModelProvider);
 
-    await Future.delayed(Duration.zero);
-    expect(state.isUserPhotosLoading, true);
-    expect(state.userPhotos, []);
+    expect(state.isUserPhotosLoading, false);
+    expect(state.userPhotos, [userPhoto]);
+    subscription.close();
   });
 
-  test('onClothingModifyResult - update action updates the item', () {
+  test('onClothingModifyResult - update action updates the item', () async {
+
+    final subscription =
+        container.listen(wardrobeViewModelProvider, (_, __) {});
     final notifier = container.read(wardrobeViewModelProvider.notifier);
 
     final oldClothing = Clothing('1', 'name', "old_path",
@@ -91,9 +101,17 @@ void main() {
     final updatedState = container.read(wardrobeViewModelProvider);
     expect(updatedState.clothes.length, 1);
     expect(updatedState.clothes.first.image, 'new_path');
+
+
+
+    await Future.delayed(Duration(milliseconds: 1100));
+    subscription.close();
   });
 
-  test('onClothingModifyResult - delete action removes the item', () {
+  test('onClothingModifyResult - delete action removes the item', () async {
+
+    final subscription =
+        container.listen(wardrobeViewModelProvider, (_, __) {});
     final notifier = container.read(wardrobeViewModelProvider.notifier);
 
     final clothing1 = Clothing('1', 'name', "path1", ClothingCategoryEnum.ALL,
@@ -110,6 +128,11 @@ void main() {
     final updatedState = container.read(wardrobeViewModelProvider);
     expect(updatedState.clothes.length, 1);
     expect(updatedState.clothes.first.id, '2');
+
+
+
+    await Future.delayed(Duration(milliseconds: 1100));
+    subscription.close();
   });
 
   test('getClothes fetches and sets clothes with image paths', () async {

@@ -107,6 +107,9 @@ void main() {
   });
 
   test('downloadOutfit handles PermissionFailure', () async {
+    final listener = container.listen(
+        outfitDetailsViewModelProvider(outfit), (_, __) {});
+
     final notifier =
         container.read(outfitDetailsViewModelProvider(outfit).notifier);
     await notifier.future;
@@ -116,8 +119,23 @@ void main() {
 
     await notifier.downloadOutfit();
 
-    final state = container.read(outfitDetailsViewModelProvider(outfit));
-    expect(state.value!.isNoPermissionSnackBarVisible, true);
+    expect(
+        container
+            .read(outfitDetailsViewModelProvider(outfit))
+            .value!
+            .isNoPermissionSnackBarVisible,
+        true);
+
+
+
+    await Future.delayed(Duration(seconds: 6));
+    expect(
+        container
+            .read(outfitDetailsViewModelProvider(outfit))
+            .value!
+            .isNoPermissionSnackBarVisible,
+        false);
+    listener.close();
   });
 
   test('downloadOutfit handles GalFailure', () async {

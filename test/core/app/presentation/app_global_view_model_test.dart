@@ -4,8 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:style_me/core/app/domain/usecases/clear_app_cache_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_current_theme_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/get_language_use_case.dart';
+import 'package:style_me/core/app/domain/usecases/get_user_use_case.dart';
+import 'package:style_me/core/app/domain/usecases/load_app_legals_to_cache_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/save_current_theme_use_case.dart';
 import 'package:style_me/core/app/domain/usecases/set_language_use_case.dart';
 import 'package:style_me/core/app/presentation/app_global_state_holder.dart';
@@ -27,8 +30,11 @@ import 'app_global_view_model_test.mocks.dart';
   MockSpec<GetCurrentThemeUseCase>(),
   MockSpec<SaveCurrentThemeUseCase>(),
   MockSpec<GetLanguageUseCase>(),
+  MockSpec<GetUserUseCase>(),
   MockSpec<SetLanguageUseCase>(),
   MockSpec<ConfirmEmailUseCase>(),
+  MockSpec<LoadAppLegalsToCacheUseCase>(),
+  MockSpec<ClearAppCacheUseCase>(),
   MockSpec<DeepLinkManager>(),
   MockSpec<Connection>(),
 ])
@@ -36,11 +42,15 @@ void main() {
   late MockGetCurrentThemeUseCase mockGetCurrentThemeUseCase;
   late MockSaveCurrentThemeUseCase mockSaveCurrentThemeUseCase;
   late MockGetLanguageUseCase mockGetLanguageUseCase;
+  late MockGetUserUseCase mockGetUserUseCase;
   late MockSetLanguageUseCase mockSetLanguageUseCase;
   late MockConfirmEmailUseCase mockConfirmEmailUseCase;
+  late MockLoadAppLegalsToCacheUseCase mockLoadAppLegalsToCacheUseCase;
+  late MockClearAppCacheUseCase mockClearAppCacheUseCase;
   late MockDeepLinkManager mockDeepLinkManager;
   late MockConnection mockConnection;
   late ProviderContainer container;
+  late ProviderSubscription<AppGlobalStateHolder> subscription;
   late UserData userData;
   late AppGlobalViewModel appGlobalViewModel;
 
@@ -49,8 +59,11 @@ void main() {
     mockGetCurrentThemeUseCase = MockGetCurrentThemeUseCase();
     mockSaveCurrentThemeUseCase = MockSaveCurrentThemeUseCase();
     mockGetLanguageUseCase = MockGetLanguageUseCase();
+    mockGetUserUseCase = MockGetUserUseCase();
     mockSetLanguageUseCase = MockSetLanguageUseCase();
     mockConfirmEmailUseCase = MockConfirmEmailUseCase();
+    mockLoadAppLegalsToCacheUseCase = MockLoadAppLegalsToCacheUseCase();
+    mockClearAppCacheUseCase = MockClearAppCacheUseCase();
     mockDeepLinkManager = MockDeepLinkManager();
     mockConnection = MockConnection();
 
@@ -72,16 +85,22 @@ void main() {
             mockGetCurrentThemeUseCase,
             mockSaveCurrentThemeUseCase,
             mockGetLanguageUseCase,
+            mockGetUserUseCase,
             mockSetLanguageUseCase,
             mockConfirmEmailUseCase,
+            mockLoadAppLegalsToCacheUseCase,
+            mockClearAppCacheUseCase,
             mockDeepLinkManager,
             mockConnection,
           ))
     ]);
     appGlobalViewModel = container.read(appGlobalViewModelProvider.notifier);
+
+    subscription = container.listen(appGlobalViewModelProvider, (_, __) {});
   });
 
   tearDown(() {
+    subscription.close();
     container.dispose();
   });
 
