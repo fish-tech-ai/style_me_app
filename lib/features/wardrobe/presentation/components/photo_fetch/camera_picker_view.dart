@@ -41,6 +41,9 @@ class _CameraPickerViewState extends State<CameraPickerView> {
   bool showCountdownTimer = false;
   int? _countdownTime;
 
+  bool get _isCameraReady =>
+      widget.isInitialized && widget.controller.value.isInitialized;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -48,7 +51,7 @@ class _CameraPickerViewState extends State<CameraPickerView> {
         double? parentAspectRatio;
         double? scale;
 
-        if (widget.isInitialized) {
+        if (_isCameraReady) {
           CameraValue camera = widget.controller.value;
           parentAspectRatio = constraints.maxWidth / constraints.maxHeight;
           scale = parentAspectRatio * camera.aspectRatio;
@@ -79,7 +82,7 @@ class _CameraPickerViewState extends State<CameraPickerView> {
                 border: Border.all(color: context.colorScheme.primary),
                 onClick: widget.onRotateCameraClicked,
               ),
-            ).orEmpty(!widget.isInitialized),
+            ).orEmpty(!_isCameraReady),
             Positioned(
               bottom: 56,
               child: PhotoTakeButton(
@@ -88,7 +91,7 @@ class _CameraPickerViewState extends State<CameraPickerView> {
                   return widget.onTakePictureClicked(parentAspectRatio ?? 1);
                 },
               ),
-            ).orEmpty(!widget.isInitialized),
+            ).orEmpty(!_isCameraReady),
             Positioned(
               right: 12,
               top: 12,
@@ -106,7 +109,7 @@ class _CameraPickerViewState extends State<CameraPickerView> {
               child: ExpandableTimerPicker(
                 onOptionSelected: _setCountdownTime,
               ),
-            ).orEmpty(!widget.isInitialized),
+            ).orEmpty(!_isCameraReady),
             Positioned.fill(
               child: CountdownTimer(_countdownTime),
             ).orEmpty(!showCountdownTimer),
@@ -117,7 +120,7 @@ class _CameraPickerViewState extends State<CameraPickerView> {
   }
 
   Widget _buildCameraPreview(BoxConstraints constraints, double scale) {
-    if (widget.isInitialized) {
+    if (_isCameraReady) {
       return Transform.flip(
         flipX: widget.controller.description.lensDirection ==
             CameraLensDirection.front,

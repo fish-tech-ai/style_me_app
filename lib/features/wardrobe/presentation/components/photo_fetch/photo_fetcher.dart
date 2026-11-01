@@ -27,6 +27,9 @@ class PhotoFetcher extends ConsumerStatefulWidget {
 class PhotoFetcherState extends ConsumerState<PhotoFetcher>
     with WidgetsBindingObserver {
   late CameraController _controller;
+  bool _hasCameraController = false;
+  Future<void>? _pendingDispose;
+  bool _isInitializing = false;
   List<CameraDescription>? _cameras;
   bool _isCameraInitialized = false;
   bool _isCameraLoading = true;
@@ -35,18 +38,15 @@ class PhotoFetcherState extends ConsumerState<PhotoFetcher>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _initializeCamera();
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.inactive) {
+      _disposeCameraController();
+    } else if (state == AppLifecycleState.resumed) {
       _initializeCamera();
     }
   }
@@ -54,35 +54,70 @@ class PhotoFetcherState extends ConsumerState<PhotoFetcher>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _controller.dispose();
+    if (_hasCameraController) {
+      _hasCameraController = false;
+      _controller.dispose();
+    }
     super.dispose();
   }
 
   Future<void> _initializeCamera() async {
-    _cameras = await availableCameras();
-    _initCameraController(0);
+    if (_isInitializing) return;
+    _isInitializing = true;
 
-    _controller.initialize().then((_) {
-      if (!mounted) return;
-      setState(() {
-        _isCameraInitialized = true;
-        _isCameraLoading = false;
-      });
-    }).catchError((Object e) {
-      if (e is CameraException && e.code == 'CameraAccessDenied') {
-        setState(() {
-          _isCameraInitialized = false;
-        });
-      }
-      setState(() {
-        _isCameraLoading = false;
-      });
+    try {
+      await _prepareCamera();
+    } catch (e) {
+      _setCameraState(initialized: false, loading: false);
       debugMessagePrint(e.toString(), "STYLE_ME_PHOTO_LABEL: ");
-    });
+    } finally {
+      _isInitializing = false;
+    }
+  }
+
+  Future<void> _prepareCamera() async {
+    final cameras = await _loadCameras();
+
+    if (cameras == null || cameras.isEmpty) {
+      _setCameraState(initialized: false, loading: false);
+      return;
+    }
+
+    _setCameraState(initialized: false, loading: true);
+
+    await _pendingDispose;
+    await _disposeCameraController();
+
+    await _startCamera(0);
+  }
+
+  Future<List<CameraDescription>?> _loadCameras() async {
+    _cameras ??= await availableCameras();
+    return _cameras;
+  }
+
+  Future<void> _startCamera(int index) async {
+    if (!mounted) return;
+    _initCameraController(index);
+    await _controller.initialize();
+    _setCameraState(initialized: true, loading: false);
+  }
+
+  Future<void> _disposeCameraController() async {
+    if (!_hasCameraController) return;
+    _hasCameraController = false;
+    _setCameraState(initialized: false, loading: true);
+
+    final future = _controller.dispose();
+    _pendingDispose = future;
+    await future;
+    if (identical(_pendingDispose, future)) {
+      _pendingDispose = null;
+    }
   }
 
   void _initCameraController(int index) {
-    if (_cameras?.isEmpty == true) {
+    if (_cameras == null || _cameras!.isEmpty) {
       return;
     }
     _controller = CameraController(
@@ -90,6 +125,15 @@ class PhotoFetcherState extends ConsumerState<PhotoFetcher>
       ResolutionPreset.medium,
       enableAudio: false,
     );
+    _hasCameraController = true;
+  }
+
+  void _setCameraState({required bool initialized, required bool loading}) {
+    if (!mounted) return;
+    setState(() {
+      _isCameraInitialized = initialized;
+      _isCameraLoading = loading;
+    });
   }
 
   void _readClipboardForImage() async {
@@ -119,13 +163,21 @@ class PhotoFetcherState extends ConsumerState<PhotoFetcher>
   }
 
   Future<void> _switchCamera() async {
-    if (_cameras == null || _cameras!.isEmpty) return;
+    final cameras = _cameras;
+    if (cameras == null || cameras.isEmpty || _isInitializing) return;
+    _isInitializing = true;
 
-    int newIndex = _controller.description == _cameras?[0] ? 1 : 0;
-    _initCameraController(newIndex);
+    try {
+      final newIndex = cameras.indexOf(_controller.description) == 0 ? 1 : 0;
+      await _disposeCameraController();
 
-    await _controller.initialize();
-    setState(() {});
+      await _startCamera(newIndex);
+    } catch (e) {
+      _setCameraState(initialized: false, loading: false);
+      debugMessagePrint(e.toString(), "STYLE_ME_PHOTO_LABEL: ");
+    } finally {
+      _isInitializing = false;
+    }
   }
 
   @override
