@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:style_me/core/lang/localizations_helper.dart';
@@ -47,14 +49,20 @@ class _ClothesListPageState extends State<ClothesListPage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 4, left: 12, right: 12),
-      child: Column(
-        spacing: 12,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(),
-          Flexible(fit: FlexFit.loose, child: _buildClothesPage(context)),
-        ],
+      child: ClipRect(
+        child: CustomMultiChildLayout(
+          delegate: _ClothesListLayoutDelegate(spacing: 12),
+          children: [
+            LayoutId(
+              id: _ClothesListSlot.header,
+              child: _buildHeader(),
+            ),
+            LayoutId(
+              id: _ClothesListSlot.content,
+              child: _buildClothesPage(context),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -165,4 +173,40 @@ class _ClothesListPageState extends State<ClothesListPage> {
       ),
     );
   }
+}
+
+enum _ClothesListSlot { header, content }
+
+class _ClothesListLayoutDelegate extends MultiChildLayoutDelegate {
+  _ClothesListLayoutDelegate({required this.spacing});
+
+  final double spacing;
+
+  @override
+  void performLayout(Size size) {
+    final headerSize = layoutChild(
+      _ClothesListSlot.header,
+      BoxConstraints(maxWidth: size.width),
+    );
+    final contentHeight =
+        math.max(0.0, size.height - headerSize.height - spacing);
+    layoutChild(
+      _ClothesListSlot.content,
+      BoxConstraints(
+        minWidth: size.width,
+        maxWidth: size.width,
+        minHeight: contentHeight,
+        maxHeight: contentHeight,
+      ),
+    );
+    positionChild(_ClothesListSlot.header, Offset.zero);
+    positionChild(
+      _ClothesListSlot.content,
+      Offset(0, headerSize.height + spacing),
+    );
+  }
+
+  @override
+  bool shouldRelayout(_ClothesListLayoutDelegate oldDelegate) =>
+      oldDelegate.spacing != spacing;
 }
