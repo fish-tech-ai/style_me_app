@@ -598,4 +598,18 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get onboardingExitDialogEndText => 'Zakończ samouczek';
+
+  @override
+  String get authDemoDialogTitle => 'Ta aplikacja to demo';
+
+  @override
+  String get authDemoDialogDescription =>
+      'To wersja demo działająca na darmowym hostingu, więc pierwsze zapytania mogą być wolne. Niektóre funkcje mogą nie działać.';
+
+  @override
+  String get authDemoDialogVideoInfo =>
+      'Jeśli nie chcesz testować jej samodzielnie, obejrzyj wideo z demem:';
+
+  @override
+  String get gotIt => 'Rozumiem';
 }

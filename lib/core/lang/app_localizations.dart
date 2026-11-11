@@ -1195,6 +1195,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'End tutorial'**
   String get onboardingExitDialogEndText;
+
+  /// No description provided for @authDemoDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This app is a demo'**
+  String get authDemoDialogTitle;
+
+  /// No description provided for @authDemoDialogDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a demo version running on free hosting, so requests may be slow at first. Some features may not work.'**
+  String get authDemoDialogDescription;
+
+  /// No description provided for @authDemoDialogVideoInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'If you don\'t want to test it yourself, watch the demo video:'**
+  String get authDemoDialogVideoInfo;
+
+  /// No description provided for @gotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get gotIt;
 }
 
 class _AppLocalizationsDelegate

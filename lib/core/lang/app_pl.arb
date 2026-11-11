@@ -202,7 +202,9 @@
   "onboardingFinish": "Stuknij, aby zakończyć samouczek",
   "onboardingExitDialogTitle": "Na pewno?",
   "onboardingExitDialogSubTitle": "Ta akcja zakończy samouczek. Możesz go zawsze rozpocząć ponownie z ekranu głównego.",
-  "onboardingExitDialogEndText": "Zakończ samouczek"
-
-
+  "onboardingExitDialogEndText": "Zakończ samouczek",
+  "authDemoDialogTitle": "Ta aplikacja to demo",
+  "authDemoDialogDescription": "To wersja demo działająca na darmowym hostingu, więc pierwsze zapytania mogą być wolne. Niektóre funkcje mogą nie działać.",
+  "authDemoDialogVideoInfo": "Jeśli nie chcesz testować jej samodzielnie, obejrzyj wideo z demem:",
+  "gotIt": "Rozumiem"
 }

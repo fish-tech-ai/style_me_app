@@ -599,4 +599,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingExitDialogEndText => 'End tutorial';
+
+  @override
+  String get authDemoDialogTitle => 'This app is a demo';
+
+  @override
+  String get authDemoDialogDescription =>
+      'This is a demo version running on free hosting, so requests may be slow at first. Some features may not work.';
+
+  @override
+  String get authDemoDialogVideoInfo =>
+      'If you don\'t want to test it yourself, watch the demo video:';
+
+  @override
+  String get gotIt => 'Got it';
 }

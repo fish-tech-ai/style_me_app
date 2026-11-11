@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 abstract class SharedPrefsConst {
   static const currentThemeKey = "currentThemeKey";
   static const languageKey = "languageKey";
+  static const authDemoDialogShownKey = "authDemoDialogShownKey";
 }
 
 abstract class GlobalUiConst {
+  static const String demoVideoUrl = 'https://youtube.com/shorts/O8AE7YNxme4';
   static const double radiusSmall = 12;
   static const double radiusNormal = 12;
   static const double radiusLarge = 16;

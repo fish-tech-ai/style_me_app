@@ -11,6 +11,7 @@ import 'package:style_me/core/utils/show_enum.dart';
 import 'package:style_me/core/views/animators/animated_transistor.dart';
 import 'package:style_me/core/views/buttons/app_back_button.dart';
 import 'package:style_me/core/views/buttons/app_outlined_button.dart';
+import 'package:style_me/features/auth/presentation/components/auth_demo_dialog.dart';
 import 'package:style_me/features/auth/presentation/components/auth_email_confirmation.dart';
 import 'package:style_me/features/auth/presentation/components/auth_form.dart';
 import 'package:style_me/features/auth/presentation/pages/legal_documents_page.dart';
@@ -34,6 +35,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     viewModel = ref.read(authViewModelProvider.notifier);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       viewModel.initFormValidators(context.localizations);
+      showAuthDemoDialogIfNeeded(context);
     });
   }
 

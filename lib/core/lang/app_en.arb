@@ -202,5 +202,9 @@
   "onboardingFinish": "Tap to finish tutorial",
   "onboardingExitDialogTitle": "Are you sure?",
   "onboardingExitDialogSubTitle": "This action will end the tutorial. You can always start it from the beginning on the home page",
-  "onboardingExitDialogEndText": "End tutorial"
+  "onboardingExitDialogEndText": "End tutorial",
+  "authDemoDialogTitle": "This app is a demo",
+  "authDemoDialogDescription": "This is a demo version running on free hosting, so requests may be slow at first. Some features may not work.",
+  "authDemoDialogVideoInfo": "If you don't want to test it yourself, watch the demo video:",
+  "gotIt": "Got it"
 }
