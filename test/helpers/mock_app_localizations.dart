@@ -1,4 +1,3 @@
-
 import 'package:style_me/core/lang/app_localizations.dart';
 
 class MockAppLocalizations extends AppLocalizations {
@@ -559,4 +558,15 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get onboardingStep5Title => "onboardingStep5Title";
 
+  @override
+  String get authDemoDialogDescription => "authDemoDialogDescription";
+
+  @override
+  String get authDemoDialogTitle => "authDemoDialogTitle";
+
+  @override
+  String get authDemoDialogVideoInfo => "authDemoDialogVideoInfo";
+
+  @override
+  String get gotIt => "gotIt";
 }

@@ -7,7 +7,7 @@ abstract class SharedPrefsConst {
 }
 
 abstract class GlobalUiConst {
-  static const String demoVideoUrl = 'https://youtube.com/shorts/O8AE7YNxme4';
+  static const String demoVideoUrl = 'https://www.youtube.com/watch?v=O8AE7YNxme4&list=PLT8OHlDISAlc';
   static const double radiusSmall = 12;
   static const double radiusNormal = 12;
   static const double radiusLarge = 16;

@@ -6,7 +6,7 @@ Style me app.
 ### Prerequisites
 - Flutter version: `3.27.1`
 - Android Studio installed
-- files from encrypted zip on [google drive secrets](https://drive.google.com/drive/u/1/folders/10qL2TMG0SCIuH8206Qts-3rayI_khszU):
+- files from encrypted zip
 	- .env 
 	- for android folder:
 		- .keystore

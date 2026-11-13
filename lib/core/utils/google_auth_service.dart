@@ -12,43 +12,28 @@ class GoogleAuthService {
   Future<String?> signInWithGoogle() async {
     try {
       _googleUser = await _googleSignIn.authenticate();
+      final String? idToken = _googleUser?.authentication.idToken;
 
-      if (_googleUser == null) {
+      if (idToken == null) {
+        debugMessagePrint("Google sign-in error: missing ID token");
         return null;
       }
 
-      final GoogleSignInAuthentication googleAuth = _googleUser!.authentication;
-      final String? idToken = googleAuth.idToken;
-
-      final authorizationClient = _googleUser!.authorizationClient;
-      GoogleSignInClientAuthorization? authorization = await authorizationClient
-          .authorizationForScopes(['email', 'profile']);
-
-      String? accessToken = authorization?.accessToken;
-
-      if (accessToken == null) {
-        final auth2 =
-            await authorizationClient.authorizeScopes(['email', 'profile']);
-        accessToken = auth2.accessToken;
-      }
-
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: accessToken,
-        idToken: idToken,
+      final UserCredential userCredential = await _auth.signInWithCredential(
+        GoogleAuthProvider.credential(idToken: idToken),
       );
-
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
       final User? user = userCredential.user;
 
-      if (user != null) {
-        String? firebaseIdToken = await user.getIdToken();
-        return firebaseIdToken;
+      if (user == null) {
+        debugMessagePrint("Google sign-in error: missing Firebase user");
+        return null;
       }
+
+      return await user.getIdToken();
     } catch (e) {
+      debugMessagePrint("Google sign-in error: $e");
       return null;
     }
-    return null;
   }
 
   Future<bool> reAuthenticate() async {
@@ -56,6 +41,7 @@ class GoogleAuthService {
       _googleUser = await _googleSignIn.authenticate();
       return _googleUser != null;
     } catch (e) {
+      debugMessagePrint("Google re-authentication error: $e");
       return false;
     }
   }
@@ -63,7 +49,9 @@ class GoogleAuthService {
   Future<void> signOut() async {
     try {
       await _googleSignIn.disconnect();
-    } catch (e) {}
+    } catch (e) {
+      debugMessagePrint("Google sign-out error: $e");
+    }
     _googleUser = null;
     await _auth.signOut();
   }
