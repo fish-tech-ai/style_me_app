@@ -1,6 +1,8 @@
 # style_me
 
-Style me app.
+**Style Me** is a virtual wardrobe demo that lets you digitize your closet by uploading photos of yourself and your clothes. Its main feature is a Virtual Try-On (VTON) tool that instantly shows how different garments will look on your own body.
+
+[Watch the Demo here](https://www.youtube.com/watch?v=O8AE7YNxme4&list=PLT8OHlDISAlc)
 
 ## Getting Started
 ### Prerequisites
